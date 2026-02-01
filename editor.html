@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rotation Editor</title>
+  <link rel="stylesheet" href="css/styles.css">
+    <style>
+    /* Editor-specific styles */
+    
+    /* Add visual feedback for draggable players */
+    .draggable-player {
+      transition: transform 0.05s ease-out, opacity 0.2s ease;
+    }
+    
+    .draggable-player:hover circle {
+      stroke: #fff;
+      stroke-width: 3;
+    }
+    
+    .draggable-player.dragging {
+      transition: none !important;
+      cursor: grabbing !important;
+    }
+    
+    .draggable-player.dragging circle {
+      stroke: #fff;
+      stroke-width: 3;
+    }
+    .editor-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px;
+      gap: 12px;
+      background: #1a252f;
+    }
+
+    .editor-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #34495e;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .editor-header h1 {
+      font-size: 1.2rem;
+      flex: 1;
+    }
+
+    .header-inputs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .header-inputs input {
+      padding: 8px 12px;
+      border: 2px solid #5d6d7e;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .header-inputs input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .header-inputs input[type="text"] {
+      min-width: 150px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: #27ae60;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #229954;
+    }
+
+    .btn-secondary {
+      background: #5d6d7e;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #4a6070;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+
+    .editor-main {
+      display: flex;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .editor-left {
+      flex: 0 0 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .panel {
+      background: #34495e;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .player-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      cursor: move;
+    }
+
+    .player-item.dragging {
+      opacity: 0.5;
+    }
+
+    .player-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .player-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      flex-shrink: 0;
+    }
+
+    .player-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .player-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-role {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .player-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      font-size: 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .icon-btn.delete:hover {
+      background: #e74c3c;
+    }
+
+    .phase-config {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mode-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mode-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .phase-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-left: 20px;
+    }
+
+    .phase-tag {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      background: #5d6d7e;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .phase-tag button {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+
+    .phase-tag button:hover {
+      background: #e74c3c;
+    }
+
+    .add-phase-btn {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border: 1px dashed #5d6d7e;
+      border-radius: 4px;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .add-phase-btn:hover {
+      border-color: #3498db;
+      color: #3498db;
+    }
+
+    .editor-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .editor-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #34495e;
+      padding: 10px 12px;
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .control-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    .control-select {
+      padding: 6px 10px;
+      border: 2px solid #5d6d7e;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .control-select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .court-wrapper {
+      flex: 1;
+      min-height: 0;
+      background: #34495e;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .court-svg {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+    }
+
+    .draggable-player {
+      cursor: grab;
+    }
+
+    .draggable-player:active {
+      cursor: grabbing;
+    }
+
+    .draggable-player.dragging {
+      opacity: 0.7;
+    }
+
+    .editor-right {
+      flex: 0 0 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .position-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+    }
+
+    .info-label {
+      opacity: 0.7;
+    }
+
+    .info-value {
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    .bench-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bench-player {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+    }
+
+    .bench-player button {
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      font-size: 0.8rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #34495e;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 2px solid #5d6d7e;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #3498db;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .editor-main {
+        flex-direction: column;
+        overflow-y: auto;
+      }
+
+      .editor-left,
+      .editor-right {
+        flex: none;
+        max-height: 200px;
+      }
+
+      .editor-center {
+        min-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="editor-container">
+    <!-- Header -->
+    <div class="editor-header">
+      <h1>🏐 Rotation Editor</h1>
+      <div class="header-inputs">
+        <input type="text" id="system-name" placeholder="System name (e.g., 5-1)" value="New Rotation">
+        <input type="text" id="system-desc" placeholder="Description" value="Custom rotation system">
+        <input type="file" id="import-file" accept=".json" style="display:none;">
+        <button class="btn btn-secondary" id="btn-import">Import JSON</button>
+        <button class="btn btn-primary" id="btn-export">Export JSON</button>
+        <button class="btn btn-secondary" id="btn-reset">Reset</button>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="editor-main">
+      <!-- Left panel: Players -->
+      <div class="editor-left panel">
+        <div class="panel-header">
+          <span class="panel-title">Players</span>
+          <button class="icon-btn" id="btn-add-player" title="Add Player">+</button>
+        </div>
+        <div class="panel-content player-list" id="player-list"></div>
+      </div>
+
+      <!-- Center: Court -->
+      <div class="editor-center">
+        <div class="editor-controls">
+          <div class="control-group">
+            <span class="control-label">Mode:</span>
+            <select class="control-select" id="mode-select">
+              <option value="serving">Serving</option>
+              <option value="receiving">Receiving</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <span class="control-label">Phase:</span>
+            <select class="control-select" id="phase-select"></select>
+          </div>
+          <div class="control-group">
+            <span class="control-label">Setter in Zone:</span>
+            <select class="control-select" id="setter-select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <button class="btn btn-secondary" id="btn-copy-positions">Copy Positions</button>
+          </div>
+        </div>
+
+        <div class="court-wrapper">
+          <svg class="court-svg" id="editor-court" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="courtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#e8844a" />
+                <stop offset="50%" style="stop-color:#d4753a" />
+                <stop offset="100%" style="stop-color:#e8844a" />
+              </linearGradient>
+              <pattern id="netPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#333"/>
+                <rect x="0" y="0" width="4" height="4" fill="#444"/>
+                <rect x="4" y="4" width="4" height="4" fill="#444"/>
+              </pattern>
+              <filter id="playerShadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+              </filter>
+            </defs>
+
+            <!-- Background -->
+            <rect x="0" y="0" width="300" height="320" fill="#4a90a4"/>
+
+            <!-- Net area -->
+            <rect x="25" y="8" width="250" height="24" fill="url(#netPattern)" rx="2"/>
+            <rect x="25" y="8" width="250" height="24" fill="rgba(255,255,255,0.1)" rx="2"/>
+            <text x="150" y="24" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10" font-weight="600" letter-spacing="1">NET</text>
+
+            <!-- Net poles -->
+            <rect x="21" y="6" width="5" height="28" fill="#555" rx="1"/>
+            <rect x="274" y="6" width="5" height="28" fill="#555" rx="1"/>
+
+            <!-- Court surface -->
+            <rect x="25" y="32" width="250" height="250" fill="url(#courtGradient)" rx="2"/>
+            <rect x="25" y="32" width="250" height="250" fill="none" stroke="#fff" stroke-width="3" rx="2"/>
+
+            <!-- 3m Attack line -->
+            <line x1="25" y1="115" x2="275" y2="115" stroke="#fff" stroke-width="2.5"/>
+            <line x1="8" y1="115" x2="25" y2="115" stroke="#fff" stroke-width="2" stroke-dasharray="4,3"/>
+            <line x1="275" y1="115" x2="292" y2="115" stroke="#fff" stroke-width="2" stroke-dasharray="4,3"/>
+
+            <!-- Center line at net -->
+            <line x1="8" y1="32" x2="292" y2="32" stroke="#fff" stroke-width="4"/>
+
+            <!-- Zone labels -->
+            <g id="zone-labels">
+              <text x="67" y="78" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-weight="700">4</text>
+              <text x="150" y="78" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-weight="700">3</text>
+              <text x="233" y="78" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-weight="700">2</text>
+              <text x="67" y="210" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-weight="700">5</text>
+              <text x="150" y="210" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-weight="700">6</text>
+              <text x="233" y="210" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-weight="700">1</text>
+            </g>
+
+            <!-- Bench area -->
+            <rect x="2" y="200" width="20" height="100" fill="rgba(0,0,0,0.15)" rx="2"/>
+
+          <!-- Players container -->
+          <g id="editor-players" filter="url(#playerShadow)" style="pointer-events: all;"></g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right panel: Phase config & Info -->
+      <div class="editor-right">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Phase Configuration</span>
+          </div>
+          <div class="panel-content phase-config" id="phase-config"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Current Position</span>
+          </div>
+          <div class="panel-content position-info" id="position-info">
+            <div class="info-row">
+              <span class="info-label">Selected:</span>
+              <span class="info-value" id="info-selected">None</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">X (0-900):</span>
+              <span class="info-value" id="info-x">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Y (0-900):</span>
+              <span class="info-value" id="info-y">-</span>
+            </div>
+            <button class="btn btn-danger" id="btn-to-bench" style="width:100%;margin-top:8px;" disabled>Send to Bench</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Player Modal -->
+  <div class="modal-overlay" id="player-modal">
+    <div class="modal">
+      <h3 class="modal-title">Add/Edit Player</h3>
+      <div class="form-group">
+        <label>Player ID (unique):</label>
+        <input type="text" id="player-id" placeholder="e.g., s, h1, m1">
+      </div>
+      <div class="form-group">
+        <label>Label (displayed):</label>
+        <input type="text" id="player-label" placeholder="e.g., S, H1, M1">
+      </div>
+      <div class="form-group">
+        <label>Role:</label>
+        <select id="player-role">
+          <option value="setter">Setter</option>
+          <option value="outside">Outside Hitter</option>
+          <option value="middle">Middle Blocker</option>
+          <option value="opposite">Opposite</option>
+          <option value="libero">Libero</option>
+        </select>
+      </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="player-libero">
+        <label for="player-libero">Is Libero?</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-cancel-player">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-player">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copy Positions Modal -->
+  <div class="modal-overlay" id="copy-modal">
+    <div class="modal">
+      <h3 class="modal-title">Copy Positions From</h3>
+      <div class="form-group">
+        <label>Source Phase:</label>
+        <select id="copy-source-phase"></select>
+      </div>
+      <div class="form-group">
+        <label>Source Setter Position:</label>
+        <select id="copy-source-setter"></select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-cancel-copy">Cancel</button>
+        <button class="btn btn-primary" id="btn-confirm-copy">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/editor.js"></script>
+</body>
+</html>

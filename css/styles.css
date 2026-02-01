@@ -1,0 +1,347 @@
+/* Volleyball Rotation System - Styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --court-color: #e8844a;
+  --court-bg: #4a90a4;
+  --player-color: #efa581;
+  --highlight-color: #f1c40f;
+  --libero-color: #e74c3c;
+  --text-light: #ffffff;
+  --panel-bg: #34495e;
+  --btn-active: #3498db;
+  --btn-inactive: #5d6d7e;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1a252f;
+  color: var(--text-light);
+}
+
+/* Main layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 8px;
+  gap: 8px;
+}
+
+/* Title bar */
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding: 4px 0;
+}
+
+.title-bar h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.system-dropdown {
+  position: relative;
+}
+
+.system-badge {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 2px solid var(--btn-active);
+  border-radius: 6px;
+  background: var(--btn-active);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.system-badge:hover {
+  background: #2980b9;
+  border-color: #2980b9;
+}
+
+.system-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  min-width: 70px;
+}
+
+.system-menu.open {
+  display: block;
+}
+
+.system-option {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s ease;
+}
+
+.system-option:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.system-option.active {
+  background: var(--btn-active);
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.mode-toggle {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--btn-inactive);
+  color: var(--text-light);
+}
+
+.mode-btn.active {
+  background: var(--btn-active);
+}
+
+/* Court area */
+.court-area {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  border-radius: 8px;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.court-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.court-svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* Phase controls */
+.phase-controls {
+  flex-shrink: 0;
+  padding-top: 8px;
+}
+
+.phase-btns {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.phase-btn {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--btn-inactive);
+  color: var(--text-light);
+}
+
+.phase-btn.active {
+  background: var(--btn-active);
+}
+
+/* Bottom bar */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  background: var(--panel-bg);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.setter-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  flex: 1;
+}
+
+.zone-btn {
+  padding: 10px 4px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zone-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.zone-btn.active {
+  background: var(--btn-active);
+  border-color: var(--btn-active);
+}
+
+/* Options */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.option-btn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-btn.active {
+  background: var(--btn-active);
+  border-color: var(--btn-active);
+}
+
+.option-btn span {
+  font-size: 16px;
+}
+
+/* Legend popup */
+.legend-toggle {
+  position: relative;
+}
+
+.legend-popup {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 8px;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 120px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.legend-toggle:hover .legend-popup,
+.legend-toggle:focus-within .legend-popup {
+  display: block;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.legend-dot.player { background: var(--player-color); }
+.legend-dot.highlight { background: var(--highlight-color); }
+.legend-dot.libero { background: var(--libero-color); }
+
+/* Responsive */
+@media (max-height: 600px) {
+  .phase-btn {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+  }
+  .zone-btn {
+    padding: 8px 4px;
+    font-size: 0.9rem;
+  }
+}

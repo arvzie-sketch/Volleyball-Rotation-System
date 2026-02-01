@@ -1,0 +1,14 @@
+# VSCode workspace files
+*.code-workspace
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor backups
+*~
+*.swp
+
+# Claude Code local settings
+.claude/
