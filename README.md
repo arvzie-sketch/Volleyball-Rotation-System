@@ -61,20 +61,21 @@ This mobile layout makes it practical to create and edit rotations on phones and
 
 ### Navigation
 
-The editor uses a flat navigation bar above the court showing all phases for both modes at once:
+The editor uses a navigation bar above the court with two **phase bubbles** side-by-side:
 
 ```
-SERVING:    [Base] [Serve] [Switch]
-RECEIVING:  [Base] [Pass] [Set] [Attack] [Switch]
+┌─ SERVING ─────────────┐  ┌─ RECEIVING ──────────────────────────┐
+│ [Base] [Serve] [Switch]│  │ [Base] [Pass] [Set] [Attack] [Switch]│
+└────────────────────────┘  └──────────────────────────────────────┘
 ```
 
-Click any phase button to select it. The mode is set automatically based on which group you click.
+Click any phase button to select it. The mode is set automatically based on which group you click. The active mode's bubble gets a highlighted border.
 
-Below the phases is a **zone grid** (2x3, matching the court layout) for selecting the setter rotation:
+Below the phases is a **zone grid** (2x3, matching the court layout) for selecting the setter rotation, with a compact **checkmark button** beside it to mark the current slot as done:
 
 ```
-[4] [3] [2]
-[5] [6] [1]
+SETTER  [4] [3] [2]  [✓]    0 / 48
+        [5] [6] [1]
 ```
 
 Each unique combination of mode + phase + setter zone is one "slot" that needs player positions defined.
@@ -99,7 +100,7 @@ Completion state is saved in your browser's localStorage and persists across pag
 
 ### Copy positions
 
-Click **Copy Positions** to copy all player positions from one phase/zone to another. This is useful when consecutive phases share similar positioning - copy first, then make adjustments.
+Click **Copy From...** in the top bar to copy all player positions from one phase/zone to another. This is useful when consecutive phases share similar positioning - copy first, then make adjustments.
 
 ### Phase configuration
 

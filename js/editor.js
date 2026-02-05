@@ -191,6 +191,9 @@ function renderNavigation() {
   ['serving', 'receiving'].forEach(mode => {
     const group = document.createElement('div');
     group.className = 'nav-mode-group';
+    if (state.currentMode === mode) {
+      group.classList.add('active-mode');
+    }
 
     const label = document.createElement('span');
     label.className = 'nav-mode-label';
@@ -237,6 +240,15 @@ function renderNavigation() {
 
 // Update active/complete visual states on nav buttons without full re-render
 function updateNavVisuals() {
+  // Update mode group active state
+  document.querySelectorAll('.nav-mode-group').forEach(group => {
+    const label = group.querySelector('.nav-mode-label');
+    if (label) {
+      const mode = label.textContent.toLowerCase();
+      group.classList.toggle('active-mode', state.currentMode === mode);
+    }
+  });
+
   // Update phase buttons
   document.querySelectorAll('.phase-btn').forEach(btn => {
     const mode = btn.dataset.mode;
@@ -261,11 +273,13 @@ function updateNavVisuals() {
   const markBtn = document.getElementById('btn-mark-done');
   const currentDone = isZoneComplete(state.currentMode, state.currentPhase, state.currentSetter);
   markBtn.classList.toggle('is-done', currentDone);
-  markBtn.textContent = currentDone ? '\u2713 Done' : 'Mark Done';
+  markBtn.textContent = currentDone ? '\u2713' : '\u2713';
 
   // Update progress counter
   const { done, total } = getCompletionCount();
-  document.getElementById('progress-text').textContent = `${done} / ${total}`;
+  const progressEl = document.getElementById('progress-text');
+  progressEl.textContent = `${done} / ${total}`;
+  progressEl.classList.toggle('complete', done === total && total > 0);
 }
 
 // ==========================================
