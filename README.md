@@ -43,7 +43,21 @@ The editor lets you create rotation data from scratch or modify existing files. 
 ### Getting started
 
 1. **Start fresh** - The editor opens with a blank template. Add players in the right sidebar, configure phases, then drag players into position for each combination.
-2. **Import existing** - Click **Import** in the top bar to load a `.json` rotation file. All positions and player data will be loaded. Completion tracking resets on import so you can review everything.
+2. **Import from file** - Click **Import** to upload a `.json` rotation file from your device
+3. **Import from library** - Click **Library** to load any existing rotation from the `/rotations` folder (works on GitHub Pages and web servers)
+
+All imports reset completion tracking so you can review everything from scratch.
+
+### Mobile editing
+
+On mobile devices (screens < 900px), the editor uses a **tab-based layout** for better usability:
+
+- Three tabs at the top: **Court**, **Players**, **Config**
+- Only one panel is visible at a time, giving the court full screen width
+- Larger touch targets on player circles for easier dragging
+- Tap a tab to switch between panels
+
+This mobile layout makes it practical to create and edit rotations on phones and tablets.
 
 ### Navigation
 
