@@ -906,18 +906,20 @@
         padding: 4px 6px;
       }
 
-      /* Mobile: compact title + overflow menu */
+      /* Mobile: compact title + overflow menu on one line */
       .title-bar {
         gap: 6px;
         padding: 4px 0;
+        flex-wrap: nowrap;
       }
 
       .title-bar h1 {
-        font-size: 0.95rem;
+        display: none; /* hide "Rotation Editor" text to save space */
       }
 
       .title-inputs {
         flex: 1;
+        min-width: 0;
       }
 
       .title-inputs .input-inline:last-child {
