@@ -931,8 +931,8 @@
         padding: 6px 8px;
       }
 
-      .menu-btn {
-        display: flex; /* show on mobile */
+      .menu-wrapper {
+        display: block; /* show on mobile */
       }
 
       /* Hide full action bar on mobile */
@@ -964,8 +964,13 @@
     }
 
     /* === OVERFLOW MENU (mobile) === */
-    .menu-btn {
+    .menu-wrapper {
       display: none; /* shown only on mobile */
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .menu-btn {
       width: 36px;
       height: 36px;
       border: none;
@@ -974,11 +979,10 @@
       color: var(--text-light);
       font-size: 1.2rem;
       cursor: pointer;
+      display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.15s ease;
-      position: relative;
-      flex-shrink: 0;
     }
 
     .menu-btn:hover { background: rgba(255,255,255,0.15); }
@@ -1042,8 +1046,8 @@
         <input type="text" class="input-inline" id="system-name" placeholder="System name (e.g., 5-1)">
         <input type="text" class="input-inline" id="system-desc" placeholder="Description">
       </div>
-      <button class="menu-btn" id="menu-toggle" title="Actions">
-        ⋯
+      <div class="menu-wrapper" id="menu-wrapper">
+        <div class="menu-btn" id="menu-toggle" title="Actions">⋯</div>
         <div class="menu-dropdown" id="menu-dropdown">
           <button class="menu-item" data-action="import"><span class="mi-icon">↑</span> Import File</button>
           <button class="menu-item" data-action="library"><span class="mi-icon">📖</span> Library</button>
@@ -1053,7 +1057,7 @@
           <div class="menu-sep"></div>
           <button class="menu-item danger" data-action="reset"><span class="mi-icon">↻</span> Reset</button>
         </div>
-      </button>
+      </div>
     </div>
 
     <!-- Top Bar -->
