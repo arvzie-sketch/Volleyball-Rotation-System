@@ -760,20 +760,123 @@
       justify-content: flex-end;
     }
 
+    /* === LIBRARY IMPORT === */
+    .library-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+    }
+
+    .library-item {
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .library-item:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--btn-active);
+    }
+
+    .library-item-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .library-item-desc {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* === MOBILE TAB LAYOUT === */
+    .mobile-tabs {
+      display: none; /* hidden on desktop */
+    }
+
     /* === RESPONSIVE DESIGN === */
     @media (max-width: 900px) {
+      .mobile-tabs {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+        background: var(--panel-bg);
+        border-radius: 8px;
+        padding: 4px;
+      }
+
+      .mobile-tab {
+        flex: 1;
+        padding: 10px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background: transparent;
+        color: var(--text-light);
+        opacity: 0.6;
+        transition: all 0.15s ease;
+      }
+
+      .mobile-tab.active {
+        background: var(--btn-active);
+        opacity: 1;
+      }
+
+      /* Hide inactive panels on mobile */
       .editor-workspace {
         flex-direction: column;
         overflow-y: auto;
       }
 
-      .sidebar-panel {
-        flex: none;
-        max-height: 250px;
+      .editor-workspace .sidebar-panel {
+        display: none; /* JS toggles this */
       }
 
-      .court-area {
-        min-height: 400px;
+      .editor-workspace .sidebar-panel.mobile-visible {
+        display: flex;
+        flex: 1;
+        max-height: none; /* remove the 250px cap */
+      }
+
+      .editor-workspace .court-area {
+        display: none; /* JS toggles this */
+      }
+
+      .editor-workspace .court-area.mobile-visible {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+      }
+
+      /* Court takes more vertical space on mobile */
+      .court-area.mobile-visible .court-wrapper {
+        flex: 1;
+        min-height: 300px;
+      }
+
+      /* Make nav bar more compact on mobile */
+      .nav-bar {
+        padding: 8px;
+        gap: 6px;
+      }
+
+      .phase-btn {
+        padding: 8px 8px;
+        font-size: 0.75rem;
+      }
+
+      .zone-btn {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        min-width: 42px;
       }
 
       .title-bar {
@@ -863,9 +966,17 @@
       <div class="action-btns">
         <input type="file" id="import-file" accept=".json">
         <button class="btn" id="btn-import">Import</button>
+        <button class="btn" id="btn-import-library">Library</button>
         <button class="btn btn-primary" id="btn-export">Export</button>
         <button class="btn" id="btn-reset">Reset</button>
       </div>
+    </div>
+
+    <!-- Mobile Tab Bar (hidden on desktop) -->
+    <div class="mobile-tabs" id="mobile-tabs">
+      <button class="mobile-tab active" data-tab="court">Court</button>
+      <button class="mobile-tab" data-tab="players">Players</button>
+      <button class="mobile-tab" data-tab="config">Config</button>
     </div>
 
     <!-- Editor Workspace -->
@@ -1060,6 +1171,23 @@
       <div class="modal-actions">
         <button class="btn" id="btn-cancel-copy">Cancel</button>
         <button class="btn btn-primary" id="btn-confirm-copy">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import from Library Modal -->
+  <div class="modal-overlay" id="library-modal">
+    <div class="modal">
+      <h3 class="modal-title">Import from Library</h3>
+      <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 12px;">
+        Load an existing rotation system as a starting point.
+        Your current data will be replaced.
+      </p>
+      <div class="library-list" id="library-list">
+        <p style="opacity: 0.5;">Loading...</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="btn-cancel-library">Cancel</button>
       </div>
     </div>
   </div>

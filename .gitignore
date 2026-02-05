@@ -12,3 +12,6 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/
+
+# Local plans (not for repo)
+Plans/

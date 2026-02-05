@@ -64,6 +64,7 @@ function init() {
   loadFromStorage();
   loadCompletionState();
   initEventHandlers();
+  initMobileTabs();
   renderPlayerList();
   renderPhaseConfig();
   renderNavigation();
@@ -486,6 +487,13 @@ function renderCourtPlayers() {
     text.setAttribute('font-size', '11');
     text.setAttribute('font-weight', '700');
     text.textContent = player.label;
+
+    // Larger touch target on mobile
+    const hitArea = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    hitArea.setAttribute('r', PLAYER_RADIUS + 8); // 26px radius hit area
+    hitArea.setAttribute('fill', 'transparent');
+    hitArea.setAttribute('stroke', 'none');
+    g.appendChild(hitArea);
 
     g.appendChild(circle);
     g.appendChild(text);
@@ -980,6 +988,120 @@ function importJSON(event) {
 }
 
 // ==========================================
+// LIBRARY IMPORT (from /rotations/ folder)
+// ==========================================
+
+async function openLibraryModal() {
+  const modal = document.getElementById('library-modal');
+  const list = document.getElementById('library-list');
+  list.innerHTML = '<p style="opacity: 0.5;">Loading...</p>';
+  modal.classList.add('open');
+
+  try {
+    const response = await fetch('rotations/systems.json');
+    if (!response.ok) throw new Error('Failed to load systems.json');
+    const systems = await response.json();
+
+    list.innerHTML = '';
+
+    if (systems.length === 0) {
+      list.innerHTML = '<p style="opacity: 0.5;">No rotation systems found.</p>';
+      return;
+    }
+
+    // Fetch name/description for each system (in parallel)
+    const details = await Promise.all(systems.map(async (name) => {
+      try {
+        const res = await fetch(`rotations/${name}.json`);
+        if (!res.ok) return { name, displayName: name, description: '' };
+        const data = await res.json();
+        return {
+          name,
+          displayName: data.name || name,
+          description: data.description || ''
+        };
+      } catch {
+        return { name, displayName: name, description: '' };
+      }
+    }));
+
+    details.forEach(system => {
+      const item = document.createElement('div');
+      item.className = 'library-item';
+
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'library-item-name';
+      nameDiv.textContent = system.displayName;
+
+      item.appendChild(nameDiv);
+
+      if (system.description) {
+        const descDiv = document.createElement('div');
+        descDiv.className = 'library-item-desc';
+        descDiv.textContent = system.description;
+        item.appendChild(descDiv);
+      }
+
+      item.addEventListener('click', () => importFromLibrary(system.name));
+      list.appendChild(item);
+    });
+
+  } catch (error) {
+    list.innerHTML = '<p style="color: #e74c3c;">Failed to load rotation library. Make sure the app is served via a web server (not opened as a local file).</p>';
+    console.error('Library load error:', error);
+  }
+}
+
+async function importFromLibrary(systemName) {
+  try {
+    const response = await fetch(`rotations/${systemName}.json`);
+    if (!response.ok) throw new Error(`Failed to load ${systemName}.json`);
+    const imported = await response.json();
+
+    if (!imported.players || !Array.isArray(imported.players)) {
+      throw new Error('Invalid rotation data: missing players array');
+    }
+
+    if (!imported.phases) {
+      throw new Error('Invalid rotation data: missing phases');
+    }
+
+    if (!imported.positions) {
+      imported.positions = {};
+    }
+
+    state.rotation = imported;
+    state.selectedPlayer = null;
+    state.currentMode = 'serving';
+    state.currentPhase = imported.phases.serving?.[0] || 'base';
+    state.currentSetter = 1;
+
+    document.getElementById('system-name').value = imported.name || systemName;
+    document.getElementById('system-desc').value = imported.description || '';
+
+    saveToStorage();
+    clearCompletionState();
+
+    renderPlayerList();
+    renderPhaseConfig();
+    renderNavigation();
+    renderCourtPlayers();
+    updatePositionInfo();
+
+    closeLibraryModal();
+    alert(`Imported: ${imported.name || systemName}`);
+
+  } catch (error) {
+    console.error('Library import error:', error);
+    alert('Error importing: ' + error.message);
+  }
+}
+
+function closeLibraryModal() {
+  document.getElementById('library-modal').classList.remove('open');
+}
+
+// ==========================================
 // BENCH & COPY
 // ==========================================
 
@@ -1055,6 +1177,72 @@ function copyPositions() {
 }
 
 // ==========================================
+// MOBILE TABS
+// ==========================================
+
+function initMobileTabs() {
+  const tabs = document.querySelectorAll('.mobile-tab');
+  if (!tabs.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+
+      // Update active tab
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // Get the three panels
+      const panels = document.querySelectorAll('.editor-workspace > *');
+      const leftSidebar = panels[0];  // .sidebar-panel (players)
+      const courtArea = panels[1];     // .court-area
+      const rightSidebar = panels[2];  // .sidebar-panel (config)
+
+      // Remove all mobile-visible
+      leftSidebar.classList.remove('mobile-visible');
+      courtArea.classList.remove('mobile-visible');
+      rightSidebar.classList.remove('mobile-visible');
+
+      // Show the target
+      if (target === 'players') {
+        leftSidebar.classList.add('mobile-visible');
+      } else if (target === 'court') {
+        courtArea.classList.add('mobile-visible');
+      } else if (target === 'config') {
+        rightSidebar.classList.add('mobile-visible');
+      }
+    });
+  });
+
+  // Set initial state: show court
+  const courtArea = document.querySelector('.court-area');
+  if (courtArea && window.innerWidth <= 900) {
+    courtArea.classList.add('mobile-visible');
+  }
+
+  // Handle resize between desktop/mobile
+  window.addEventListener('resize', () => {
+    const isMobile = window.innerWidth <= 900;
+    const panels = document.querySelectorAll('.editor-workspace > *');
+
+    if (!isMobile) {
+      // Desktop: remove all mobile-visible classes (desktop CSS doesn't use them)
+      panels.forEach(p => p.classList.remove('mobile-visible'));
+    } else {
+      // Mobile: ensure at least one panel is visible
+      const hasVisible = Array.from(panels).some(p => p.classList.contains('mobile-visible'));
+      if (!hasVisible) {
+        document.querySelector('.court-area').classList.add('mobile-visible');
+        // Reset tab active state
+        document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+        const courtTab = document.querySelector('.mobile-tab[data-tab="court"]');
+        if (courtTab) courtTab.classList.add('active');
+      }
+    }
+  });
+}
+
+// ==========================================
 // EVENT HANDLERS
 // ==========================================
 
@@ -1101,12 +1289,19 @@ function initEventHandlers() {
   document.getElementById('btn-confirm-copy').addEventListener('click', copyPositions);
   document.getElementById('btn-cancel-copy').addEventListener('click', closeCopyModal);
 
+  // Library import
+  document.getElementById('btn-import-library').addEventListener('click', openLibraryModal);
+  document.getElementById('btn-cancel-library').addEventListener('click', closeLibraryModal);
+
   // Close modals on overlay click
   document.getElementById('player-modal').addEventListener('click', (e) => {
     if (e.target.id === 'player-modal') closeModal();
   });
   document.getElementById('copy-modal').addEventListener('click', (e) => {
     if (e.target.id === 'copy-modal') closeCopyModal();
+  });
+  document.getElementById('library-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'library-modal') closeLibraryModal();
   });
 }
 
