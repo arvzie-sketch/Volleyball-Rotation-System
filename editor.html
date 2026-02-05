@@ -906,15 +906,22 @@
         padding: 4px 6px;
       }
 
+      /* Mobile: compact title + overflow menu */
       .title-bar {
-        flex-direction: row;
-        align-items: center;
         gap: 6px;
-        padding: 8px;
+        padding: 4px 0;
+      }
+
+      .title-bar h1 {
+        font-size: 0.95rem;
       }
 
       .title-inputs {
-        width: 100%;
+        flex: 1;
+      }
+
+      .title-inputs .input-inline:last-child {
+        display: none; /* hide description on mobile */
       }
 
       .input-inline {
@@ -924,21 +931,13 @@
         padding: 6px 8px;
       }
 
+      .menu-btn {
+        display: flex; /* show on mobile */
+      }
+
+      /* Hide full action bar on mobile */
       .top-bar {
-        flex-direction: column;
-      }
-
-      .action-btns {
-        width: 100%;
-        flex-wrap: wrap;
-        gap: 4px;
-      }
-
-      .action-btns .btn {
-        padding: 8px 10px;
-        font-size: 0.75rem;
-        min-width: unset;
-        flex: 0;
+        display: none;
       }
 
       .nav-phases-row {
@@ -964,6 +963,66 @@
       }
     }
 
+    /* === OVERFLOW MENU (mobile) === */
+    .menu-btn {
+      display: none; /* shown only on mobile */
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text-light);
+      font-size: 1.2rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .menu-btn:hover { background: rgba(255,255,255,0.15); }
+
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: #2c3e50;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 4px;
+      min-width: 170px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      z-index: 100;
+    }
+
+    .menu-dropdown.open { display: block; }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-light);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.1s ease;
+    }
+
+    .menu-item:hover { background: rgba(255,255,255,0.1); }
+    .menu-item .mi-icon { opacity: 0.5; width: 20px; text-align: center; flex-shrink: 0; }
+    .menu-item.primary { color: var(--btn-active); font-weight: 700; }
+    .menu-item.danger { color: var(--libero-color); }
+    .menu-sep { height: 1px; background: rgba(255,255,255,0.1); margin: 4px 8px; }
+
     /* === UTILITY CLASSES === */
     .hidden {
       display: none !important;
@@ -983,6 +1042,18 @@
         <input type="text" class="input-inline" id="system-name" placeholder="System name (e.g., 5-1)">
         <input type="text" class="input-inline" id="system-desc" placeholder="Description">
       </div>
+      <button class="menu-btn" id="menu-toggle" title="Actions">
+        ⋯
+        <div class="menu-dropdown" id="menu-dropdown">
+          <button class="menu-item" data-action="import"><span class="mi-icon">↑</span> Import File</button>
+          <button class="menu-item" data-action="library"><span class="mi-icon">📖</span> Library</button>
+          <button class="menu-item" data-action="copy"><span class="mi-icon">📋</span> Copy From…</button>
+          <div class="menu-sep"></div>
+          <button class="menu-item primary" data-action="export"><span class="mi-icon">↓</span> Export</button>
+          <div class="menu-sep"></div>
+          <button class="menu-item danger" data-action="reset"><span class="mi-icon">↻</span> Reset</button>
+        </div>
+      </button>
     </div>
 
     <!-- Top Bar -->

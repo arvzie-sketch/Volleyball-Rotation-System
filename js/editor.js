@@ -1317,6 +1317,33 @@ function initEventHandlers() {
   document.getElementById('library-modal').addEventListener('click', (e) => {
     if (e.target.id === 'library-modal') closeLibraryModal();
   });
+
+  // Overflow menu (mobile)
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuDropdown = document.getElementById('menu-dropdown');
+  if (menuToggle && menuDropdown) {
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuDropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+      menuDropdown.classList.remove('open');
+    });
+
+    menuDropdown.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuDropdown.classList.remove('open');
+        const action = item.dataset.action;
+        if (action === 'import') document.getElementById('import-file').click();
+        else if (action === 'library') openLibraryModal();
+        else if (action === 'copy') openCopyModal();
+        else if (action === 'export') exportJSON();
+        else if (action === 'reset') resetEditor();
+      });
+    });
+  }
 }
 
 // Initialize when DOM is ready
