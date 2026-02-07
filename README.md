@@ -2,7 +2,9 @@
 
 A visual tool for viewing and editing volleyball player rotations across different offensive systems. Designed for coaches, players, and analysts who need to plan, review, or teach court positioning for every phase of play.
 
-**Live demo:** [https://arvzie-sketch.github.io/Volleyball-Rotation-System/](https://arvzie-sketch.github.io/Volleyball-Rotation-System/)
+**Live demo:**
+- **Viewer:** [https://arvzie-sketch.github.io/Volleyball-Rotation-System/](https://arvzie-sketch.github.io/Volleyball-Rotation-System/)
+- **Editor:** [https://arvzie-sketch.github.io/Volleyball-Rotation-System/editor.html](https://arvzie-sketch.github.io/Volleyball-Rotation-System/editor.html)
 
 ## Overview
 
@@ -17,7 +19,7 @@ Both run entirely in the browser with no server or dependencies required. Just o
 
 The viewer displays player positions on a volleyball court for any combination of:
 
-- **System** - The offensive system (5-1, 4-2, etc.). Select from the dropdown at the top.
+- **System** - The offensive system. Available systems: 5-1, 4-2, 4-2-L-Setter, 4-2-L-Middle, 6-2. Select from the dropdown at the top.
 - **Mode** - Serving or Receiving
 - **Phase** - The stage of play (Base, Serve/Pass, Set, Attack, Switch). Available phases vary by mode and system.
 - **Setter position** - Which rotation the team is in (zones 1-6). The 2x3 grid at the bottom mirrors the court layout.
@@ -97,6 +99,10 @@ Since there are many combinations to fill in (e.g., 8 phases x 6 zones = 48 slot
 5. The **progress counter** shows how many slots are done out of the total
 
 Completion state is saved in your browser's localStorage and persists across page reloads. It is editor-only metadata and is not included in exported files.
+
+### FIVB overlap validation
+
+The editor validates player positions against FIVB Rule 7.4 overlap rules in real time. During phases where overlap applies (receivingBase and receivingPass), any violation is highlighted with a red indicator showing which rule is broken. This helps ensure your formations are legal before exporting.
 
 ### Copy positions
 
@@ -182,7 +188,14 @@ rotations/
   systems.json          List of available rotation systems
   5-1.json              5-1 system rotation data
   4-2.json              4-2 system rotation data
-  ...                   Additional rotation files
+  4-2-L-Setter.json     4-2 with libero replacing back-row setter
+  4-2-L-Middle.json     4-2 with libero replacing back-row middle
+  6-2.json              6-2 system rotation data
+tools/
+  validate-rotation.js  FIVB overlap rule validator for rotation files
+  position-analysis.md  Coordinate system and 5-1 pattern analysis
+  4-2-libero-analysis.md  Analysis of both 4-2 libero variants
+  6-2-analysis.md       6-2 system analysis and position derivation
 ```
 
 ## Credits

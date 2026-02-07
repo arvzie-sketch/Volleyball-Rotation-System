@@ -19,5 +19,8 @@ Plans/
 # Sample/test files
 Samples/
 
+# PDFs (copyrighted reference docs)
+*.pdf
+
 # Windows artifacts
 nul
