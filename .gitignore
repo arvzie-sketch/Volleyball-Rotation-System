@@ -15,3 +15,9 @@ Thumbs.db
 
 # Local plans (not for repo)
 Plans/
+
+# Sample/test files
+Samples/
+
+# Windows artifacts
+nul

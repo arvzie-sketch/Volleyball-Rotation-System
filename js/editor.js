@@ -333,6 +333,152 @@ function scalePos(pos) {
   };
 }
 
+// ==========================================
+// POSITION VALIDATION (FIVB Rule 7.4)
+// ==========================================
+
+// Zone grid centers for lineup derivation (900-unit system)
+const ZONE_CENTERS = [
+  null, // index 0 unused
+  { x: 700, y: 600 }, // Z1
+  { x: 700, y: 100 }, // Z2
+  { x: 450, y: 100 }, // Z3
+  { x: 200, y: 100 }, // Z4
+  { x: 200, y: 600 }, // Z5
+  { x: 450, y: 700 }  // Z6
+];
+
+// FIVB Rule 7.4 overlap constraints
+const OVERLAP_RULES = [
+  // Front-back pairs (7.4.2.1) — front player y < back player y
+  { a: 4, b: 5, axis: 'y', rule: '7.4.2.1', desc: 'Z4 (LF) in front of Z5 (LB)' },
+  { a: 3, b: 6, axis: 'y', rule: '7.4.2.1', desc: 'Z3 (CF) in front of Z6 (CB)' },
+  { a: 2, b: 1, axis: 'y', rule: '7.4.2.1', desc: 'Z2 (RF) in front of Z1 (RB)' },
+  // Left-right within rows (7.4.2.2) — left player x < right player x
+  { a: 4, b: 3, axis: 'x', rule: '7.4.2.2', desc: 'Z4 left of Z3 (front)' },
+  { a: 3, b: 2, axis: 'x', rule: '7.4.2.2', desc: 'Z3 left of Z2 (front)' },
+  { a: 5, b: 6, axis: 'x', rule: '7.4.2.2', desc: 'Z5 left of Z6 (back)' },
+  { a: 6, b: 1, axis: 'x', rule: '7.4.2.2', desc: 'Z6 left of Z1 (back)' },
+];
+
+// Phases where overlap validation applies (before serve contact)
+const VALIDATION_OVERLAP_PHASES = ['receivingBase', 'receivingPass'];
+
+// Derive lineup (Z1→Z6 player IDs) from rotation 1 base positions
+function deriveLineup() {
+  for (const phase of ['servingBase', 'receivingBase']) {
+    const r1 = state.rotation.positions[phase]?.['1'];
+    if (!r1) continue;
+
+    const onCourt = Object.entries(r1).filter(([, pos]) => pos[0] >= 0);
+    if (onCourt.length < 6) continue;
+
+    const assignments = {};
+    const used = new Set();
+
+    for (let z = 1; z <= 6; z++) {
+      const t = ZONE_CENTERS[z];
+      let bestId = null;
+      let bestDist = Infinity;
+      onCourt.forEach(([id, pos]) => {
+        if (used.has(id)) return;
+        const dist = Math.hypot(pos[0] - t.x, pos[1] - t.y);
+        if (dist < bestDist) { bestDist = dist; bestId = id; }
+      });
+      if (bestId) { assignments[z] = bestId; used.add(bestId); }
+    }
+
+    if (Object.keys(assignments).length >= 6) {
+      return [1, 2, 3, 4, 5, 6].map(z => assignments[z]);
+    }
+  }
+  return null;
+}
+
+// Get zone→player mapping for the current rotation
+function getZoneMap() {
+  const lineup = deriveLineup();
+  if (!lineup) return null;
+  const rot = state.currentSetter;
+  const map = {};
+  for (let i = 0; i < 6; i++) {
+    // Players rotate Z1→Z2→Z3→Z4→Z5→Z6→Z1 each rotation
+    map[i + 1] = lineup[(i + 7 - rot) % 6];
+  }
+  return map;
+}
+
+// Validate current positions, with optional drag override
+function validatePositions(overridePlayer, overridePos) {
+  const phaseKey = getPhaseKey();
+  if (!VALIDATION_OVERLAP_PHASES.includes(phaseKey)) return [];
+
+  const zoneMap = getZoneMap();
+  if (!zoneMap) return [];
+
+  const positions = getCurrentPositions();
+  const violations = [];
+
+  OVERLAP_RULES.forEach(rule => {
+    const pA = zoneMap[rule.a], pB = zoneMap[rule.b];
+    if (!pA || !pB) return;
+
+    let posA = positions[pA], posB = positions[pB];
+    if (overridePlayer === pA && overridePos) posA = overridePos;
+    if (overridePlayer === pB && overridePos) posB = overridePos;
+    if (!posA || !posB) return;
+    if (posA[0] < 0 || posB[0] < 0) return; // bench
+
+    const idx = rule.axis === 'x' ? 0 : 1;
+    if (posA[idx] >= posB[idx]) {
+      const lA = state.rotation.players.find(p => p.id === pA)?.label || pA;
+      const lB = state.rotation.players.find(p => p.id === pB)?.label || pB;
+      const rel = rule.axis === 'x' ? 'left of' : 'in front of';
+      violations.push({
+        rule: rule.rule,
+        message: `${lA} (Z${rule.a}) must be ${rel} ${lB} (Z${rule.b}) — ${rule.axis}: ${posA[idx]} vs ${posB[idx]}`
+      });
+    }
+  });
+  return violations;
+}
+
+// Render validation panel
+function renderValidation(overridePlayer, overridePos) {
+  const panel = document.getElementById('validation-panel');
+  if (!panel) return;
+
+  const phaseKey = getPhaseKey();
+  if (!VALIDATION_OVERLAP_PHASES.includes(phaseKey)) {
+    panel.style.display = 'none';
+    return;
+  }
+
+  const zoneMap = getZoneMap();
+  if (!zoneMap) {
+    panel.style.display = 'block';
+    panel.className = 'validation-panel info';
+    panel.innerHTML = 'Define base positions (R1) to enable overlap validation';
+    return;
+  }
+
+  const violations = validatePositions(overridePlayer, overridePos);
+  if (violations.length === 0) {
+    panel.style.display = 'block';
+    panel.className = 'validation-panel valid';
+    panel.innerHTML = '\u2713 No overlap violations';
+  } else {
+    panel.style.display = 'block';
+    panel.className = 'validation-panel has-violations';
+    panel.innerHTML = violations.map(v =>
+      `<div class="validation-item">` +
+      `<span class="validation-rule">FIVB ${v.rule}</span>` +
+      `<span class="validation-msg">${v.message}</span>` +
+      `</div>`
+    ).join('');
+  }
+}
+
 // Get player color
 function getPlayerColor(playerId) {
   const player = state.rotation.players.find(p => p.id === playerId);
@@ -545,6 +691,8 @@ function renderCourtPlayers() {
     container.appendChild(g);
     playerElements[player.id] = { group: g, circle, text };
   });
+
+  renderValidation();
 }
 
 // ==========================================
@@ -662,6 +810,9 @@ function handleDrag(e) {
     const unscaled = unscalePos(x, y);
     document.getElementById('info-x').textContent = unscaled[0];
     document.getElementById('info-y').textContent = unscaled[1];
+
+    // Real-time validation during drag
+    renderValidation(state.draggingPlayer, unscaled);
   }
 }
 
@@ -686,6 +837,7 @@ function endDrag(e) {
       elements.group.style.opacity = isOnBench(pos) ? '0.5' : '1';
 
       saveToStorage();
+      renderValidation();
     }
   }
 
@@ -1134,6 +1286,7 @@ function sendToBench() {
 
   saveToStorage();
   updatePositionInfo();
+  renderValidation();
 }
 
 function openCopyModal() {
@@ -1188,6 +1341,7 @@ function copyPositions() {
   saveToStorage();
   renderCourtPlayers();
   closeCopyModal();
+  renderValidation();
 }
 
 // ==========================================

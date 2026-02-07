@@ -650,6 +650,56 @@
       color: var(--btn-active);
     }
 
+    /* === VALIDATION PANEL === */
+    .validation-panel {
+      display: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+
+    .validation-panel.has-violations {
+      display: block;
+      background: rgba(231, 76, 60, 0.15);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .validation-panel.valid {
+      display: block;
+      background: rgba(39, 174, 96, 0.15);
+      border: 1px solid rgba(39, 174, 96, 0.3);
+      color: #27ae60;
+      font-weight: 600;
+    }
+
+    .validation-panel.info {
+      display: block;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 0.6;
+    }
+
+    .validation-item {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      padding: 2px 0;
+    }
+
+    .validation-rule {
+      font-weight: 700;
+      color: #e74c3c;
+      white-space: nowrap;
+      font-size: 0.72rem;
+    }
+
+    .validation-msg {
+      flex: 1;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
     /* === DRAG AND DROP STYLES === */
     .draggable-player {
       cursor: grab;
@@ -1117,6 +1167,9 @@
             <span class="progress-text" id="progress-text">0 / 0</span>
           </div>
         </div>
+
+        <!-- Validation Panel -->
+        <div id="validation-panel" class="validation-panel"></div>
 
         <div class="court-wrapper">
           <svg class="court-svg" id="editor-court" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet">
