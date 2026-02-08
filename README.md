@@ -3,8 +3,8 @@
 A visual tool for viewing and editing volleyball player rotations across different offensive systems. Designed for coaches, players, and analysts who need to plan, review, or teach court positioning for every phase of play.
 
 **Live demo:**
-- **Viewer:** [https://arvzie-sketch.github.io/Volleyball-Rotation-System/](https://arvzie-sketch.github.io/Volleyball-Rotation-System/)
-- **Editor:** [https://arvzie-sketch.github.io/Volleyball-Rotation-System/editor.html](https://arvzie-sketch.github.io/Volleyball-Rotation-System/editor.html)
+- **Viewer:** [https://volleyball-rotations.com](https://volleyball-rotations.com)
+- **Editor:** [https://volleyball-rotations.com/editor.html](https://volleyball-rotations.com/editor.html)
 
 ## Overview
 
@@ -180,7 +180,8 @@ Then open `http://localhost:8000`.
 
 ```
 index.html              Viewer app
-editor.html             Editor app (standalone, all CSS inline)
+editor.html             Editor app
+css/glass-shared.css    Shared glassmorphism design tokens and components
 css/styles.css          Viewer styles
 js/app.js               Viewer logic
 js/editor.js            Editor logic
