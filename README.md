@@ -42,11 +42,15 @@ Click any player on the court to highlight them in yellow. This helps track a si
 
 The editor lets you create rotation data from scratch or modify existing files. Open `editor.html` in a browser.
 
+### Recommended workflow
+
+The fastest way to get started is to **import an existing system from the library** and adapt it rather than building from scratch. The built-in systems (5-1, 4-2, 6-2) provide a complete set of players, phases, and positions — change what you need and export.
+
 ### Getting started
 
-1. **Start fresh** - The editor opens with a blank template. Add players in the right sidebar, configure phases, then drag players into position for each combination.
+1. **Import from library** - Click **Library** to load any existing rotation from the `/rotations` folder as a starting point
 2. **Import from file** - Click **Import** to upload a `.json` rotation file from your device
-3. **Import from library** - Click **Library** to load any existing rotation from the `/rotations` folder (works on GitHub Pages and web servers)
+3. **Start fresh** - The editor opens with a blank template. Add players in the right sidebar, configure phases, then drag players into position for each combination.
 
 All imports reset completion tracking so you can review everything from scratch.
 
