@@ -74,6 +74,21 @@ function populateSystemDropdown() {
     });
     menu.appendChild(btn);
   });
+
+  // Separator + Import option
+  const sep = document.createElement('div');
+  sep.className = 'system-sep';
+  menu.appendChild(sep);
+
+  const importBtn = document.createElement('button');
+  importBtn.className = 'system-option system-import';
+  importBtn.textContent = '↑ Import file...';
+  importBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.remove('open');
+    document.getElementById('import-rotation').click();
+  });
+  menu.appendChild(importBtn);
 }
 
 // Load rotation data from JSON
@@ -95,6 +110,14 @@ async function loadRotation(systemName) {
     console.error('Error loading rotation:', error);
     return null;
   }
+}
+
+// Load rotation from a parsed JSON object (e.g. from file import)
+function loadRotationFromData(data) {
+  state.rotationData = data;
+  state.currentSystem = null;
+  document.getElementById('system-badge').textContent = (data.name || 'Custom') + ' ▼';
+  document.querySelectorAll('.system-option').forEach(opt => opt.classList.remove('active'));
 }
 
 // Get phase key for position lookup
@@ -321,6 +344,25 @@ async function init() {
   renderPhaseButtons();
   initPlayers();
 }
+
+// Handle imported rotation file
+document.getElementById('import-rotation').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    loadRotationFromData(data);
+    state.phase = 'base';
+    state.highlightedPlayer = null;
+    renderPhaseButtons();
+    initPlayers();
+  } catch (err) {
+    console.error('Failed to load rotation file:', err);
+    alert('Could not load file — make sure it is a valid rotation JSON.');
+  }
+  e.target.value = '';
+});
 
 // Start when DOM is ready
 document.addEventListener('DOMContentLoaded', init);

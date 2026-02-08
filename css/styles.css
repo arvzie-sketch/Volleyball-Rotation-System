@@ -104,6 +104,17 @@
   color: var(--accent);
 }
 
+.system-sep {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 4px 8px;
+}
+
+.system-import {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* Top bar */
 .top-bar {
   display: flex;
