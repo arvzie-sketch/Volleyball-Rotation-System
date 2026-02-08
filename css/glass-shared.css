@@ -1,0 +1,370 @@
+/* =============================================================
+   VOLLEYBALL ROTATION SYSTEM — SHARED GLASSMORPHISM TOKENS
+   Used by: glassmorphism-sample.html, editor-glassmorphism-sample.html
+   ============================================================= */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-bg-hover: rgba(255, 255, 255, 0.12);
+  --glass-bg-active: rgba(255, 255, 255, 0.18);
+  --glass-border: rgba(255, 255, 255, 0.13);
+  --glass-border-hover: rgba(255, 255, 255, 0.25);
+  --glass-border-active: rgba(255, 255, 255, 0.3);
+  --glass-blur: 16px;
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  --glass-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Accent */
+  --accent: #5eaeff;
+  --accent-bg: rgba(94, 174, 255, 0.18);
+  --accent-border: rgba(94, 174, 255, 0.4);
+  --accent-glow: 0 0 16px rgba(94, 174, 255, 0.15);
+
+  /* Success (completion state) */
+  --success: #2ecc71;
+  --success-bg: rgba(46, 204, 113, 0.18);
+  --success-border: rgba(46, 204, 113, 0.4);
+  --success-glow: 0 0 16px rgba(46, 204, 113, 0.15);
+
+  /* Danger */
+  --danger: #e74c3c;
+  --danger-bg: rgba(231, 76, 60, 0.18);
+  --danger-border: rgba(231, 76, 60, 0.4);
+
+  /* Court / Player colours */
+  --player-color: #efa581;
+  --highlight-color: #f1c40f;
+  --libero-color: #e74c3c;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.3);
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(ellipse at 15% 30%, rgba(94, 174, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 15%, rgba(232, 132, 74, 0.15) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 85%, rgba(74, 144, 164, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 60%, rgba(46, 204, 113, 0.08) 0%, transparent 40%),
+    linear-gradient(135deg, #0c1520 0%, #162030 35%, #1a2840 65%, #0f1a28 100%);
+  background-attachment: fixed;
+}
+
+/* ============================
+   Glass Panel Base
+   ============================ */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-inset-highlight);
+  border-radius: 14px;
+}
+
+/* ============================
+   App Navigation Shell
+   ============================ */
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.app-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-nav-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.app-nav-hamburger {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.app-nav-hamburger:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+}
+
+.app-nav-hamburger.open {
+  background: var(--glass-bg-active);
+  border-color: var(--glass-border-active);
+}
+
+/* Dropdown menu */
+.app-nav-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: rgba(20, 32, 46, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 6px;
+  z-index: 300;
+}
+
+.app-nav-menu.open {
+  display: block;
+  animation: menu-fade-in 0.15s ease;
+}
+
+@keyframes menu-fade-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-menu-item {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.nav-menu-item:hover {
+  background: var(--glass-bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-menu-item.active {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+.nav-menu-sep {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 4px 6px;
+}
+
+.nav-coffee {
+  color: rgba(255, 200, 120, 0.8);
+}
+
+.nav-coffee:hover {
+  color: rgba(255, 200, 120, 1);
+}
+
+/* ============================
+   Toggle Group (Switchable Buttons)
+   — Serving/Receiving (viewer)
+   — Court/Players/Config (editor)
+   ============================ */
+.toggle-group {
+  display: flex;
+  gap: 4px;
+  border-radius: 14px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 11px 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: transparent;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+}
+
+.toggle-btn.active {
+  background: var(--glass-bg-active);
+  border-color: var(--glass-border-active);
+  color: var(--text-primary);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn:not(.active):hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================
+   Zone Buttons (Setter 1–6 grid)
+   ============================ */
+.zone-btn {
+  padding: 10px 6px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  min-width: 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.zone-btn:hover {
+  color: var(--text-primary);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-active);
+}
+
+.zone-btn.active {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+  box-shadow: var(--accent-glow);
+}
+
+.zone-btn.complete {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success);
+  box-shadow: var(--success-glow);
+}
+
+.zone-btn.complete.active {
+  border-color: var(--accent-border);
+  box-shadow: var(--accent-glow);
+}
+
+/* ============================
+   Phase Buttons (Base/Serve/Attack)
+   ============================ */
+.phase-btn {
+  padding: 9px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+}
+
+.phase-btn.active {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+  box-shadow: var(--accent-glow);
+}
+
+.phase-btn.complete {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success);
+  box-shadow: var(--success-glow);
+}
+
+.phase-btn.complete.active {
+  background: linear-gradient(135deg, var(--success-bg), var(--accent-bg));
+  border-color: var(--accent-border);
+  color: var(--accent);
+  box-shadow: var(--accent-glow), var(--success-glow);
+}
+
+.phase-btn:not(.active):not(.complete):hover {
+  color: var(--text-primary);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-active);
+}
+
+/* ============================
+   Action Buttons
+   ============================ */
+.btn {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+}
+
+.btn:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+}
+
+.btn-primary {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: rgba(94, 174, 255, 0.28);
+  box-shadow: var(--accent-glow);
+}
+
+.btn-danger {
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger);
+}
+
+.btn-danger:hover {
+  background: rgba(231, 76, 60, 0.28);
+}
