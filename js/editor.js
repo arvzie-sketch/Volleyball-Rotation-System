@@ -365,12 +365,28 @@ const OVERLAP_RULES = [
 const VALIDATION_OVERLAP_PHASES = ['receivingBase', 'receivingPass'];
 
 // Derive lineup (Z1→Z6 player IDs) from rotation 1 base positions
+// The lineup is the 6 rotating players (excluding libero). If the libero is
+// on court replacing a back-row player, we swap it out for the benched player.
 function deriveLineup() {
+  const libero = state.rotation.players.find(p => p.isLibero);
+  const liberoId = libero?.id;
+
   for (const phase of ['servingBase', 'receivingBase']) {
     const r1 = state.rotation.positions[phase]?.['1'];
     if (!r1) continue;
 
-    const onCourt = Object.entries(r1).filter(([, pos]) => pos[0] >= 0);
+    // Get on-court players, excluding the libero
+    let onCourt = Object.entries(r1).filter(([id, pos]) => pos[0] >= 0 && id !== liberoId);
+
+    // If libero was on court and a regular player is benched, include the benched player
+    if (liberoId && r1[liberoId] && r1[liberoId][0] >= 0) {
+      const benched = Object.entries(r1).find(([id, pos]) => pos[0] < 0 && id !== liberoId);
+      if (benched) {
+        // Use the benched player's ID but at the libero's on-court position
+        onCourt.push([benched[0], r1[liberoId]]);
+      }
+    }
+
     if (onCourt.length < 6) continue;
 
     const assignments = {};

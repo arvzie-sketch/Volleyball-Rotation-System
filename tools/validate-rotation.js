@@ -157,15 +157,31 @@ function getPlayerZones(lineup, rotation) {
 /**
  * Auto-detect lineup from servingBase rotation 1 positions.
  * Assigns each player to the nearest zone based on coordinates.
+ * Excludes the libero — if the libero is on court replacing a back-row
+ * player, the benched player is placed at the libero's position for
+ * zone detection purposes.
  */
-function autoDetectLineup(positions) {
+function autoDetectLineup(data, positions) {
     const r1 = positions.servingBase?.['1'];
     if (!r1) {
         console.error('Cannot auto-detect lineup: servingBase rotation 1 not found');
         process.exit(1);
     }
 
-    const players = Object.entries(r1).filter(([id, pos]) => pos[0] >= 0); // exclude bench
+    const libero = data.players.find(p => p.isLibero);
+    const liberoId = libero?.id;
+
+    // Get on-court players, excluding the libero
+    let players = Object.entries(r1).filter(([id, pos]) => pos[0] >= 0 && id !== liberoId);
+
+    // If libero was on court, include the benched regular player at the libero's position
+    if (liberoId && r1[liberoId] && r1[liberoId][0] >= 0) {
+        const benched = Object.entries(r1).find(([id, pos]) => pos[0] < 0 && id !== liberoId);
+        if (benched) {
+            players.push([benched[0], r1[liberoId]]);
+        }
+    }
+
     const lineup = new Array(6).fill(null);
 
     for (const [playerId, pos] of players) {
@@ -222,7 +238,7 @@ function validateFile(filePath, lineupArg) {
     if (lineupArg) {
         lineup = lineupArg.split(',').map(s => s.trim());
     } else {
-        lineup = autoDetectLineup(positions);
+        lineup = autoDetectLineup(data, positions);
     }
 
     const onCourtPlayers = data.players.filter(p => !p.isLibero).map(p => p.id);
