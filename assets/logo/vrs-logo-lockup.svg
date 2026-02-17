@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Volleyball Rotation System Logo Lockup</title>
+  <desc id="desc">Volleyball Rotation System wordmark with a court and rotation logo mark.</desc>
+  <defs>
+    <linearGradient id="badge-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f1a28" />
+      <stop offset="60%" stop-color="#1b2d45" />
+      <stop offset="100%" stop-color="#253b58" />
+    </linearGradient>
+    <linearGradient id="badge-court" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8844a" />
+      <stop offset="100%" stop-color="#d4753a" />
+    </linearGradient>
+    <linearGradient id="badge-arrow" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#8ac8ff" />
+      <stop offset="100%" stop-color="#5eaeff" />
+    </linearGradient>
+    <filter id="badge-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity="0.26" />
+    </filter>
+    <marker id="badge-arrowhead" markerWidth="14" markerHeight="10" refX="12" refY="5" orient="auto">
+      <polygon points="0,0 14,5 0,10" fill="#7dbfff" />
+    </marker>
+  </defs>
+
+  <rect x="18" y="18" width="1164" height="324" rx="50" fill="rgba(15,26,40,0.08)" stroke="rgba(94,174,255,0.22)" />
+
+  <g transform="translate(70 42)" filter="url(#badge-shadow)">
+    <rect x="0" y="0" width="276" height="276" rx="62" fill="url(#badge-bg)" />
+    <rect x="46" y="56" width="184" height="166" rx="20" fill="url(#badge-court)" stroke="rgba(255,255,255,0.74)" stroke-width="3.4" />
+    <line x1="107.3" y1="56" x2="107.3" y2="222" stroke="rgba(255,255,255,0.58)" stroke-width="3" />
+    <line x1="168.7" y1="56" x2="168.7" y2="222" stroke="rgba(255,255,255,0.58)" stroke-width="3" />
+    <line x1="46" y1="139" x2="230" y2="139" stroke="rgba(255,255,255,0.72)" stroke-width="3.6" />
+
+    <path
+      d="M199 181 C236 156 236 126 199 101 C164 75 112 75 77 101 C40 126 40 156 77 181 C112 205 164 205 199 181"
+      fill="none"
+      stroke="url(#badge-arrow)"
+      stroke-width="9.5"
+      stroke-linecap="round"
+      marker-end="url(#badge-arrowhead)"
+      opacity="0.95"
+    />
+
+    <g fill="#ffffff" stroke="rgba(12,20,30,0.36)" stroke-width="2.2">
+      <circle cx="77" cy="101" r="8.5" />
+      <circle cx="138" cy="101" r="8.5" />
+      <circle cx="199" cy="101" r="8.5" />
+      <circle cx="77" cy="181" r="8.5" fill="#e74c3c" />
+      <circle cx="138" cy="181" r="8.5" />
+      <circle cx="199" cy="181" r="8.5" />
+    </g>
+  </g>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="390" y="155" fill="#ffffff" font-size="74" font-weight="760" letter-spacing="0.4">Volleyball Rotation</text>
+    <text x="390" y="223" fill="#8ac8ff" font-size="64" font-weight="700" letter-spacing="3">SYSTEM</text>
+    <text x="392" y="278" fill="rgba(255,255,255,0.72)" font-size="30" font-weight="520" letter-spacing="0.4">Viewer + Editor for Tactical Court Positioning</text>
+  </g>
+</svg>

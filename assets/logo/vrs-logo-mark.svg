@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Volleyball Rotation System Logo Mark</title>
+  <desc id="desc">A stylized volleyball court with six rotational positions and a clockwise rotation arrow.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f1a28" />
+      <stop offset="55%" stop-color="#1a2840" />
+      <stop offset="100%" stop-color="#223652" />
+    </linearGradient>
+    <linearGradient id="court" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8844a" />
+      <stop offset="100%" stop-color="#d4753a" />
+    </linearGradient>
+    <linearGradient id="arrow" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#8ac8ff" />
+      <stop offset="100%" stop-color="#5eaeff" />
+    </linearGradient>
+    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity="0.32" />
+    </filter>
+    <marker id="arrowhead" markerWidth="16" markerHeight="12" refX="14" refY="6" orient="auto">
+      <polygon points="0,0 16,6 0,12" fill="#7dbfff" />
+    </marker>
+  </defs>
+
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bg)" />
+
+  <g filter="url(#soft-shadow)">
+    <rect x="96" y="112" width="320" height="288" rx="34" fill="url(#court)" stroke="rgba(255,255,255,0.72)" stroke-width="5" />
+    <line x1="202.67" y1="112" x2="202.67" y2="400" stroke="rgba(255,255,255,0.58)" stroke-width="4.5" />
+    <line x1="309.33" y1="112" x2="309.33" y2="400" stroke="rgba(255,255,255,0.58)" stroke-width="4.5" />
+    <line x1="96" y1="256" x2="416" y2="256" stroke="rgba(255,255,255,0.72)" stroke-width="5" />
+  </g>
+
+  <path
+    d="M363 328 C430 282 430 230 363 184 C302 140 210 140 149 184 C82 230 82 282 149 328 C210 372 302 372 363 328"
+    fill="none"
+    stroke="url(#arrow)"
+    stroke-width="16"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    marker-end="url(#arrowhead)"
+    opacity="0.94"
+  />
+
+  <g fill="#ffffff" stroke="rgba(12,20,30,0.38)" stroke-width="3">
+    <circle cx="149" cy="184" r="14" />
+    <circle cx="256" cy="184" r="14" />
+    <circle cx="363" cy="184" r="14" />
+    <circle cx="149" cy="328" r="14" fill="#e74c3c" />
+    <circle cx="256" cy="328" r="14" />
+    <circle cx="363" cy="328" r="14" />
+  </g>
+
+  <g transform="translate(256 256)">
+    <circle r="42" fill="#f7efe6" stroke="#ffffff" stroke-width="5" />
+    <path d="M-28,-18 C-8,-32 8,-32 28,-18" fill="none" stroke="#dd8d5a" stroke-width="4.5" />
+    <path d="M-28,18 C-8,32 8,32 28,18" fill="none" stroke="#dd8d5a" stroke-width="4.5" />
+    <path d="M0,-41 C-9,-17 -9,17 0,41" fill="none" stroke="#dd8d5a" stroke-width="4.5" />
+  </g>
+</svg>

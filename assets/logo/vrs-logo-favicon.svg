@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">VRS Favicon</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f1a28" />
+      <stop offset="100%" stop-color="#1f3451" />
+    </linearGradient>
+    <linearGradient id="court" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8844a" />
+      <stop offset="100%" stop-color="#d4753a" />
+    </linearGradient>
+  </defs>
+
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bg)" />
+  <rect x="12" y="14" width="40" height="36" rx="5" fill="url(#court)" stroke="rgba(255,255,255,0.75)" stroke-width="1.6" />
+  <line x1="25.3" y1="14" x2="25.3" y2="50" stroke="rgba(255,255,255,0.58)" stroke-width="1.25" />
+  <line x1="38.7" y1="14" x2="38.7" y2="50" stroke="rgba(255,255,255,0.58)" stroke-width="1.25" />
+  <line x1="12" y1="32" x2="52" y2="32" stroke="rgba(255,255,255,0.75)" stroke-width="1.4" />
+
+  <path d="M47 43 C54 38 54 28 47 23 C40 18 24 18 17 23 C10 28 10 38 17 43 C24 48 40 48 47 43" fill="none" stroke="#86c5ff" stroke-width="2.4" stroke-linecap="round" />
+  <circle cx="32" cy="32" r="4.6" fill="#f7efe6" stroke="#ffffff" stroke-width="1.2" />
+</svg>
