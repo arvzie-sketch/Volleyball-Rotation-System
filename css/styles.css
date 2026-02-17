@@ -280,6 +280,16 @@
 
 .option-btn span { font-size: 16px; }
 
+/* About text — subtle crawlable description */
+.about-text {
+  font-size: 0.65rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 4px 8px 0;
+  flex-shrink: 0;
+}
+
 /* Responsive — small screens (shorter than Pixel 9's 892px) */
 @media (max-height: 750px) {
   .app-container { padding: 8px; gap: 6px; }

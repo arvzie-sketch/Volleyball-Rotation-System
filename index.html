@@ -11,8 +11,23 @@
   <meta property="og:url" content="https://volleyball-rotations.com">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://volleyball-rotations.com">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/vrs-logo-favicon.svg">
   <link rel="stylesheet" href="css/glass-shared.css">
   <link rel="stylesheet" href="css/styles.css?v=2">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Volleyball Rotation Viewer",
+    "url": "https://volleyball-rotations.com",
+    "description": "Interactive volleyball rotation viewer for 5-1, 4-2, and 6-2 systems. See where every player stands during serve, receive, attack, and switch phases.",
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "browserRequirements": "Requires a modern web browser",
+    "author": { "@type": "Person", "name": "arvzie-sketch" }
+  }
+  </script>
 </head>
 <body>
   <!-- Navigation Shell -->
@@ -142,6 +157,8 @@
         <button class="option-btn active" id="toggle-bench" title="Show Bench"><span>B</span></button>
       </div>
     </div>
+
+    <p class="about-text">Interactive volleyball rotation viewer. Supports 5-1, 4-2, 4-2 with libero, and 6-2 systems. Select serving or receiving, choose a phase, and pick the setter position to see where every player stands. All positions validated against FIVB overlap rules.</p>
   </div>
 
   <input type="file" id="import-rotation" accept=".json" style="display:none">
