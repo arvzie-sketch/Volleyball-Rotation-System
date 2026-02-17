@@ -435,20 +435,36 @@ function validatePositions(overridePlayer, overridePos) {
   const positions = getCurrentPositions();
   const violations = [];
 
-  OVERLAP_RULES.forEach(rule => {
-    const pA = zoneMap[rule.a], pB = zoneMap[rule.b];
-    if (!pA || !pB) return;
+  // Build a zone→position map that accounts for libero substitution.
+  // If a lineup player is on bench, the libero occupies their zone.
+  const libero = state.rotation.players.find(p => p.isLibero);
+  const liberoId = libero?.id;
+  const zonePositions = {};
+  for (let z = 1; z <= 6; z++) {
+    const pid = zoneMap[z];
+    let pos = positions[pid];
+    if (pos && pos[0] < 0 && liberoId && positions[liberoId] && positions[liberoId][0] >= 0) {
+      // Lineup player is benched — libero is filling this zone
+      zonePositions[z] = { id: liberoId, pos: positions[liberoId] };
+    } else {
+      zonePositions[z] = { id: pid, pos };
+    }
+  }
 
-    let posA = positions[pA], posB = positions[pB];
-    if (overridePlayer === pA && overridePos) posA = overridePos;
-    if (overridePlayer === pB && overridePos) posB = overridePos;
+  OVERLAP_RULES.forEach(rule => {
+    let { id: idA, pos: posA } = zonePositions[rule.a] || {};
+    let { id: idB, pos: posB } = zonePositions[rule.b] || {};
+    if (!idA || !idB) return;
+
+    if (overridePlayer === idA && overridePos) posA = overridePos;
+    if (overridePlayer === idB && overridePos) posB = overridePos;
     if (!posA || !posB) return;
     if (posA[0] < 0 || posB[0] < 0) return; // bench
 
     const idx = rule.axis === 'x' ? 0 : 1;
     if (posA[idx] >= posB[idx]) {
-      const lA = state.rotation.players.find(p => p.id === pA)?.label || pA;
-      const lB = state.rotation.players.find(p => p.id === pB)?.label || pB;
+      const lA = state.rotation.players.find(p => p.id === idA)?.label || idA;
+      const lB = state.rotation.players.find(p => p.id === idB)?.label || idB;
       const rel = rule.axis === 'x' ? 'left of' : 'in front of';
       violations.push({
         rule: rule.rule,
