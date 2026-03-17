@@ -8,10 +8,13 @@
   flex-direction: column;
   height: calc(100vh - 53px);
   height: calc(100dvh - 53px);
+  max-height: calc(100vh - 53px);
+  max-height: calc(100dvh - 53px);
   max-width: 500px;
   margin: 0 auto;
   padding: 12px;
   gap: 10px;
+  overflow: hidden;
 }
 
 /* Title bar */
