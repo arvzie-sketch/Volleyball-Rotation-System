@@ -5,15 +5,17 @@ A visual tool for viewing and editing volleyball player rotations across differe
 **Live demo:**
 - **Viewer:** [https://volleyball-rotations.com](https://volleyball-rotations.com)
 - **Editor:** [https://volleyball-rotations.com/editor.html](https://volleyball-rotations.com/editor.html)
+- **Learn:** [https://volleyball-rotations.com/learn.html](https://volleyball-rotations.com/learn.html)
 
 ## Overview
 
-The app has two parts:
+The app has three parts:
 
 - **Viewer** (`index.html`) - Interactive court display for reviewing rotations during practice or games
 - **Editor** (`editor.html`) - Drag-and-drop editor for creating and modifying rotation files
+- **Learn** (`learn.html`) - Guide to volleyball rotations, player roles, court zones, overlap rules (FIVB 7.4), and the libero — verified against the FIVB 2025-2028 rulebook
 
-Both run entirely in the browser with no server or dependencies required. Just open the HTML files directly or host them on any static server (GitHub Pages, etc.).
+All pages run entirely in the browser with no server or dependencies required. Just open the HTML files directly or host them on any static server (GitHub Pages, etc.).
 
 ## Viewer
 
@@ -185,6 +187,7 @@ Then open `http://localhost:8000`.
 ```
 index.html              Viewer app
 editor.html             Editor app
+learn.html              Learn page (rotation guide)
 css/glass-shared.css    Shared glassmorphism design tokens and components
 css/styles.css          Viewer styles
 js/app.js               Viewer logic

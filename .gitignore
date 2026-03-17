@@ -22,5 +22,8 @@ Samples/
 # PDFs (copyrighted reference docs)
 *.pdf
 
+# Google (Search Console, etc.)
+google/
+
 # Windows artifacts
 nul

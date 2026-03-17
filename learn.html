@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volleyball Rotations Explained — 5-1, 4-2, 6-2 Systems & Serve Receive Rules</title>
+  <meta name="description" content="Learn how volleyball rotations work. Understand 5-1, 4-2, and 6-2 systems, court zones, serve receive positions, overlap rules (FIVB 7.4), and the libero role.">
+  <meta name="keywords" content="volleyball rotations explained, 5-1 rotation, 4-2 rotation, 6-2 rotation, volleyball positions, serve receive, FIVB overlap rules, volleyball court zones, libero">
+  <meta property="og:title" content="Volleyball Rotations Explained — 5-1, 4-2, 6-2 Systems">
+  <meta property="og:description" content="Learn how volleyball rotation systems work. Court zones, serve receive, overlap rules, and the libero — explained simply.">
+  <meta property="og:url" content="https://volleyball-rotations.com/learn">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://volleyball-rotations.com/learn">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/vrs-logo-favicon.svg">
+  <link rel="stylesheet" href="css/glass-shared.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Volleyball Rotations Explained — 5-1, 4-2, 6-2 Systems & Serve Receive Rules",
+    "description": "A clear guide to volleyball rotation systems, court zones, overlap rules, and the libero role.",
+    "url": "https://volleyball-rotations.com/learn",
+    "author": { "@type": "Person", "name": "arvzie-sketch" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Volleyball Rotation System",
+      "url": "https://volleyball-rotations.com"
+    },
+    "mainEntityOfPage": "https://volleyball-rotations.com/learn",
+    "datePublished": "2026-03-17",
+    "dateModified": "2026-03-17"
+  }
+  </script>
+  <style>
+    /* Override app-level overflow lock for scrollable content page */
+    html, body { overflow: auto; overflow-x: hidden; }
+
+    .learn-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    .learn-hero {
+      text-align: center;
+      padding: 48px 16px 32px;
+    }
+
+    .learn-hero h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .learn-hero .subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .learn-section {
+      margin-bottom: 20px;
+      padding: 24px;
+    }
+
+    .learn-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+
+    .learn-section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 18px 0 10px;
+      color: var(--text-primary);
+    }
+
+    .learn-section p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .learn-section ul, .learn-section ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .learn-section li {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .learn-section strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .learn-section em {
+      color: var(--text-primary);
+      font-style: italic;
+    }
+
+    /* Zone grid diagram */
+    .zone-diagram {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      max-width: 280px;
+      margin: 16px auto;
+    }
+
+    .zone-diagram .zone-cell {
+      padding: 14px 8px;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: 1px solid var(--glass-border);
+    }
+
+    .zone-cell.front {
+      background: rgba(232, 132, 74, 0.25);
+      color: var(--player-color);
+    }
+
+    .zone-cell.back {
+      background: rgba(94, 174, 255, 0.15);
+      color: var(--accent);
+    }
+
+    .zone-row-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 6px 0 2px;
+      grid-column: 1 / -1;
+    }
+
+    /* System comparison table */
+    .system-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 16px 0;
+      font-size: 0.85rem;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+    }
+
+    .system-table th {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .system-table td {
+      padding: 10px 12px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .system-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* CTA button */
+    .cta-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-border);
+      border-radius: 10px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .cta-link:hover {
+      background: rgba(94, 174, 255, 0.28);
+      box-shadow: var(--accent-glow);
+    }
+
+    /* TOC */
+    .toc {
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+
+    .toc-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 6px 0;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.15s ease;
+    }
+
+    .toc a:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .learn-hero h1 { font-size: 1.4rem; }
+      .learn-section { padding: 18px 16px; }
+      .system-table { font-size: 0.8rem; }
+      .system-table th, .system-table td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Shell -->
+  <nav class="app-nav">
+    <div class="app-nav-inner">
+      <span class="app-nav-title">Volleyball Rotations</span>
+      <div style="position:relative;">
+        <button class="app-nav-hamburger" id="nav-hamburger">&#9776;</button>
+        <div class="app-nav-menu" id="nav-menu">
+          <a href="index.html" class="nav-menu-item">Viewer</a>
+          <a href="editor.html" class="nav-menu-item">Editor</a>
+          <a href="learn.html" class="nav-menu-item active">Learn</a>
+          <div class="nav-menu-sep"></div>
+          <a href="https://github.com/arvzie-sketch/Volleyball-Rotation-System" target="_blank" class="nav-menu-item">Help (GitHub)</a>
+          <a href="https://buymeacoffee.com/theautomationguy" target="_blank" class="nav-menu-item nav-coffee">Buy Me a Coffee &#9749;</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="learn-container">
+    <!-- Hero -->
+    <div class="learn-hero">
+      <h1>Volleyball Rotations Explained</h1>
+      <p class="subtitle">A practical guide to rotation systems, court zones, overlap rules, and the libero &mdash; everything you need to understand player positioning on the court.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc glass-panel">
+      <div class="toc-title">Contents</div>
+      <a href="#what-are-rotations">What are volleyball rotations?</a>
+      <a href="#court-zones">Court zones and positions</a>
+      <a href="#player-roles">Player roles</a>
+      <a href="#rotation-systems">Rotation systems: 5-1, 4-2, 6-2</a>
+      <a href="#serve-receive">Serve receive and phases of play</a>
+      <a href="#overlap-rules">Overlap rules (FIVB Rule 7.4)</a>
+      <a href="#libero">The libero</a>
+      <a href="#try-it">Try it yourself</a>
+    </div>
+
+    <!-- What Are Rotations -->
+    <section class="learn-section glass-panel" id="what-are-rotations">
+      <h2>What are volleyball rotations?</h2>
+      <p>In volleyball, six players share the court at all times. Each time your team wins back the serve (called a <em>side-out</em>), every player rotates one position clockwise. This means every player cycles through all six court zones during a set.</p>
+      <p>Rotations exist so that no single player can stay in their strongest position forever. It forces teams to be tactical about <em>when</em> and <em>how</em> players move from their rotational position to their preferred attacking or defensive spot. That movement &mdash; called <strong>switching</strong> or <strong>transitioning</strong> &mdash; is the core of offensive and defensive strategy.</p>
+      <p>The rotation order is set at the start of each set by the coach on the lineup sheet and cannot change during that set (FIVB Rule 7.3.1). The receiving team must be in the correct rotational order at the moment the server contacts the ball, but players are free to move anywhere on the court once the ball is hit (Rule 7.4.4). The serving team, however, is free to stand anywhere at the moment of serve &mdash; only the receiving team is bound by positioning rules.</p>
+    </section>
+
+    <!-- Court Zones -->
+    <section class="learn-section glass-panel" id="court-zones">
+      <h2>Court zones and positions</h2>
+      <p>The court is divided into six zones, numbered 1 through 6. The numbering starts at the back-right (serving position) and goes counter-clockwise:</p>
+
+      <div class="zone-diagram">
+        <div class="zone-row-label">Net (front row)</div>
+        <div class="zone-cell front">Zone 4<br>Left Front</div>
+        <div class="zone-cell front">Zone 3<br>Center Front</div>
+        <div class="zone-cell front">Zone 2<br>Right Front</div>
+        <div class="zone-row-label">Back row</div>
+        <div class="zone-cell back">Zone 5<br>Left Back</div>
+        <div class="zone-cell back">Zone 6<br>Center Back</div>
+        <div class="zone-cell back">Zone 1<br>Right Back</div>
+      </div>
+
+      <p>The three front-row players (zones 2, 3, 4) are allowed to attack at the net and block. The three back-row players (zones 1, 5, 6) can only attack from behind the 3-meter attack line. This front/back distinction is what makes rotations strategically important &mdash; teams want their best attackers in the front row and need to manage what happens when they rotate to the back.</p>
+    </section>
+
+    <!-- Player Roles -->
+    <section class="learn-section glass-panel" id="player-roles">
+      <h2>Player roles</h2>
+      <p>The FIVB rules do not define player roles beyond the libero &mdash; the rules only care about zones (1&ndash;6) and front/back row. Roles like "setter" and "outside hitter" are tactical designations that teams use to organize their offense and defense. Here are the standard roles you will see at every level of play:</p>
+
+      <h3>Setter (S)</h3>
+      <p>The setter is the playmaker. Their primary job is to take the second contact and deliver the ball to hitters in a position they can attack. A good setter reads the block, manages the tempo of the offense, and distributes the ball to keep the opposing defense guessing. In a 5-1 system there is one setter; in a 4-2 or 6-2 there are two. The setter typically targets zone 2/3 at the net regardless of which zone they rotate from.</p>
+
+      <h3>Outside Hitter (OH)</h3>
+      <p>Also called the <em>left-side hitter</em> or <em>wing spiker</em>. The outside hitter attacks primarily from zone 4 (left front) and is usually the team's most reliable all-around player. They are expected to pass in serve receive, hit from both front and back row, and play solid defense. Most teams carry two outside hitters in their lineup, placed opposite each other in the rotation.</p>
+
+      <h3>Middle Blocker (MB)</h3>
+      <p>Also called the <em>middle hitter</em>. The middle blocker's main jobs are running quick attacks through zone 3 (center front) and anchoring the block. They need to read the opponent's setter and move laterally to close blocks on outside and right-side attacks. Because middles are typically tall with weaker passing and back-row skills, they are almost always replaced by the libero when they rotate to the back row. Teams usually carry two middles.</p>
+
+      <h3>Opposite (OPP)</h3>
+      <p>Also called the <em>right-side hitter</em>. The opposite is positioned across from the setter in the rotation and attacks primarily from zone 2 (right front). In many systems the opposite is the primary scoring option, especially when hitting against the opponent's outside blocker. They also play back-row defense in zone 1 when behind the attack line. At higher levels, the opposite is often the most powerful attacker on the team.</p>
+
+      <h3>Libero (L)</h3>
+      <p>A back-row defensive specialist who wears a different jersey and can freely replace any back-row player. The libero cannot serve, block, or attack above net height. They are covered in detail in their <a href="#libero" style="color:var(--accent);">own section below</a>.</p>
+
+      <h3>Defensive Specialist (DS)</h3>
+      <p>A defensive specialist is a back-row substitute who enters the game through a regular substitution (not a libero replacement). Unlike the libero, the DS uses one of the team's limited substitutions and can serve. Teams often use a DS to strengthen back-row defense or passing in rotations where a weaker passer would otherwise be receiving. The DS typically replaces a middle blocker or opposite in the back row.</p>
+
+      <h3>Serving Specialist</h3>
+      <p>Not a formal position, but a common tactical substitution. A serving specialist is a player who subs in specifically to serve &mdash; usually because they have a particularly strong or accurate serve &mdash; and then is substituted back out after their service rotation. This uses a regular substitution each way, so teams must manage their substitution count carefully. You will see this most often at competitive and professional levels where a dominant jump serve can shift momentum.</p>
+    </section>
+
+    <!-- Rotation Systems -->
+    <section class="learn-section glass-panel" id="rotation-systems">
+      <h2>Rotation systems: 5-1, 4-2, 6-2</h2>
+      <p>A rotation system defines how many setters and hitters a team uses and how setting responsibilities are organized. The two numbers refer to <strong>hitters</strong> and <strong>setters</strong>.</p>
+
+      <h3>5-1 System</h3>
+      <p>Five hitters, one setter. The setter runs the offense from every rotation &mdash; whether they are in the front row or back row. This is the most common system at competitive and professional levels.</p>
+      <p>When the setter is in the front row (zones 2, 3, or 4), the team has only two front-row attackers. When the setter rotates to the back row, all three front-row players are hitters, giving the team a stronger offensive rotation. The trade-off is that everything depends on one setter &mdash; if they get dug or struggle, there is no backup.</p>
+
+      <h3>4-2 System</h3>
+      <p>Four hitters, two setters. The setters are placed opposite each other in the rotation, so one is always in the front row. Whichever setter is in the front row does the setting from zone 2 or 3, while the other plays as a back-row player.</p>
+      <p>This is a simpler system often used by beginner and intermediate teams. It always gives you a front-row setter (easier to set from the net), but you only ever have two front-row attackers. The offensive ceiling is lower, but it is easier to learn and more forgiving.</p>
+
+      <h3>6-2 System</h3>
+      <p>Six hitters, two setters &mdash; but the setter only sets when they are in the back row. This means the team always has three front-row attackers, since the front-row setter acts as a hitter instead of setting. The back-row setter runs to the net to set.</p>
+      <p>This gives you the most attacking options (three hitters up front at all times), but requires two players who can both set and hit. It is popular at club and college levels where teams have versatile athletes.</p>
+
+      <table class="system-table">
+        <tr>
+          <th>System</th>
+          <th>Setters</th>
+          <th>Front-row attackers</th>
+          <th>Best for</th>
+        </tr>
+        <tr>
+          <td><strong>5-1</strong></td>
+          <td>1</td>
+          <td>2 or 3 (varies by rotation)</td>
+          <td>Competitive / pro teams</td>
+        </tr>
+        <tr>
+          <td><strong>4-2</strong></td>
+          <td>2</td>
+          <td>2 (always)</td>
+          <td>Beginners / learning teams</td>
+        </tr>
+        <tr>
+          <td><strong>6-2</strong></td>
+          <td>2</td>
+          <td>3 (always)</td>
+          <td>Club / college level</td>
+        </tr>
+      </table>
+
+      <p style="margin-top:16px;"><a href="index.html" class="cta-link">See all systems in the interactive viewer &rarr;</a></p>
+    </section>
+
+    <!-- Serve Receive -->
+    <section class="learn-section glass-panel" id="serve-receive">
+      <h2>Serve receive and phases of play</h2>
+      <p>Every rally goes through several phases, and your players should be in different positions for each one:</p>
+      <ul>
+        <li><strong>Base</strong> &mdash; Starting positions before the serve. The receiving team must follow overlap rules (see below). Players are in their rotational order but may shift within their zone constraints. The serving team is free to position anywhere.</li>
+        <li><strong>Serve / Pass</strong> &mdash; The moment the serve is contacted. On the serving team, players begin transitioning to their defensive positions. On the receiving team, designated passers position themselves to receive the serve while other players prepare to attack.</li>
+        <li><strong>Set</strong> &mdash; After the pass, the setter moves to their setting position (usually near zone 2/3 at the net). Hitters begin their approach routes.</li>
+        <li><strong>Attack</strong> &mdash; Hitters are at their attacking positions (outside, middle, or right-side), the setter has delivered the ball, and back-row players adjust for defensive coverage.</li>
+        <li><strong>Switch</strong> &mdash; After the rally or during a dead ball, players transition to their preferred base positions for the next play. This is where front-row players move to their strongest attacking zones and back-row players settle into defensive roles.</li>
+      </ul>
+      <p>Understanding these phases is what separates teams that "know where to stand" from teams that run a real system. Each phase has an ideal position for every player, and those positions change with each rotation.</p>
+    </section>
+
+    <!-- Overlap Rules -->
+    <section class="learn-section glass-panel" id="overlap-rules">
+      <h2>Overlap rules (FIVB Rule 7.4)</h2>
+      <p>At the moment the server contacts the ball, players on the <strong>receiving team</strong> must be in their correct rotational position relative to their neighbors. The serving team is exempt &mdash; they may stand anywhere (Rule 7.4). Violating this is called a <strong>positional fault</strong> (Rule 7.5) &mdash; the other team gets a point and the serve.</p>
+      <p>Positions are judged by <strong>foot contact with the ground</strong> (Rule 7.4.3). The rule works on two axes:</p>
+
+      <h3>Front-to-back (Rule 7.4.2.1)</h3>
+      <p>Each front-row player must have at least part of one foot closer to the center line (net) than the feet of the corresponding back-row player. Specifically:</p>
+      <ul>
+        <li>Zone 4 (left front) must be level with or closer to the net than zone 5 (left back)</li>
+        <li>Zone 3 (center front) must be level with or closer than zone 6 (center back)</li>
+        <li>Zone 2 (right front) must be level with or closer than zone 1 (right back)</li>
+      </ul>
+
+      <h3>Left-to-right (Rule 7.4.2.2)</h3>
+      <p>Players in the same row must maintain their lateral order. Each side player must have at least part of one foot closer to the nearest sideline than the feet of the adjacent player in that row:</p>
+      <ul>
+        <li><strong>Front row:</strong> Zone 4 must be left of zone 3, zone 3 must be left of zone 2</li>
+        <li><strong>Back row:</strong> Zone 5 must be left of zone 6, zone 6 must be left of zone 1</li>
+      </ul>
+
+      <p>Players only need to maintain position relative to their <em>adjacent</em> neighbors &mdash; not diagonals. For example, the zone 4 player does not need to be left of the zone 2 player. This gives teams room to "stack" or shift their formation while staying legal, which is how serve-receive patterns work in practice.</p>
+      <p>Once the serve is contacted, all players on both teams can move anywhere (Rule 7.4.4). The positional rule only applies at the instant of the serve.</p>
+    </section>
+
+    <!-- The Libero -->
+    <section class="learn-section glass-panel" id="libero">
+      <h2>The libero</h2>
+      <p>The libero is a defensive specialist who wears a different colored jersey (Rule 19.2). They can replace any back-row player without counting against the team's substitution limit, and these replacements are unlimited (Rule 19.3.2.1). However, the libero has specific restrictions under FIVB rules:</p>
+      <ul>
+        <li>Cannot serve, block, or attempt to block (Rule 19.3.1.3)</li>
+        <li>Cannot complete an attack hit when the ball is entirely above the top of the net (Rule 19.3.1.2)</li>
+        <li>If the libero sets the ball using an overhand finger pass while in the front zone (ahead of the attack line), no teammate may attack that ball above net height (Rule 19.3.1.4). The libero <em>can</em> make the set &mdash; it is the attack that becomes restricted.</li>
+      </ul>
+      <p>In most systems, the libero replaces the middle blocker when they rotate to the back row. Middle blockers are typically the tallest players and weakest passers, so swapping them out for the team's best defender is a natural fit. In a 4-2 system, the libero sometimes replaces the back-row setter instead, depending on the team's needs.</p>
+      <p>The libero enters and exits the court through the Libero Replacement Zone &mdash; the area between the attack line and the end line on their team's side (Rule 19.3.2.7). Replacements must happen while the ball is out of play and before the whistle for service (Rule 19.3.2.4). There must be a completed rally between two libero replacements (Rule 19.3.2.1).</p>
+    </section>
+
+    <!-- Try It -->
+    <section class="learn-section glass-panel" id="try-it" style="text-align:center;">
+      <h2>Try it yourself</h2>
+      <p>See all of these concepts in action. The interactive viewer lets you step through every rotation, mode, and phase for the 5-1, 4-2, and 6-2 systems.</p>
+      <p style="margin-top:16px;">
+        <a href="index.html" class="cta-link">Open the Rotation Viewer &rarr;</a>
+      </p>
+      <p style="margin-top:12px;">
+        <a href="editor.html" class="cta-link" style="background:var(--glass-bg); border-color:var(--glass-border-hover); color:var(--text-secondary);">Build your own rotation &rarr;</a>
+      </p>
+    </section>
+  </div>
+
+  <script>
+    // Nav hamburger
+    const navHamburger = document.getElementById('nav-hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    navHamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = navMenu.classList.toggle('open');
+      navHamburger.classList.toggle('open', open);
+    });
+    document.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      navHamburger.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
