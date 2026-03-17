@@ -6,6 +6,10 @@
  * Licensed under Apache License 2.0
  */
 
+// Reset scroll position — fixes PWA webview retaining scroll offset from learn page
+window.scrollTo(0, 0);
+document.documentElement.scrollTop = 0;
+
 // Configuration
 const SCALE = 250 / 900;
 const COURT_OFFSET_X = 25;
