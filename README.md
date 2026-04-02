@@ -6,14 +6,16 @@ A visual tool for viewing and editing volleyball player rotations across differe
 - **Viewer:** [https://volleyball-rotations.com](https://volleyball-rotations.com)
 - **Editor:** [https://volleyball-rotations.com/editor.html](https://volleyball-rotations.com/editor.html)
 - **Learn:** [https://volleyball-rotations.com/learn.html](https://volleyball-rotations.com/learn.html)
+- **Quiz:** [https://volleyball-rotations.com/quiz.html](https://volleyball-rotations.com/quiz.html)
 
 ## Overview
 
-The app has three parts:
+The app has four parts:
 
 - **Viewer** (`index.html`) - Interactive court display for reviewing rotations during practice or games
 - **Editor** (`editor.html`) - Drag-and-drop editor for creating and modifying rotation files
 - **Learn** (`learn.html`) - Guide to volleyball rotations, player roles, court zones, overlap rules (FIVB 7.4), and the libero — verified against the FIVB 2025-2028 rulebook
+- **Quiz** (`quiz.html`) - Interactive rules quiz with 83 questions across General Rules and Rotations categories. Randomised per session, answer locking with FIVB rule references, score tiers (Bronze/Silver/Gold), and downloadable PDF diploma
 
 All pages run entirely in the browser with no server or dependencies required. Just open the HTML files directly or host them on any static server (GitHub Pages, etc.).
 
@@ -128,6 +130,53 @@ Click **Export** in the top bar to download the rotation data as a `.json` file.
 
 Click **Reset** to clear all data and start over. This also clears all completion tracking.
 
+## Quiz
+
+The quiz tests knowledge of volleyball rules based on the FIVB Official Volleyball Rules 2025-2028. Open `quiz.html` in a browser.
+
+### Categories
+
+| Category | Pool | Questions per quiz |
+|----------|------|--------------------|
+| General Rules | 65 questions | 20 (randomised) |
+| Rotations & Positioning | 18 questions | 10 (randomised) |
+| Full Exam | All 83 questions | 25 (randomised) |
+
+### How it works
+
+1. Pick a category — questions are randomised from the pool each session
+2. Select an answer and click **Submit** — the question locks and shows the correct answer, explanation, and FIVB rule reference
+3. Navigate freely with Prev/Next or the question grid — locked answers can be reviewed but not changed
+4. When all questions are answered, click **See Results**
+5. Results show your score, a tier badge, and (if you pass) a downloadable PDF diploma
+
+### Diploma tiers
+
+| Tier | Threshold |
+|------|-----------|
+| Bronze | 70%+ |
+| Silver | 80%+ |
+| Gold | 90%+ |
+
+The diploma is generated entirely client-side (no server) using jsPDF. It includes your name, score, tier, date, and a FIVB rules attribution.
+
+### Adding or editing questions
+
+Questions are stored in `data/quiz-questions.json`. Each question follows this structure:
+
+```json
+{ "id": 1, "type": "multiple", "category": "general",
+  "question": "What is the official net height for men's volleyball?",
+  "options": ["2.24 m", "2.35 m", "2.43 m", "2.50 m"],
+  "correct": 2,
+  "explanation": "The net height for men is 2.43 m.",
+  "rule": "FIVB Rule 2.1.1" }
+```
+
+- `type`: `"multiple"` (4 options) or `"truefalse"`
+- `category`: `"general"` or `"rotations"`
+- `correct`: index into `options` array (for multiple), or `true`/`false` (for truefalse)
+
 ## Rotation data format
 
 Rotation files are JSON with this structure:
@@ -188,10 +237,14 @@ Then open `http://localhost:8000`.
 index.html              Viewer app
 editor.html             Editor app
 learn.html              Learn page (rotation guide)
+quiz.html               Rules quiz with diploma generation
 css/glass-shared.css    Shared glassmorphism design tokens and components
 css/styles.css          Viewer styles
 js/app.js               Viewer logic
 js/editor.js            Editor logic
+js/quiz.js              Quiz logic
+data/
+  quiz-questions.json   83 quiz questions (General Rules + Rotations)
 rotations/
   systems.json          List of available rotation systems
   5-1.json              5-1 system rotation data
