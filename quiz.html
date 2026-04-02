@@ -46,23 +46,55 @@
     /* ── Hero ───────────────────────────────────── */
     .quiz-hero {
       text-align: center;
-      padding: 48px 16px 32px;
+      padding: 40px 8px 24px;
     }
 
     .quiz-hero h1 {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: -0.3px;
     }
 
     .quiz-hero .subtitle {
       color: var(--text-secondary);
-      font-size: 1rem;
-      line-height: 1.6;
-      max-width: 560px;
-      margin: 0 auto;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+
+    /* Diploma tier row in hero */
+    .tier-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tier-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border: 1px solid;
+    }
+
+    .tier-pill.bronze { color: #c49a3c; border-color: rgba(196,154,60,0.3); background: rgba(196,154,60,0.1); }
+    .tier-pill.silver { color: #9aaabb; border-color: rgba(154,170,187,0.3); background: rgba(154,170,187,0.1); }
+    .tier-pill.gold   { color: #e8c84a; border-color: rgba(232,200,74,0.3); background: rgba(232,200,74,0.1); }
+
+    .tier-pip {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
     }
 
     /* ── Category Selection ─────────────────────── */
@@ -72,9 +104,8 @@
 
     .category-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-bottom: 28px;
+      gap: 10px;
+      margin: 24px 0 20px;
     }
 
     .category-card {
@@ -83,13 +114,17 @@
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow), var(--glass-inset-highlight);
-      border-radius: 14px;
-      padding: 24px;
+      border-radius: 12px;
+      padding: 18px 18px 18px 0;
       cursor: pointer;
       text-align: left;
       width: 100%;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      display: flex;
+      align-items: center;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       color: var(--text-primary);
+      overflow: hidden;
+      position: relative;
     }
 
     .category-card:hover {
@@ -98,36 +133,82 @@
       box-shadow: var(--glass-shadow), var(--glass-inset-highlight), var(--accent-glow);
     }
 
-    .category-card h3 {
-      font-size: 1.1rem;
+    /* Per-card accent colors */
+    .category-card[data-category="general"]   { --card-color: #5b9bd5; }
+    .category-card[data-category="rotations"] { --card-color: #e0844a; }
+    .category-card[data-category="full"]      { --card-color: #d4aa40; }
+
+    .card-bar {
+      width: 3px;
+      align-self: stretch;
+      background: var(--card-color);
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+
+    .card-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--card-color) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--card-color) 28%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--card-color);
+      margin-right: 14px;
+    }
+
+    .card-icon-box svg { width: 19px; height: 19px; }
+
+    .card-text { flex: 1; min-width: 0; }
+
+    .card-text h3 {
+      font-size: 0.97rem;
       font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 6px;
+      color: var(--text-primary);
+      margin-bottom: 3px;
     }
 
-    .category-card p {
-      font-size: 0.88rem;
+    .card-text p {
+      font-size: 0.8rem;
       color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: 10px;
+      line-height: 1.45;
+      margin-bottom: 8px;
     }
 
-    .question-count {
-      display: inline-block;
-      font-size: 0.78rem;
+    .card-meta {
+      display: flex;
+      align-items: center;
+    }
+
+    .q-count {
+      font-size: 0.74rem;
       color: var(--text-muted);
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 6px;
-      padding: 2px 10px;
+    }
+
+    .card-chevron {
+      width: 20px;
+      height: 20px;
+      color: color-mix(in srgb, var(--card-color) 70%, transparent);
+      flex-shrink: 0;
+      margin-left: 12px;
+      margin-right: 4px;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .category-card:hover .card-chevron {
+      transform: translateX(2px);
+      color: var(--card-color);
     }
 
     .disclaimer {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       text-align: center;
-      line-height: 1.5;
-      margin-top: 8px;
+      line-height: 1.6;
+      margin-top: 6px;
     }
 
     /* ── Quiz Screen ────────────────────────────── */
@@ -636,30 +717,82 @@
     <div id="category-screen">
       <div class="quiz-hero">
         <h1>Volleyball Rules Quiz</h1>
-        <p class="subtitle">Test your knowledge of volleyball rules based on the FIVB Official Volleyball Rules 2025&ndash;2028. Answer correctly, see the rule reference, and earn a diploma.</p>
+        <p class="subtitle">Based on the FIVB Official Volleyball Rules 2025&ndash;2028. Answer correctly, see the rule reference, and earn a diploma.</p>
+        <div class="tier-row">
+          <span class="tier-pill bronze"><span class="tier-pip"></span>Bronze &nbsp;70%+</span>
+          <span class="tier-pill silver"><span class="tier-pip"></span>Silver &nbsp;80%+</span>
+          <span class="tier-pill gold"><span class="tier-pip"></span>Gold &nbsp;90%+</span>
+        </div>
       </div>
 
       <div class="category-grid">
+
         <button class="category-card" data-category="general">
-          <h3>General Rules</h3>
-          <p>Net heights, scoring, serve rules, ball contact, libero restrictions, substitutions, and more.</p>
-          <span class="question-count">20 random questions from a pool of 65</span>
+          <div class="card-bar"></div>
+          <div class="card-icon-box">
+            <!-- book-open (Feather) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h3>General Rules</h3>
+            <p>Net heights, scoring, serve rules, ball contact, libero restrictions, substitutions, and more.</p>
+            <div class="card-meta">
+              <span class="q-count">20 questions &middot; pool of 65</span>
+            </div>
+          </div>
+          <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
         </button>
 
         <button class="category-card" data-category="rotations">
-          <h3>Rotations &amp; Positioning</h3>
-          <p>Overlap rules, zone numbering, rotation order, positional faults, and back-row restrictions.</p>
-          <span class="question-count">10 random questions from a pool of 18</span>
+          <div class="card-bar"></div>
+          <div class="card-icon-box">
+            <!-- rotate-cw (Feather) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h3>Rotations &amp; Positioning</h3>
+            <p>Overlap rules, zone numbering, rotation order, positional faults, and back-row restrictions.</p>
+            <div class="card-meta">
+              <span class="q-count">10 questions &middot; pool of 18</span>
+            </div>
+          </div>
+          <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
         </button>
 
         <button class="category-card" data-category="full">
-          <h3>Full Exam</h3>
-          <p>All categories combined for the ultimate test. Both general rules and rotations covered.</p>
-          <span class="question-count">25 random questions from the full pool</span>
+          <div class="card-bar"></div>
+          <div class="card-icon-box">
+            <!-- award (Feather) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="6"/>
+              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <h3>Full Exam</h3>
+            <p>All categories combined for the ultimate test. Both general rules and rotations covered.</p>
+            <div class="card-meta">
+              <span class="q-count">25 questions &middot; full pool</span>
+            </div>
+          </div>
+          <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
         </button>
+
       </div>
 
-      <p class="disclaimer">This quiz is not affiliated with or endorsed by the FIVB. Rule references are based on the FIVB Official Volleyball Rules 2025&ndash;2028.</p>
+      <p class="disclaimer">Not affiliated with or endorsed by the FIVB. Rule references based on the FIVB Official Volleyball Rules 2025&ndash;2028.</p>
     </div>
 
     <!-- ── SCREEN 2: Quiz ── -->
