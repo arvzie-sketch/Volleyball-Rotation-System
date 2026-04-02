@@ -1,0 +1,947 @@
+{
+  "meta": {
+    "title": "Volleyball Rules Quiz",
+    "description": "Test your knowledge of volleyball rules based on the FIVB Official Volleyball Rules 2025-2028.",
+    "version": "1.0",
+    "disclaimer": "This quiz is for educational purposes. It is not affiliated with or endorsed by the FIVB. Rule references are based on the FIVB Official Volleyball Rules 2025-2028."
+  },
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "category": "general",
+      "question": "What is the official net height for men's volleyball?",
+      "options": ["2.24 m", "2.35 m", "2.43 m", "2.50 m"],
+      "correct": 2,
+      "explanation": "The net height for men is 2.43 m, measured from the centre of the playing court.",
+      "rule": "FIVB Rule 2.1.1"
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "category": "general",
+      "question": "What is the official net height for women's volleyball?",
+      "options": ["2.10 m", "2.24 m", "2.35 m", "2.43 m"],
+      "correct": 1,
+      "explanation": "The net height for women is 2.24 m, measured from the centre of the playing court.",
+      "rule": "FIVB Rule 2.1.1"
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "category": "general",
+      "question": "What are the dimensions of a volleyball court?",
+      "options": ["16 x 8 m", "18 x 9 m", "20 x 10 m", "18 x 10 m"],
+      "correct": 1,
+      "explanation": "The playing court is a rectangle measuring 18 x 9 m.",
+      "rule": "FIVB Rule 1.1"
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many players per team are on the court during play?",
+      "options": ["5", "6", "7", "8"],
+      "correct": 1,
+      "explanation": "There must always be six players per team in play.",
+      "rule": "FIVB Rule 7.3.1"
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many players can a team register on the score sheet for a standard match?",
+      "options": ["6", "10", "12", "14"],
+      "correct": 2,
+      "explanation": "A team may consist of up to 12 players. For FIVB Senior competitions, up to 14 players may be recorded.",
+      "rule": "FIVB Rule 4.1.1"
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many liberos can a team designate?",
+      "options": ["1", "Up to 2", "Up to 3", "Unlimited"],
+      "correct": 1,
+      "explanation": "Each team has the right to designate up to two specialist defensive players: Liberos.",
+      "rule": "FIVB Rule 19.1.1"
+    },
+    {
+      "id": 7,
+      "type": "truefalse",
+      "category": "general",
+      "question": "In FIVB Senior competitions, if a team has more than 12 players on the score sheet, having two liberos is mandatory.",
+      "correct": true,
+      "explanation": "For FIVB Senior competitions, if a team has more than 12 players recorded on the score sheet, two liberos are mandatory.",
+      "rule": "FIVB Rule 19.1.1"
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many substitutions is a team allowed per set?",
+      "options": ["4", "6", "8", "Unlimited"],
+      "correct": 1,
+      "explanation": "Each team may request a maximum of six substitutions per set.",
+      "rule": "FIVB Rule 15.1"
+    },
+    {
+      "id": 9,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many time-outs is each team allowed per set?",
+      "options": ["1", "2", "3", "4"],
+      "correct": 1,
+      "explanation": "Each team may request a maximum of two time-outs per set.",
+      "rule": "FIVB Rule 15.1"
+    },
+    {
+      "id": 10,
+      "type": "multiple",
+      "category": "general",
+      "question": "How long does a requested time-out last?",
+      "options": ["15 seconds", "30 seconds", "45 seconds", "60 seconds"],
+      "correct": 1,
+      "explanation": "All requested time-outs last for 30 seconds.",
+      "rule": "FIVB Rule 15.4.1"
+    },
+    {
+      "id": 11,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many points are needed to win a regular set (not the deciding set)?",
+      "options": ["21 with 2-point lead", "25 with 2-point lead", "25 with no lead required", "30 with 2-point lead"],
+      "correct": 1,
+      "explanation": "A set (except the deciding 5th set) is won by the team which first scores 25 points with a minimum lead of two points.",
+      "rule": "FIVB Rule 6.2"
+    },
+    {
+      "id": 12,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many points are needed to win the deciding 5th set?",
+      "options": ["15 with 2-point lead", "21 with 2-point lead", "25 with 2-point lead", "15 with no lead required"],
+      "correct": 0,
+      "explanation": "The deciding 5th set is played to 15 points with a minimum lead of 2 points.",
+      "rule": "FIVB Rule 6.3.2"
+    },
+    {
+      "id": 13,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many sets does a team need to win to win the match?",
+      "options": ["2 out of 3", "3 out of 5", "4 out of 7", "2 out of 5"],
+      "correct": 1,
+      "explanation": "The match is won by the team that wins three sets (best of five).",
+      "rule": "FIVB Rule 6.3.1"
+    },
+    {
+      "id": 14,
+      "type": "truefalse",
+      "category": "general",
+      "question": "The ball can be played with any part of the body.",
+      "correct": true,
+      "explanation": "The ball may touch any part of the body. There is no restriction on which body part can contact the ball.",
+      "rule": "FIVB Rule 9.2.1"
+    },
+    {
+      "id": 15,
+      "type": "truefalse",
+      "category": "general",
+      "question": "On the first hit of the team (such as a receive or dig), the ball can touch multiple body parts in sequence as long as it happens in one continuous action.",
+      "correct": true,
+      "explanation": "At the first hit of the team, the ball may contact various parts of the body consecutively, provided that the contacts occur during one action. For example, the ball hitting the forearm and then rolling up to the shoulder on a dig is legal if it's one motion.",
+      "rule": "FIVB Rule 9.2.3.2"
+    },
+    {
+      "id": 16,
+      "type": "truefalse",
+      "category": "general",
+      "question": "On the second or third hit of the team, the ball can touch multiple body parts in sequence (one after another) during the contact.",
+      "correct": false,
+      "explanation": "On the second or third hit, the ball may only touch various parts of the body if the contacts take place simultaneously. Consecutive (sequential) contacts are only allowed on the first hit of the team or during a block.",
+      "rule": "FIVB Rule 9.2.3"
+    },
+    {
+      "id": 17,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If the ball lands on a boundary line, it is considered 'in'.",
+      "correct": true,
+      "explanation": "The ball is 'in' if at any moment of its contact with the floor, some part of the ball touches the court, including the boundary lines.",
+      "rule": "FIVB Rule 8.3"
+    },
+    {
+      "id": 18,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A player who touches the net between the antennae during the action of playing the ball commits a fault.",
+      "correct": true,
+      "explanation": "Contact with the net by a player between the antennae, during the action of playing the ball, is a fault. The action of playing the ball includes take-off, hit (or attempt), and landing.",
+      "rule": "FIVB Rule 11.3.1"
+    },
+    {
+      "id": 19,
+      "type": "truefalse",
+      "category": "general",
+      "question": "Touching the net outside the antennae is always a fault.",
+      "correct": false,
+      "explanation": "Touching the net outside the antennae is NOT a fault. Players may touch the post, ropes, or any other object outside the antennae, including the net itself, provided that it does not interfere with play.",
+      "rule": "FIVB Rule 11.3.2"
+    },
+    {
+      "id": 20,
+      "type": "multiple",
+      "category": "general",
+      "question": "A player steps on the centre line with one foot during play. The other foot remains on their own side. Is this allowed?",
+      "options": [
+        "No, any contact with the centre line is a fault",
+        "Yes, as long as some part of the foot remains on or directly above the centre line",
+        "Yes, players can freely cross the centre line",
+        "Only the libero is allowed to step on the centre line"
+      ],
+      "correct": 1,
+      "explanation": "Touching the opponent's court with a foot is permitted, provided that some part of the penetrating foot remains either in contact with or directly above the centre line.",
+      "rule": "FIVB Rule 11.2.2.1"
+    },
+    {
+      "id": 21,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If a player's foot completely crosses the centre line and lands entirely on the opponent's court, it is a fault.",
+      "correct": true,
+      "explanation": "A player's foot (or feet) penetrating completely into the opponent's court is a fault. Some part of the foot must remain on or above the centre line.",
+      "rule": "FIVB Rule 11.4.3"
+    },
+    {
+      "id": 22,
+      "type": "multiple",
+      "category": "general",
+      "question": "What about body parts above the feet crossing the centre line? For example, a player's hand touches the opponent's court floor.",
+      "options": [
+        "Always a fault",
+        "Permitted as long as it does not interfere with the opponent's play",
+        "Only allowed during blocking",
+        "Only the arms are allowed to cross"
+      ],
+      "correct": 1,
+      "explanation": "Touching the opponent's court with any part of the body above the feet is permitted, provided that it does not interfere with the opponent's play.",
+      "rule": "FIVB Rule 11.2.2.2"
+    },
+    {
+      "id": 23,
+      "type": "truefalse",
+      "category": "general",
+      "question": "It is legal to block the opponent's serve.",
+      "correct": false,
+      "explanation": "Blocking the opponent's service is forbidden.",
+      "rule": "FIVB Rule 14.5"
+    },
+    {
+      "id": 24,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A block contact counts as one of the team's three hits.",
+      "correct": false,
+      "explanation": "A block contact is NOT counted as a team hit. After a block contact, a team is still entitled to three hits to return the ball.",
+      "rule": "FIVB Rule 14.4.1"
+    },
+    {
+      "id": 25,
+      "type": "multiple",
+      "category": "general",
+      "question": "A player touches the ball during a block. How many more hits does the team get?",
+      "options": ["0 — the block was their first hit", "1", "2", "3"],
+      "correct": 3,
+      "explanation": "A block contact is not counted as a team hit. After a block, the team is entitled to three more hits to return the ball. The blocker can even make the first of those three hits.",
+      "rule": "FIVB Rule 14.4.1, 14.4.2"
+    },
+    {
+      "id": 26,
+      "type": "truefalse",
+      "category": "general",
+      "question": "Only front-row players are allowed to complete a block.",
+      "correct": true,
+      "explanation": "Only front-row players are permitted to complete a block. Back-row players and the libero cannot block or participate in a completed block.",
+      "rule": "FIVB Rule 14.1.1"
+    },
+    {
+      "id": 27,
+      "type": "multiple",
+      "category": "general",
+      "question": "A back-row player wants to attack the ball. Where must they take off from if the ball is entirely above the net?",
+      "options": [
+        "Anywhere on the court",
+        "Behind the centre line",
+        "Behind the attack line (3-metre line)",
+        "Behind the end line"
+      ],
+      "correct": 2,
+      "explanation": "A back-row player may complete an attack hit at any height from behind the front zone. At take-off, the player's foot must not have touched or crossed the attack line.",
+      "rule": "FIVB Rule 13.2.2"
+    },
+    {
+      "id": 28,
+      "type": "truefalse",
+      "category": "general",
+      "question": "After a back-row attack, the player is allowed to land inside the front zone (in front of the attack line).",
+      "correct": true,
+      "explanation": "After the hit, the back-row player may land within the front zone. The restriction only applies at the moment of take-off.",
+      "rule": "FIVB Rule 13.2.2.2"
+    },
+    {
+      "id": 29,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A back-row player standing inside the front zone can attack the ball if part of the ball is below the top of the net at the moment of contact.",
+      "correct": true,
+      "explanation": "A back-row player may complete an attack hit from the front zone, if at the moment of contact a part of the ball is lower than the top of the net.",
+      "rule": "FIVB Rule 13.2.3"
+    },
+    {
+      "id": 30,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many seconds does the server have to hit the ball after the referee's whistle?",
+      "options": ["5 seconds", "8 seconds", "10 seconds", "12 seconds"],
+      "correct": 1,
+      "explanation": "The server must hit the ball within 8 seconds after the 1st referee whistles for service.",
+      "rule": "FIVB Rule 12.4.4"
+    },
+    {
+      "id": 31,
+      "type": "multiple",
+      "category": "general",
+      "question": "At the moment of serving, the server's foot touches the end line. What happens?",
+      "options": [
+        "Nothing, touching the line is allowed",
+        "It is a foot fault — service fault",
+        "The referee gives a warning first",
+        "The serve is replayed"
+      ],
+      "correct": 1,
+      "explanation": "At the moment of the service hit (or take-off for a jump serve), the server must not touch the court, including the end line, or the floor outside the service zone.",
+      "rule": "FIVB Rule 12.4.3"
+    },
+    {
+      "id": 32,
+      "type": "truefalse",
+      "category": "general",
+      "question": "After hitting the serve, the server is allowed to step on the court or land inside the playing area.",
+      "correct": true,
+      "explanation": "After the service hit, the server may step or land outside the service zone or inside the court. The restriction only applies at the moment of the hit or take-off.",
+      "rule": "FIVB Rule 12.4.3"
+    },
+    {
+      "id": 33,
+      "type": "multiple",
+      "category": "general",
+      "question": "What is the maximum number of hits a team can use to return the ball (not counting a block)?",
+      "options": ["2", "3", "4", "Unlimited"],
+      "correct": 1,
+      "explanation": "The team is entitled to a maximum of three hits (in addition to blocking) for returning the ball.",
+      "rule": "FIVB Rule 9.1"
+    },
+    {
+      "id": 34,
+      "type": "multiple",
+      "category": "general",
+      "question": "Which of the following is the libero NOT allowed to do?",
+      "options": [
+        "Dig a ball in the back row",
+        "Pass a ball using forearms",
+        "Serve, block, or attempt to block",
+        "Replace a back-row player"
+      ],
+      "correct": 2,
+      "explanation": "The libero may not serve, block, or attempt to block. They can do everything else as a back-row player, including digging and passing.",
+      "rule": "FIVB Rule 19.3.1.3"
+    },
+    {
+      "id": 35,
+      "type": "truefalse",
+      "category": "general",
+      "question": "The libero can attack the ball as long as it is entirely above the net at the moment of contact.",
+      "correct": false,
+      "explanation": "The libero is NOT allowed to complete an attack hit if the ball is entirely higher than the top of the net at the moment of contact. This applies from anywhere on the court, including the free zone.",
+      "rule": "FIVB Rule 19.3.1.2"
+    },
+    {
+      "id": 36,
+      "type": "multiple",
+      "category": "general",
+      "question": "The libero sets the ball using an overhand finger pass while standing inside the front zone. What restriction applies?",
+      "options": [
+        "No restriction — the set is legal and anyone can attack it",
+        "The set is a fault and play stops immediately",
+        "No teammate may attack that ball above net height",
+        "Only the middle blocker can attack the ball"
+      ],
+      "correct": 2,
+      "explanation": "If the libero sets the ball using an overhand finger pass from the front zone, no teammate may complete an attack hit when the ball is entirely above the top of the net. The libero CAN make the set — it is the attack that becomes restricted.",
+      "rule": "FIVB Rule 19.3.1.4"
+    },
+    {
+      "id": 37,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If the libero sets the ball with an overhand finger pass from behind the attack line (back zone), the attack restriction does not apply.",
+      "correct": true,
+      "explanation": "The ball may be freely attacked if the libero makes the overhand finger pass from outside the front zone. The restriction only applies when the libero is in the front zone.",
+      "rule": "FIVB Rule 19.3.1.4"
+    },
+    {
+      "id": 38,
+      "type": "truefalse",
+      "category": "general",
+      "question": "Libero replacements count against the team's six substitutions per set.",
+      "correct": false,
+      "explanation": "Libero replacements are NOT counted as substitutions. They are unlimited, but there must be a completed rally between two libero replacements.",
+      "rule": "FIVB Rule 19.3.2.1"
+    },
+    {
+      "id": 39,
+      "type": "multiple",
+      "category": "general",
+      "question": "How many liberos can be on the court at the same time?",
+      "options": ["0", "1", "2", "Depends on the team size"],
+      "correct": 1,
+      "explanation": "Only one libero may be on the court at any time, even if the team has designated two liberos.",
+      "rule": "FIVB Rule 19.1.3"
+    },
+    {
+      "id": 40,
+      "type": "multiple",
+      "category": "general",
+      "question": "The libero can replace which type of player?",
+      "options": [
+        "Any player on the court",
+        "Only the middle blocker",
+        "Any back-row player",
+        "Only the player in zone 6"
+      ],
+      "correct": 2,
+      "explanation": "The libero is allowed to replace any player in a back-row position. In practice, teams most commonly replace the middle blocker in the back row, but the rules allow replacement of any back-row player.",
+      "rule": "FIVB Rule 19.3.1.1"
+    },
+    {
+      "id": 41,
+      "type": "multiple",
+      "category": "general",
+      "question": "What colour jersey must the libero wear?",
+      "options": [
+        "The same as the team",
+        "Black",
+        "A different dominant colour that clearly contrasts with the rest of the team",
+        "White"
+      ],
+      "correct": 2,
+      "explanation": "The libero must wear a uniform with a different dominant colour from any colour of the rest of the team, and it must clearly contrast with the rest of the team.",
+      "rule": "FIVB Rule 19.2"
+    },
+    {
+      "id": 42,
+      "type": "truefalse",
+      "category": "general",
+      "question": "The ball is allowed to touch the net while crossing over to the opponent's side.",
+      "correct": true,
+      "explanation": "While crossing the net, the ball may touch it. A ball touching the net is not a fault.",
+      "rule": "FIVB Rule 10.2"
+    },
+    {
+      "id": 43,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A serve that touches the net and goes over to the opponent's side is a fault.",
+      "correct": false,
+      "explanation": "The ball may touch the net while crossing, including on a serve. As long as the ball crosses the net within the crossing space and lands in the opponent's court, it is legal. The old 'let serve' rule was removed long ago.",
+      "rule": "FIVB Rule 10.2"
+    },
+    {
+      "id": 44,
+      "type": "truefalse",
+      "category": "general",
+      "question": "Players of the serving team are allowed to raise their hands above their heads during service to block the opponent's view.",
+      "correct": false,
+      "explanation": "Any player of the serving team is forbidden to raise hands above the head during service until the ball has passed beyond the net. This is part of the screening rules.",
+      "rule": "FIVB Rule 12.5.3"
+    },
+    {
+      "id": 45,
+      "type": "multiple",
+      "category": "general",
+      "question": "How far is the attack line from the centre line?",
+      "options": ["2 metres", "3 metres", "4 metres", "3.5 metres"],
+      "correct": 1,
+      "explanation": "The attack line is drawn 3 m back from the axis of the centre line. It marks the boundary of the front zone.",
+      "rule": "FIVB Rule 1.3.4"
+    },
+    {
+      "id": 46,
+      "type": "multiple",
+      "category": "general",
+      "question": "What is the standard interval (break) between sets?",
+      "options": ["1 minute", "2 minutes", "3 minutes", "5 minutes"],
+      "correct": 2,
+      "explanation": "All intervals between sets last three minutes. The interval between the 2nd and 3rd set can be extended up to 10 minutes by the organizer.",
+      "rule": "FIVB Rule 18.1"
+    },
+    {
+      "id": 47,
+      "type": "truefalse",
+      "category": "general",
+      "question": "Teams change sides of the court after every set.",
+      "correct": true,
+      "explanation": "After each set, the teams change courts, with the exception of the deciding set where teams change when the leading team reaches 8 points.",
+      "rule": "FIVB Rule 18.2.1"
+    },
+    {
+      "id": 48,
+      "type": "multiple",
+      "category": "general",
+      "question": "In the deciding 5th set, when do the teams change sides of the court?",
+      "options": [
+        "They don't change sides in the 5th set",
+        "At 5 points",
+        "At 8 points",
+        "At 10 points"
+      ],
+      "correct": 2,
+      "explanation": "In the deciding set, once the leading team reaches 8 points, the teams change courts without delay and the player positions remain the same.",
+      "rule": "FIVB Rule 18.2.2"
+    },
+    {
+      "id": 49,
+      "type": "multiple",
+      "category": "general",
+      "question": "A starting player is substituted out. Can they come back into the game in the same set?",
+      "options": [
+        "No, once substituted out they are out for the set",
+        "Yes, but only once and only to their original position",
+        "Yes, they can re-enter as many times as needed",
+        "Only if the team has remaining substitutions"
+      ],
+      "correct": 1,
+      "explanation": "A player of the starting line-up may leave the game but only once in a set, and re-enter but only once in a set, and only to their previous position in the line-up.",
+      "rule": "FIVB Rule 15.6.1"
+    },
+    {
+      "id": 50,
+      "type": "multiple",
+      "category": "general",
+      "question": "Player A (starter) is substituted by Player B. Who can substitute Player B back out?",
+      "options": [
+        "Any player on the bench",
+        "Only Player A (the original starter)",
+        "Only the libero",
+        "Player B cannot be substituted out"
+      ],
+      "correct": 1,
+      "explanation": "A substitute player may enter the game in place of a starting player, but only once per set, and they can only be substituted by the same starting player who they replaced.",
+      "rule": "FIVB Rule 15.6.2"
+    },
+    {
+      "id": 51,
+      "type": "truefalse",
+      "category": "general",
+      "question": "When the ball is driven into the net and the net touches an opponent player, it is a fault on that opponent.",
+      "correct": false,
+      "explanation": "When the ball is driven into the net, causing it to touch an opponent, no fault is committed. The net contact was caused by the ball, not by the player's action.",
+      "rule": "FIVB Rule 11.3.3"
+    },
+    {
+      "id": 52,
+      "type": "truefalse",
+      "category": "general",
+      "question": "During a block, the ball can make consecutive contacts with one or more blockers and it is still legal.",
+      "correct": true,
+      "explanation": "Consecutive (quick and continuous) contacts with the ball may occur by one or more blockers, provided that the contacts are made during one action.",
+      "rule": "FIVB Rule 14.2"
+    },
+    {
+      "id": 53,
+      "type": "multiple",
+      "category": "general",
+      "question": "Two opponents touch the ball simultaneously over the net. The ball stays in play and lands on Team A's side. How many hits does Team A get?",
+      "options": ["1", "2", "3", "4"],
+      "correct": 2,
+      "explanation": "When two opponents touch the ball simultaneously over the net and the ball remains in play, the team receiving the ball is entitled to another three hits.",
+      "rule": "FIVB Rule 9.1.2.2"
+    },
+    {
+      "id": 54,
+      "type": "multiple",
+      "category": "general",
+      "question": "What number range must players' jerseys be numbered in?",
+      "options": ["1 to 10", "1 to 15", "1 to 20", "1 to 99"],
+      "correct": 2,
+      "explanation": "Players' jerseys must be numbered from 1 to 20. In FIVB Senior competitions with larger squads, numbers may be extended.",
+      "rule": "FIVB Rule 4.3.3"
+    },
+    {
+      "id": 55,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A player is allowed to hold or catch the ball briefly before directing it to a teammate.",
+      "correct": false,
+      "explanation": "The ball must not be caught and/or thrown. It can rebound in any direction, but it must not come to rest in a player's hands.",
+      "rule": "FIVB Rule 9.2.2"
+    },
+    {
+      "id": 56,
+      "type": "multiple",
+      "category": "general",
+      "question": "How wide are the court lines?",
+      "options": ["2 cm", "5 cm", "8 cm", "10 cm"],
+      "correct": 1,
+      "explanation": "All lines on the court are 5 cm wide.",
+      "rule": "FIVB Rule 1.3.1"
+    },
+    {
+      "id": 57,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A player who is about to touch the net can be stopped or held back by a teammate without it being a fault.",
+      "correct": true,
+      "explanation": "A player who is about to commit a fault (such as touching the net or crossing the centre line) may be stopped or held back by a teammate. This is an exception to the assisted hit rule.",
+      "rule": "FIVB Rule 9.1.3"
+    },
+    {
+      "id": 58,
+      "type": "multiple",
+      "category": "general",
+      "question": "The score is 24-24 in the 4th set. What happens?",
+      "options": [
+        "The set goes to a tie-break",
+        "Play continues until one team leads by 2 points",
+        "The next point wins the set",
+        "The set is declared a draw"
+      ],
+      "correct": 1,
+      "explanation": "In the case of a 24-24 tie, play is continued until a two-point lead is achieved (26-24, 27-25, etc.). There is no cap.",
+      "rule": "FIVB Rule 6.2"
+    },
+    {
+      "id": 59,
+      "type": "truefalse",
+      "category": "general",
+      "question": "The service can be executed with a closed fist, an open hand, or any part of the arm.",
+      "correct": true,
+      "explanation": "The ball shall be hit with one hand or any part of the arm after being tossed or released from the hand(s). There is no restriction on using a fist versus an open hand.",
+      "rule": "FIVB Rule 12.4.1"
+    },
+    {
+      "id": 60,
+      "type": "multiple",
+      "category": "general",
+      "question": "A team member holds a teammate up by the shoulders so they can reach a high ball. Is this legal?",
+      "options": [
+        "Yes, teamwork is encouraged",
+        "No, this is an assisted hit fault",
+        "Only if the teammate is the libero",
+        "Only during blocking"
+      ],
+      "correct": 1,
+      "explanation": "Within the playing area, a player is not permitted to take support from a teammate or any structure/object in order to hit the ball. This is called an assisted hit fault.",
+      "rule": "FIVB Rule 9.1.3"
+    },
+    {
+      "id": 61,
+      "type": "multiple",
+      "category": "general",
+      "question": "What happens if two faults are committed by the same team one after the other during a rally?",
+      "options": [
+        "Both faults are penalized",
+        "Only the first fault is counted",
+        "Only the more severe fault is counted",
+        "The rally is replayed"
+      ],
+      "correct": 1,
+      "explanation": "If two or more faults are committed successively, only the first one is counted.",
+      "rule": "FIVB Rule 6.1.2.1"
+    },
+    {
+      "id": 62,
+      "type": "multiple",
+      "category": "general",
+      "question": "What happens when both teams commit a fault at the same time (simultaneously)?",
+      "options": [
+        "The serving team wins the point",
+        "The receiving team wins the point",
+        "A double fault is called and the rally is replayed",
+        "The referee decides which fault was more severe"
+      ],
+      "correct": 2,
+      "explanation": "If two or more faults are committed by opponents simultaneously, a double fault is called and the rally is replayed.",
+      "rule": "FIVB Rule 6.1.2.2"
+    },
+    {
+      "id": 63,
+      "type": "multiple",
+      "category": "general",
+      "question": "In blocking, a player reaches over the net into the opponent's space. When is this allowed?",
+      "options": [
+        "Never — you cannot reach over the net",
+        "Only if the ball has already crossed to your side",
+        "Only after the opponent's attack hit",
+        "At any time, as long as it does not interfere with the opponent's play before their attack hit"
+      ],
+      "correct": 3,
+      "explanation": "In blocking, a player may touch the ball beyond the net, provided that they do not interfere with the opponent's play before the opponent's attack hit.",
+      "rule": "FIVB Rule 11.1.1"
+    },
+    {
+      "id": 64,
+      "type": "truefalse",
+      "category": "general",
+      "question": "There must be a completed rally between two libero replacements.",
+      "correct": true,
+      "explanation": "Libero replacements are unlimited but there must be a completed rally between two libero replacements.",
+      "rule": "FIVB Rule 19.3.2.1"
+    },
+    {
+      "id": 65,
+      "type": "multiple",
+      "category": "general",
+      "question": "The server tosses the ball for a serve but decides not to hit it. What happens?",
+      "options": [
+        "The server can re-toss freely — there is no limit",
+        "It is a service fault — the opponent wins the point",
+        "The server can catch the ball and re-toss once",
+        "This is not covered in the rules"
+      ],
+      "correct": 1,
+      "explanation": "Only one toss or release of the ball is allowed for a serve. If the server tosses the ball and does not hit it, it is a service fault and the opponent wins the point.",
+      "rule": "FIVB Rule 12.4.2"
+    },
+    {
+      "id": 66,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "At the moment the server contacts the ball, which team must be in the correct rotational positions?",
+      "options": [
+        "Both teams",
+        "Only the serving team",
+        "Only the receiving team",
+        "Neither team — positions only matter after the serve"
+      ],
+      "correct": 2,
+      "explanation": "The players of the receiving team must be in the rotational order at the service hit. The players of the serving team are free to occupy any position at the service hit.",
+      "rule": "FIVB Rule 7.4"
+    },
+    {
+      "id": 67,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "The serving team must follow overlap (positional) rules at the moment of serve.",
+      "correct": false,
+      "explanation": "The players of the serving team are free to occupy any position at the service hit. Only the receiving team must be in the correct rotational order.",
+      "rule": "FIVB Rule 7.4"
+    },
+    {
+      "id": 68,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "How are player positions determined for checking overlap (positional) rules?",
+      "options": [
+        "By the position of their torso",
+        "By where their head is",
+        "By the position of their feet contacting the ground",
+        "By where the referee estimates they are standing"
+      ],
+      "correct": 2,
+      "explanation": "The positions of players are determined and controlled according to the positions of their feet contacting the ground. The last contact with the floor fixes the player's position.",
+      "rule": "FIVB Rule 7.4.3"
+    },
+    {
+      "id": 69,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "For overlap rules: the player in zone 4 (front-left) must be positioned in front of which player?",
+      "options": [
+        "Zone 1 (back-right)",
+        "Zone 6 (back-centre)",
+        "Zone 5 (back-left)",
+        "Zone 3 (front-centre)"
+      ],
+      "correct": 2,
+      "explanation": "Each front-row player must be closer to the net than the corresponding back-row player. Zone 4 (front-left) corresponds to zone 5 (back-left).",
+      "rule": "FIVB Rule 7.4.2.1"
+    },
+    {
+      "id": 70,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "For overlap rules: the player in zone 3 (front-centre) must be positioned in front of which player?",
+      "options": [
+        "Zone 5 (back-left)",
+        "Zone 1 (back-right)",
+        "Zone 6 (back-centre)",
+        "Zone 2 (front-right)"
+      ],
+      "correct": 2,
+      "explanation": "Zone 3 (front-centre) must be closer to the net than zone 6 (back-centre). Each front-row player is paired with the back-row player directly behind them.",
+      "rule": "FIVB Rule 7.4.2.1"
+    },
+    {
+      "id": 71,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "In the front row, zone 4 must be to the left of zone 3, and zone 3 must be to the left of zone 2.",
+      "correct": true,
+      "explanation": "The front-row and back-row players must be positioned laterally in the correct order. In the front row: zone 4 (left) must be left of zone 3 (centre), and zone 3 must be left of zone 2 (right).",
+      "rule": "FIVB Rule 7.4.2.2"
+    },
+    {
+      "id": 72,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "After the server contacts the ball, players on both teams can move anywhere on the court.",
+      "correct": true,
+      "explanation": "After the service hit, the players of both teams may move around and occupy any position on their court and the free zone.",
+      "rule": "FIVB Rule 7.4.4"
+    },
+    {
+      "id": 73,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "When a team wins back the right to serve (side-out), in which direction do the players rotate?",
+      "options": ["Counter-clockwise", "Clockwise", "They don't rotate — only the server changes", "The direction alternates each time"],
+      "correct": 1,
+      "explanation": "When the receiving team gains the right to serve, its players rotate one position clockwise.",
+      "rule": "FIVB Rule 7.6.2"
+    },
+    {
+      "id": 74,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "After a rotation, which player goes to position 1 (back-right) to serve?",
+      "options": [
+        "The player from position 6",
+        "The player from position 2",
+        "The player from position 5",
+        "The team captain"
+      ],
+      "correct": 1,
+      "explanation": "The player in position 2 rotates to position 1 to serve. The player in position 1 rotates to position 6, and so on clockwise.",
+      "rule": "FIVB Rule 7.6.2"
+    },
+    {
+      "id": 75,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "Which zones are considered the front row?",
+      "options": [
+        "Zones 1, 2, 3",
+        "Zones 4, 5, 6",
+        "Zones 2, 3, 4",
+        "Zones 1, 3, 5"
+      ],
+      "correct": 2,
+      "explanation": "The three front-row positions are zone 4 (front-left), zone 3 (front-centre), and zone 2 (front-right). The back row consists of zones 5, 6, and 1.",
+      "rule": "FIVB Rule 7.4.1"
+    },
+    {
+      "id": 76,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "Which zones are considered the back row?",
+      "options": [
+        "Zones 1, 5, 6",
+        "Zones 4, 5, 6",
+        "Zones 1, 2, 3",
+        "Zones 1, 2, 6"
+      ],
+      "correct": 0,
+      "explanation": "The three back-row positions are zone 5 (back-left), zone 6 (back-centre), and zone 1 (back-right).",
+      "rule": "FIVB Rule 7.4.1"
+    },
+    {
+      "id": 77,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "What is the penalty for a positional fault (overlap violation)?",
+      "options": [
+        "Warning for the first offence",
+        "Point and service to the opponent",
+        "Loss of the set",
+        "Yellow card to the player out of position"
+      ],
+      "correct": 1,
+      "explanation": "A positional fault leads to the team being sanctioned with a point and service to the opponent, and the players' positions must be corrected.",
+      "rule": "FIVB Rule 7.5.4"
+    },
+    {
+      "id": 78,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "For overlap rules, each player only needs to maintain their position relative to adjacent neighbours — not diagonally opposite players.",
+      "correct": true,
+      "explanation": "Players only need to maintain correct positioning relative to their adjacent neighbours in the same row (left-right) and their corresponding front/back partner. There is no diagonal constraint. For example, the zone 4 player does not need to be left of the zone 2 player.",
+      "rule": "FIVB Rule 7.4.2"
+    },
+    {
+      "id": 79,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "If two players in the same row are exactly level (aligned), this counts as a positional fault.",
+      "correct": false,
+      "explanation": "Being 'level with' (exactly aligned) is legal. Each player needs at least a part of one foot in the correct relative position — being level satisfies this requirement.",
+      "rule": "FIVB Rule 7.4.3.1"
+    },
+    {
+      "id": 80,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "The rotational order set at the beginning of a set can be changed during that set.",
+      "correct": false,
+      "explanation": "The team's starting line-up indicates the rotational order of the players on the court. This order must be maintained throughout the set.",
+      "rule": "FIVB Rule 7.3.1"
+    },
+    {
+      "id": 81,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "Zone numbering starts at which position on the court?",
+      "options": [
+        "Front-left (zone 1)",
+        "Front-right (zone 1)",
+        "Back-right / serving position (zone 1)",
+        "Back-left (zone 1)"
+      ],
+      "correct": 2,
+      "explanation": "Zone 1 is at the back-right of the court, which is the serving position. Numbering continues counter-clockwise: zone 2 (front-right), zone 3 (front-centre), zone 4 (front-left), zone 5 (back-left), zone 6 (back-centre).",
+      "rule": "FIVB Rule 7.4.1"
+    },
+    {
+      "id": 82,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "Both the server and a receiving team player commit a fault at the moment of the serve. The server makes an improper serve, and a receiving player is out of position. Which fault is called?",
+      "options": [
+        "The receiving team's positional fault",
+        "The server's fault",
+        "Both faults are penalized",
+        "The rally is replayed"
+      ],
+      "correct": 1,
+      "explanation": "If the server makes a fault at the moment of the service hit and the opponent is out of position, it is the serving fault which is sanctioned.",
+      "rule": "FIVB Rule 12.7.1"
+    },
+    {
+      "id": 83,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "A serve is executed legally but then goes out of bounds. A receiving player was also out of position. Which fault is called?",
+      "options": [
+        "The service fault (ball out)",
+        "The positional fault (it happened first, at the moment of serve)",
+        "Both faults are penalized",
+        "The rally is replayed"
+      ],
+      "correct": 1,
+      "explanation": "If the service execution was correct but the serve subsequently becomes faulty (goes out, etc.), the positional fault has taken place first (at the moment of the serve) and is sanctioned.",
+      "rule": "FIVB Rule 12.7.2"
+    }
+  ]
+}
