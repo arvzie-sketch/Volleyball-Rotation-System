@@ -1375,7 +1375,7 @@
       "id": 114,
       "type": "truefalse",
       "category": "rotations",
-      "question": "If a rotational fault is discovered only after the rally is over, only one point is awarded to the opponent, no matter who won that rally.",
+      "question": "A rotational fault caught only after the rally ends gives the opponent one point, even if the faulting team won that rally.",
       "correct": true,
       "explanation": "If the rotational fault is found only after the rally has finished, only one point is awarded to the opponent, regardless of the rally result.",
       "rule": "FIVB Rule 7.7.1.1"
