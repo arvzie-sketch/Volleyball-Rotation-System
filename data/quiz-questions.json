@@ -11,7 +11,12 @@
       "type": "multiple",
       "category": "general",
       "question": "What is the official net height for men's volleyball?",
-      "options": ["2.24 m", "2.35 m", "2.43 m", "2.50 m"],
+      "options": [
+        "2.24 m",
+        "2.35 m",
+        "2.43 m",
+        "2.50 m"
+      ],
       "correct": 2,
       "explanation": "The net height for men is 2.43 m, measured from the centre of the playing court.",
       "rule": "FIVB Rule 2.1.1"
@@ -21,7 +26,12 @@
       "type": "multiple",
       "category": "general",
       "question": "What is the official net height for women's volleyball?",
-      "options": ["2.10 m", "2.24 m", "2.35 m", "2.43 m"],
+      "options": [
+        "2.10 m",
+        "2.24 m",
+        "2.35 m",
+        "2.43 m"
+      ],
       "correct": 1,
       "explanation": "The net height for women is 2.24 m, measured from the centre of the playing court.",
       "rule": "FIVB Rule 2.1.1"
@@ -31,7 +41,12 @@
       "type": "multiple",
       "category": "general",
       "question": "What are the dimensions of a volleyball court?",
-      "options": ["16 x 8 m", "18 x 9 m", "20 x 10 m", "18 x 10 m"],
+      "options": [
+        "16 x 8 m",
+        "18 x 9 m",
+        "20 x 10 m",
+        "18 x 10 m"
+      ],
       "correct": 1,
       "explanation": "The playing court is a rectangle measuring 18 x 9 m.",
       "rule": "FIVB Rule 1.1"
@@ -41,7 +56,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many players per team are on the court during play?",
-      "options": ["5", "6", "7", "8"],
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "correct": 1,
       "explanation": "There must always be six players per team in play.",
       "rule": "FIVB Rule 7.3.1"
@@ -51,7 +71,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many players can a team register on the score sheet for a standard match?",
-      "options": ["6", "10", "12", "14"],
+      "options": [
+        "6",
+        "10",
+        "12",
+        "14"
+      ],
       "correct": 2,
       "explanation": "A team may consist of up to 12 players. For FIVB Senior competitions, up to 14 players may be recorded.",
       "rule": "FIVB Rule 4.1.1"
@@ -61,7 +86,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many liberos can a team designate?",
-      "options": ["1", "Up to 2", "Up to 3", "Unlimited"],
+      "options": [
+        "1",
+        "Up to 2",
+        "Up to 3",
+        "Unlimited"
+      ],
       "correct": 1,
       "explanation": "Each team has the right to designate up to two specialist defensive players: Liberos.",
       "rule": "FIVB Rule 19.1.1"
@@ -80,7 +110,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many substitutions is a team allowed per set?",
-      "options": ["4", "6", "8", "Unlimited"],
+      "options": [
+        "4",
+        "6",
+        "8",
+        "Unlimited"
+      ],
       "correct": 1,
       "explanation": "Each team may request a maximum of six substitutions per set.",
       "rule": "FIVB Rule 15.1"
@@ -90,7 +125,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many time-outs is each team allowed per set?",
-      "options": ["1", "2", "3", "4"],
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "correct": 1,
       "explanation": "Each team may request a maximum of two time-outs per set.",
       "rule": "FIVB Rule 15.1"
@@ -100,7 +140,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How long does a requested time-out last?",
-      "options": ["15 seconds", "30 seconds", "45 seconds", "60 seconds"],
+      "options": [
+        "15 seconds",
+        "30 seconds",
+        "45 seconds",
+        "60 seconds"
+      ],
       "correct": 1,
       "explanation": "All requested time-outs last for 30 seconds.",
       "rule": "FIVB Rule 15.4.1"
@@ -110,7 +155,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many points are needed to win a regular set (not the deciding set)?",
-      "options": ["21 with 2-point lead", "25 with 2-point lead", "25 with no lead required", "30 with 2-point lead"],
+      "options": [
+        "21 with 2-point lead",
+        "25 with 2-point lead",
+        "25 with no lead required",
+        "30 with 2-point lead"
+      ],
       "correct": 1,
       "explanation": "A set (except the deciding 5th set) is won by the team which first scores 25 points with a minimum lead of two points.",
       "rule": "FIVB Rule 6.2"
@@ -120,7 +170,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many points are needed to win the deciding 5th set?",
-      "options": ["15 with 2-point lead", "21 with 2-point lead", "25 with 2-point lead", "15 with no lead required"],
+      "options": [
+        "15 with 2-point lead",
+        "21 with 2-point lead",
+        "25 with 2-point lead",
+        "15 with no lead required"
+      ],
       "correct": 0,
       "explanation": "The deciding 5th set is played to 15 points with a minimum lead of 2 points.",
       "rule": "FIVB Rule 6.3.2"
@@ -130,7 +185,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many sets does a team need to win to win the match?",
-      "options": ["2 out of 3", "3 out of 5", "4 out of 7", "2 out of 5"],
+      "options": [
+        "2 out of 3",
+        "3 out of 5",
+        "4 out of 7",
+        "2 out of 5"
+      ],
       "correct": 1,
       "explanation": "The match is won by the team that wins three sets (best of five).",
       "rule": "FIVB Rule 6.3.1"
@@ -251,7 +311,12 @@
       "type": "multiple",
       "category": "general",
       "question": "A player touches the ball during a block. How many more hits does the team get?",
-      "options": ["0 — the block was their first hit", "1", "2", "3"],
+      "options": [
+        "0 — the block was their first hit",
+        "1",
+        "2",
+        "3"
+      ],
       "correct": 3,
       "explanation": "A block contact is not counted as a team hit. After a block, the team is entitled to three more hits to return the ball. The blocker can even make the first of those three hits.",
       "rule": "FIVB Rule 14.4.1, 14.4.2"
@@ -303,7 +368,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many seconds does the server have to hit the ball after the referee's whistle?",
-      "options": ["5 seconds", "8 seconds", "10 seconds", "12 seconds"],
+      "options": [
+        "5 seconds",
+        "8 seconds",
+        "10 seconds",
+        "12 seconds"
+      ],
       "correct": 1,
       "explanation": "The server must hit the ball within 8 seconds after the 1st referee whistles for service.",
       "rule": "FIVB Rule 12.4.4"
@@ -337,7 +407,12 @@
       "type": "multiple",
       "category": "general",
       "question": "What is the maximum number of hits a team can use to return the ball (not counting a block)?",
-      "options": ["2", "3", "4", "Unlimited"],
+      "options": [
+        "2",
+        "3",
+        "4",
+        "Unlimited"
+      ],
       "correct": 1,
       "explanation": "The team is entitled to a maximum of three hits (in addition to blocking) for returning the ball.",
       "rule": "FIVB Rule 9.1"
@@ -404,7 +479,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How many liberos can be on the court at the same time?",
-      "options": ["0", "1", "2", "Depends on the team size"],
+      "options": [
+        "0",
+        "1",
+        "2",
+        "Depends on the team size"
+      ],
       "correct": 1,
       "explanation": "Only one libero may be on the court at any time, even if the team has designated two liberos.",
       "rule": "FIVB Rule 19.1.3"
@@ -471,7 +551,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How far is the attack line from the centre line?",
-      "options": ["2 metres", "3 metres", "4 metres", "3.5 metres"],
+      "options": [
+        "2 metres",
+        "3 metres",
+        "4 metres",
+        "3.5 metres"
+      ],
       "correct": 1,
       "explanation": "The attack line is drawn 3 m back from the axis of the centre line. It marks the boundary of the front zone.",
       "rule": "FIVB Rule 1.3.4"
@@ -481,7 +566,12 @@
       "type": "multiple",
       "category": "general",
       "question": "What is the standard interval (break) between sets?",
-      "options": ["1 minute", "2 minutes", "3 minutes", "5 minutes"],
+      "options": [
+        "1 minute",
+        "2 minutes",
+        "3 minutes",
+        "5 minutes"
+      ],
       "correct": 2,
       "explanation": "All intervals between sets last three minutes. The interval between the 2nd and 3rd set can be extended up to 10 minutes by the organizer.",
       "rule": "FIVB Rule 18.1"
@@ -563,7 +653,12 @@
       "type": "multiple",
       "category": "general",
       "question": "Two opponents touch the ball simultaneously over the net. The ball stays in play and lands on Team A's side. How many hits does Team A get?",
-      "options": ["1", "2", "3", "4"],
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "correct": 2,
       "explanation": "When two opponents touch the ball simultaneously over the net and the ball remains in play, the team receiving the ball is entitled to another three hits.",
       "rule": "FIVB Rule 9.1.2.2"
@@ -573,7 +668,12 @@
       "type": "multiple",
       "category": "general",
       "question": "What number range must players' jerseys be numbered in?",
-      "options": ["1 to 10", "1 to 15", "1 to 20", "1 to 99"],
+      "options": [
+        "1 to 10",
+        "1 to 15",
+        "1 to 20",
+        "1 to 99"
+      ],
       "correct": 2,
       "explanation": "Players' jerseys must be numbered from 1 to 20. In FIVB Senior competitions with larger squads, numbers may be extended.",
       "rule": "FIVB Rule 4.3.3"
@@ -592,7 +692,12 @@
       "type": "multiple",
       "category": "general",
       "question": "How wide are the court lines?",
-      "options": ["2 cm", "5 cm", "8 cm", "10 cm"],
+      "options": [
+        "2 cm",
+        "5 cm",
+        "8 cm",
+        "10 cm"
+      ],
       "correct": 1,
       "explanation": "All lines on the court are 5 cm wide.",
       "rule": "FIVB Rule 1.3.1"
@@ -806,7 +911,12 @@
       "type": "multiple",
       "category": "rotations",
       "question": "When a team wins back the right to serve (side-out), in which direction do the players rotate?",
-      "options": ["Counter-clockwise", "Clockwise", "They don't rotate — only the server changes", "The direction alternates each time"],
+      "options": [
+        "Counter-clockwise",
+        "Clockwise",
+        "They don't rotate — only the server changes",
+        "The direction alternates each time"
+      ],
       "correct": 1,
       "explanation": "When the receiving team gains the right to serve, its players rotate one position clockwise.",
       "rule": "FIVB Rule 7.6.2"
@@ -942,6 +1052,360 @@
       "correct": 1,
       "explanation": "If the service execution was correct but the serve subsequently becomes faulty (goes out, etc.), the positional fault has taken place first (at the moment of the serve) and is sanctioned.",
       "rule": "FIVB Rule 12.7.2"
+    },
+    {
+      "id": 84,
+      "type": "multiple",
+      "category": "general",
+      "question": "Before the first set, what may the winner of the toss choose?",
+      "options": [
+        "Only the right to serve",
+        "Either serve/receive or the side of the court",
+        "Only the side of the court",
+        "Nothing - the referee decides both"
+      ],
+      "correct": 1,
+      "explanation": "The toss winner chooses either the right to serve or receive, or the side of the court. The other team gets the remaining choice.",
+      "rule": "FIVB Rule 7.1.2"
+    },
+    {
+      "id": 85,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A new toss is held before the deciding 5th set.",
+      "correct": true,
+      "explanation": "If a deciding set is played, a new toss is carried out before that set.",
+      "rule": "FIVB Rule 7.1"
+    },
+    {
+      "id": 86,
+      "type": "multiple",
+      "category": "general",
+      "question": "If the teams did not have a court exclusively for warm-up before the match, how long is the official warm-up together at the net?",
+      "options": [
+        "6 minutes",
+        "8 minutes",
+        "10 minutes",
+        "12 minutes"
+      ],
+      "correct": 2,
+      "explanation": "If the teams did not previously have a court at their exclusive disposal, they are entitled to 10 minutes together at the net.",
+      "rule": "FIVB Rule 7.2.1"
+    },
+    {
+      "id": 87,
+      "type": "truefalse",
+      "category": "general",
+      "question": "All balls used in one match must have the same standards for size, weight, pressure, type, and colour.",
+      "correct": true,
+      "explanation": "All balls used in a match must have the same standards.",
+      "rule": "FIVB Rule 3.2"
+    },
+    {
+      "id": 88,
+      "type": "truefalse",
+      "category": "general",
+      "question": "Players are allowed to wear objects that may cause injury or give an artificial advantage.",
+      "correct": false,
+      "explanation": "Objects that may cause injury or give an artificial advantage are forbidden.",
+      "rule": "FIVB Rule 4.5.1"
+    },
+    {
+      "id": 89,
+      "type": "multiple",
+      "category": "general",
+      "question": "When the ball is out of play, who is allowed to ask the referees for a rule explanation?",
+      "options": [
+        "Any player on the court",
+        "Only the game captain",
+        "Only the coach",
+        "Only the libero"
+      ],
+      "correct": 1,
+      "explanation": "When the ball is out of play, only the game captain is authorized to speak to the referees for clarification.",
+      "rule": "FIVB Rule 5.1.2.1"
+    },
+    {
+      "id": 90,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If a team is declared incomplete, it keeps any points and sets it had already won.",
+      "correct": true,
+      "explanation": "An incomplete team loses the set or match, but it keeps the points and sets it had already earned.",
+      "rule": "FIVB Rule 6.4.3"
+    },
+    {
+      "id": 91,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A ball that touches the ceiling is out.",
+      "correct": true,
+      "explanation": "The ball is out if it touches an object outside the court, including the ceiling.",
+      "rule": "FIVB Rule 8.4.2"
+    },
+    {
+      "id": 92,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A ball that touches an antenna is out.",
+      "correct": true,
+      "explanation": "The ball is out if it touches the antennae.",
+      "rule": "FIVB Rule 8.4.3"
+    },
+    {
+      "id": 93,
+      "type": "multiple",
+      "category": "general",
+      "question": "A ball crosses partly or fully through the external space to the opponent free zone. When can the team still play it back?",
+      "options": [
+        "Only if it came from the first team hit",
+        "Only if it came from the second team hit",
+        "Only if it came from a block",
+        "Never"
+      ],
+      "correct": 0,
+      "explanation": "A ball that goes through the external space may be played back only if it came from the first hit of the team.",
+      "rule": "FIVB Rule 10.1.2, 10.1.2.3"
+    },
+    {
+      "id": 94,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A ball driven into the net may still be recovered within the team's three hits.",
+      "correct": true,
+      "explanation": "A ball driven into the net may be recovered as long as the team stays within its three hits.",
+      "rule": "FIVB Rule 10.3.1"
+    },
+    {
+      "id": 95,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A serve hit before the referee's whistle is cancelled and repeated.",
+      "correct": true,
+      "explanation": "A serve executed before the whistle is cancelled and replayed.",
+      "rule": "FIVB Rule 12.4.5"
+    },
+    {
+      "id": 96,
+      "type": "truefalse",
+      "category": "general",
+      "question": "During the serve, a player on the serving team may raise both hands above the head before the ball passes the net.",
+      "correct": false,
+      "explanation": "Players on the serving team are forbidden to raise their hands above the head during service until the ball has passed beyond the net.",
+      "rule": "FIVB Rule 12.5.3"
+    },
+    {
+      "id": 97,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A player may complete an attack hit on the opponent's serve when the ball is in the front zone and entirely above the top of the net.",
+      "correct": false,
+      "explanation": "No player may complete an attack hit on the opponent's serve when the ball is in the front zone and entirely higher than the top of the net.",
+      "rule": "FIVB Rule 13.2.4"
+    },
+    {
+      "id": 98,
+      "type": "multiple",
+      "category": "general",
+      "question": "A serious accident happens while the ball is in play. What should happen?",
+      "options": [
+        "Play continues until the rally ends",
+        "The referee stops play immediately and the rally is replayed",
+        "Only the captain may stop play",
+        "The injured team loses the rally"
+      ],
+      "correct": 1,
+      "explanation": "If a serious accident occurs while the ball is in play, the referee stops the game immediately, allows medical help, and the rally is replayed.",
+      "rule": "FIVB Rule 17.1.1"
+    },
+    {
+      "id": 99,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If an injured or ill player cannot be replaced legally or exceptionally, that player may receive one 3-minute recovery time in the match.",
+      "correct": true,
+      "explanation": "A player who cannot be replaced legally or exceptionally may be given one 3-minute recovery time in the match.",
+      "rule": "FIVB Rule 17.1.2"
+    },
+    {
+      "id": 100,
+      "type": "multiple",
+      "category": "general",
+      "question": "In an exceptional substitution, who may replace the injured or ill player?",
+      "options": [
+        "Any player not on the court, except a libero, the second libero, or their regular replacement player",
+        "Only a starting player",
+        "Only the team captain",
+        "Only the libero"
+      ],
+      "correct": 0,
+      "explanation": "An exceptional substitution may use any player who is not on the court at that moment, except a libero, the second libero, or their regular replacement player.",
+      "rule": "FIVB Rule 15.7"
+    },
+    {
+      "id": 101,
+      "type": "truefalse",
+      "category": "general",
+      "question": "An exceptional substitution counts as one of the team's regular substitutions.",
+      "correct": false,
+      "explanation": "An exceptional substitution is not counted as a regular substitution.",
+      "rule": "FIVB Rule 15.7"
+    },
+    {
+      "id": 102,
+      "type": "truefalse",
+      "category": "general",
+      "question": "The first delay by a team in a match is a delay warning.",
+      "correct": true,
+      "explanation": "The first delay in the match by a team member is sanctioned with a delay warning.",
+      "rule": "FIVB Rule 16.2.2"
+    },
+    {
+      "id": 103,
+      "type": "multiple",
+      "category": "general",
+      "question": "What is the usual result of the second delay by the same team in the match?",
+      "options": [
+        "Only a warning is given again",
+        "The rally is replayed",
+        "Point and service to the opponent",
+        "Automatic loss of the set"
+      ],
+      "correct": 2,
+      "explanation": "The second and later delays by the same team in the same match are delay penalties: point and service to the opponent.",
+      "rule": "FIVB Rule 16.2.3"
+    },
+    {
+      "id": 104,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If a team has only one libero and that libero becomes unable to play, the coach may redesignate another player who is not on the court at that moment, except the regular replacement player.",
+      "correct": true,
+      "explanation": "When a team has only one libero available, the coach may redesignate any other player not on court at that moment, except the regular replacement player.",
+      "rule": "FIVB Rule 19.4.2.1"
+    },
+    {
+      "id": 105,
+      "type": "truefalse",
+      "category": "general",
+      "question": "If a team has two liberos and one becomes unable to play, the team may continue with one libero.",
+      "correct": true,
+      "explanation": "When a team has two liberos and one becomes unable to play, the team may continue the match with the remaining libero.",
+      "rule": "FIVB Rule 19.4.3.1"
+    },
+    {
+      "id": 106,
+      "type": "truefalse",
+      "category": "general",
+      "question": "A yellow card by itself is a warning, not a sanction.",
+      "correct": true,
+      "explanation": "A yellow card alone is a formal warning. It is not a sanction and has no immediate scoring consequence.",
+      "rule": "FIVB Rule 21.1, 21.6"
+    },
+    {
+      "id": 107,
+      "type": "truefalse",
+      "category": "general",
+      "question": "The first offensive conduct by a team member results in expulsion.",
+      "correct": true,
+      "explanation": "The first offensive conduct by a team member is sanctioned by expulsion.",
+      "rule": "FIVB Rule 21.3.2.2"
+    },
+    {
+      "id": 108,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "After the line-up sheet has been given to the 2nd referee or scorer, the starting line-up cannot be changed without a regular substitution.",
+      "correct": true,
+      "explanation": "Once the line-up sheet has been delivered, changes to the line-up must be made through a regular substitution.",
+      "rule": "FIVB Rule 7.3.4"
+    },
+    {
+      "id": 109,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "Before the set starts, if players are standing in the wrong positions compared with the line-up sheet, their positions are corrected with no sanction.",
+      "correct": true,
+      "explanation": "If the discrepancy is found before the set starts, the players are placed correctly according to the line-up sheet and there is no sanction.",
+      "rule": "FIVB Rule 7.3.5.1"
+    },
+    {
+      "id": 110,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "Before the set starts, if a player on court is not listed on the line-up sheet for that set, the player must be changed to match the line-up sheet, with no sanction.",
+      "correct": true,
+      "explanation": "If an unlisted player is found on court before the set starts, that player must be changed so the line-up matches, and there is no sanction.",
+      "rule": "FIVB Rule 7.3.5.2"
+    },
+    {
+      "id": 111,
+      "type": "multiple",
+      "category": "rotations",
+      "question": "What determines a team's rotational order throughout the set?",
+      "options": [
+        "The toss before the match",
+        "The team's starting line-up",
+        "The libero replacements",
+        "The referee's whistle"
+      ],
+      "correct": 1,
+      "explanation": "The team's starting line-up sets the rotational order, and that order must be maintained throughout the set.",
+      "rule": "FIVB Rule 7.3.1, 7.6.1"
+    },
+    {
+      "id": 112,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "If the wrong player serves, the team has committed a rotational fault.",
+      "correct": true,
+      "explanation": "A rotational fault happens when the service is not made according to the rotational order.",
+      "rule": "FIVB Rule 7.7.1"
+    },
+    {
+      "id": 113,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "A team can be in correct overlap positions and still commit a rotational fault if the wrong player serves.",
+      "correct": true,
+      "explanation": "Overlap order and service order are different checks. A team may be positioned correctly and still have a rotational fault if the wrong server serves.",
+      "rule": "FIVB Rule 7.5, 7.7.1"
+    },
+    {
+      "id": 114,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "If a rotational fault is discovered only after the rally is over, only one point is awarded to the opponent, no matter who won that rally.",
+      "correct": true,
+      "explanation": "If the rotational fault is found only after the rally has finished, only one point is awarded to the opponent, regardless of the rally result.",
+      "rule": "FIVB Rule 7.7.1.1"
+    },
+    {
+      "id": 115,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "If the exact moment of a rotational fault cannot be determined, no earlier points are cancelled.",
+      "correct": true,
+      "explanation": "When the exact moment of the rotational fault cannot be determined, there is no points cancellation.",
+      "rule": "FIVB Rule 7.7.2"
+    },
+    {
+      "id": 116,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "If a line-up discrepancy is found later in the set, the opponent's points remain valid.",
+      "correct": true,
+      "explanation": "When a line-up discrepancy is found later, the opponent's points remain valid.",
+      "rule": "FIVB Rule 7.3.5.3"
+    },
+    {
+      "id": 117,
+      "type": "truefalse",
+      "category": "rotations",
+      "question": "If a line-up discrepancy is found later in the set, the opponent also receives a point and the next service.",
+      "correct": true,
+      "explanation": "When a later line-up discrepancy is discovered, the opponent receives a point and the next service, and the faulty team must return to the correct positions.",
+      "rule": "FIVB Rule 7.3.5.3"
     }
   ]
 }
