@@ -23,7 +23,7 @@ Samples/
 *.pdf
 
 # Google (Search Console, etc.)
-google/
+Google/
 
 # Windows artifacts
 nul
