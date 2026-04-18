@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Volleyball Rotation Editor — Build & Export Rotations</title>
   <meta name="description" content="Drag-and-drop editor for creating volleyball rotation files. Build custom 5-1, 4-2, or 6-2 systems, track completion, validate FIVB rules, and export to JSON.">
   <meta property="og:title" content="Volleyball Rotation Editor">
@@ -1000,15 +1000,24 @@
   <!-- Navigation Shell -->
   <nav class="app-nav">
     <div class="app-nav-inner">
-      <h1 class="app-nav-title">Volleyball Rotation Editor</h1>
+      <h1 class="app-nav-title">Volleyball Rotations</h1>
+
+      <!-- Desktop-only inline tabs -->
+      <div class="app-nav-tabs" aria-label="Primary">
+        <a href="index.html"  class="nav-tab">Viewer</a>
+        <a href="editor.html" class="nav-tab active">Editor</a>
+        <a href="learn.html"  class="nav-tab">Learn</a>
+        <a href="quiz.html"   class="nav-tab">Quiz</a>
+      </div>
+
       <div style="position:relative;">
-        <button class="app-nav-hamburger" id="nav-hamburger">☰</button>
+        <button class="app-nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
         <div class="app-nav-menu" id="nav-menu">
-          <a href="index.html" class="nav-menu-item">Viewer</a>
-          <a href="editor.html" class="nav-menu-item active">Editor</a>
-          <a href="learn.html" class="nav-menu-item">Learn</a>
-          <a href="quiz.html" class="nav-menu-item">Quiz</a>
-          <div class="nav-menu-sep"></div>
+          <a href="index.html"  class="nav-menu-item nav-menu-internal">Viewer</a>
+          <a href="editor.html" class="nav-menu-item nav-menu-internal active">Editor</a>
+          <a href="learn.html"  class="nav-menu-item nav-menu-internal">Learn</a>
+          <a href="quiz.html"   class="nav-menu-item nav-menu-internal">Quiz</a>
+          <div class="nav-menu-sep nav-menu-internal"></div>
           <a href="https://github.com/arvzie-sketch/Volleyball-Rotation-System" target="_blank" class="nav-menu-item">Help (GitHub)</a>
           <a href="https://buymeacoffee.com/theautomationguy" target="_blank" class="nav-menu-item nav-coffee">Buy Me a Coffee ☕</a>
         </div>
@@ -1097,8 +1106,9 @@
         <!-- Validation Panel -->
         <div id="validation-panel" class="validation-panel"></div>
 
-        <div class="court-wrapper">
-          <svg class="court-svg" id="editor-court" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet">
+        <div class="court-wrapper" style="position:relative;">
+          <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
+          <svg class="court-svg" id="editor-court" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
             <defs>
               <linearGradient id="courtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" style="stop-color:#e8844a" />
@@ -1202,6 +1212,48 @@
       </div>
     </div>
   </div>
+
+  <!-- Help Panel -->
+  <aside class="help-panel" id="help-panel" aria-hidden="true" aria-labelledby="help-panel-title">
+    <div class="help-panel-inner">
+      <div class="help-panel-head">
+        <h2 id="help-panel-title">What am I looking at?</h2>
+        <button class="help-panel-close" id="help-panel-close" aria-label="Close help panel">×</button>
+      </div>
+      <div class="help-panel-body">
+
+        <section class="help-topic">
+          <h3>How the editor works</h3>
+          <p>Build a full rotation set by placing each player for every phase of every rotation. The <strong>0/48</strong> counter tracks how close you are to a complete set.</p>
+          <a href="learn.html#what-are-rotations" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Court / Players / Config tabs</h3>
+          <p><strong>Court</strong> = place players by phase. <strong>Players</strong> = name and label your roster. <strong>Config</strong> = system (5-1/4-2/6-2) and set-level options.</p>
+        </section>
+
+        <section class="help-topic">
+          <h3>Phases in Serving vs Receiving</h3>
+          <p>Serving has 3 phases (Base, Serve, Switch). Receiving has 5 (Base, Pass, Set, Attack, Switch). Each needs positions filled.</p>
+          <a href="learn.html#serve-receive" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Overlap validation</h3>
+          <p>When enabled, the editor warns if your Base positions violate FIVB Rule 7.4 overlap rules.</p>
+          <a href="learn.html#overlap-rules" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Exporting & importing</h3>
+          <p>Use the <strong>…</strong> menu to save a rotation as JSON, or import one you or someone else built.</p>
+        </section>
+
+      </div>
+    </div>
+  </aside>
+  <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
   <!-- Player Modal -->
   <div class="modal-overlay" id="player-modal">

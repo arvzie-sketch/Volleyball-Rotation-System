@@ -48,6 +48,11 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
+function clearGlow() {
+  const el = document.getElementById('result-glow');
+  if (el) el.className = 'result-glow';
+}
+
 // ── Data Loading ─────────────────────────────────────────────
 async function loadQuestions() {
   const res  = await fetch('data/quiz-questions.json');
@@ -122,16 +127,16 @@ function renderQuestion(index) {
     <p class="question-text">${q.question}</p>
   `;
 
-  // Build options
+  // Build options — 2×2 grid for MC, side-by-side for T/F
   if (q.type === 'truefalse') {
+    html += '<div class="options-tf">';
     const opts = [{ label: 'True', value: true }, { label: 'False', value: false }];
-    opts.forEach(opt => {
-      html += buildOptionBtn(opt.value, opt.label, null, q, ans, locked);
-    });
+    opts.forEach(opt => { html += buildOptionBtn(opt.value, opt.label, null, q, ans, locked); });
+    html += '</div>';
   } else {
-    q.options.forEach((text, i) => {
-      html += buildOptionBtn(i, text, OPTION_LABELS[i], q, ans, locked);
-    });
+    html += '<div class="options-grid">';
+    q.options.forEach((text, i) => { html += buildOptionBtn(i, text, OPTION_LABELS[i], q, ans, locked); });
+    html += '</div>';
   }
 
   // Submit or locked state
@@ -244,8 +249,10 @@ function updateNavButtons() {
 
 function updateProgress() {
   const answered = Object.values(answers).filter(a => a.locked).length;
-  document.getElementById('progress-text').textContent =
-    `${answered} of ${quizQuestions.length} answered`;
+  const total = quizQuestions.length;
+  document.getElementById('progress-text').textContent = `${answered} of ${total} answered`;
+  const fill = document.getElementById('progress-bar-fill');
+  if (fill) fill.style.width = total > 0 ? `${(answered / total) * 100}%` : '0%';
 }
 
 // ── Results ───────────────────────────────────────────────────
@@ -255,15 +262,24 @@ function showResults() {
   const percentage = Math.round((correct / total) * 100);
   const tier       = getTier(percentage);
 
-  let html = `<div class="score-circle-wrap ${tier ? tier + '-border' : ''}">
+  // Tier glow backdrop
+  const glowEl = document.getElementById('result-glow');
+  if (glowEl) {
+    glowEl.className = 'result-glow' + (tier ? ` ${tier} visible` : '');
+  }
+
+  let html = `<div class="results-inner">`;
+
+  html += `<p class="result-heading">Your Result</p>`;
+  html += `<div class="score-circle-wrap ${tier ? tier + '-border' : ''}">
     <div class="score-pct">${percentage}%</div>
     <div class="score-label">${correct}/${total} correct</div>
   </div>`;
 
   if (tier) {
-    html += `<div class="tier-badge ${tier}">${tier.charAt(0).toUpperCase() + tier.slice(1)}</div><br>`;
+    html += `<div class="tier-badge ${tier}">${tier.charAt(0).toUpperCase() + tier.slice(1)}</div>`;
   } else {
-    html += `<div class="tier-badge none">Keep studying!</div><br>`;
+    html += `<div class="tier-badge none">Keep studying!</div>`;
   }
 
   html += `<p class="score-fraction">${correct} out of ${total} correct &mdash; ${getCategoryLabel(quizCategory)}</p>`;
@@ -288,20 +304,25 @@ function showResults() {
     </div>
   `;
 
+  html += `</div>`; // close results-inner
+
   document.getElementById('results-content').innerHTML = html;
   showScreen('results-screen');
 
   // Bind buttons
   document.getElementById('review-btn').addEventListener('click', () => {
+    clearGlow();
     showScreen('quiz-screen');
     goToQuestion(0);
   });
 
   document.getElementById('try-again-btn').addEventListener('click', () => {
+    clearGlow();
     startQuiz(quizCategory);
   });
 
   document.getElementById('back-btn').addEventListener('click', () => {
+    clearGlow();
     showScreen('category-screen');
   });
 

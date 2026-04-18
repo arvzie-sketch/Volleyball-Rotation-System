@@ -21,10 +21,7 @@
     "description": "Interactive quiz testing volleyball rules knowledge based on FIVB Official Rules 2025-2028",
     "url": "https://volleyball-rotations.com/quiz",
     "educationalLevel": "beginner to advanced",
-    "about": {
-      "@type": "Thing",
-      "name": "Volleyball Rules"
-    },
+    "about": { "@type": "Thing", "name": "Volleyball Rules" },
     "publisher": {
       "@type": "Organization",
       "name": "Volleyball Rotation System",
@@ -33,192 +30,258 @@
   }
   </script>
   <style>
-    /* Override app-level overflow lock for scrollable page */
     html, body { overflow: auto; overflow-x: hidden; }
 
-    /* ── Layout ─────────────────────────────────── */
+    /* ── Layout ──────────────────────────────────── */
     .quiz-container {
-      max-width: 720px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 24px 16px 64px;
+      padding: 0 16px 64px;
     }
 
-    /* ── Hero ───────────────────────────────────── */
+    /* ── Hero ────────────────────────────────────── */
     .quiz-hero {
       text-align: center;
-      padding: 40px 8px 24px;
+      padding: 48px 8px 32px;
+    }
+
+    .hero-icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: rgba(212,170,64,0.14);
+      border: 1px solid rgba(212,170,64,0.32);
+      color: #d4aa40;
+      margin-bottom: 20px;
+      box-shadow: 0 0 24px rgba(212,170,64,0.14);
     }
 
     .quiz-hero h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 2.2rem;
+      font-weight: 800;
       color: var(--text-primary);
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
+      margin-bottom: 12px;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
     }
 
     .quiz-hero .subtitle {
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       line-height: 1.65;
-      max-width: 480px;
-      margin: 0 auto 20px;
+      max-width: 440px;
+      margin: 0 auto 24px;
     }
 
-    /* Diploma tier row in hero */
+    /* Tier pills */
     .tier-row {
       display: flex;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .tier-pill {
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 4px 11px;
+      gap: 6px;
+      padding: 7px 18px;
       border-radius: 20px;
-      font-size: 0.72rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
       border: 1px solid;
     }
 
-    .tier-pill.bronze { color: #c49a3c; border-color: rgba(196,154,60,0.3); background: rgba(196,154,60,0.1); }
-    .tier-pill.silver { color: #9aaabb; border-color: rgba(154,170,187,0.3); background: rgba(154,170,187,0.1); }
-    .tier-pill.gold   { color: #e8c84a; border-color: rgba(232,200,74,0.3); background: rgba(232,200,74,0.1); }
+    .tier-pill.bronze { color: #c49a3c; border-color: rgba(196,154,60,0.35); background: rgba(196,154,60,0.1); }
+    .tier-pill.silver { color: #9aaabb; border-color: rgba(154,170,187,0.35); background: rgba(154,170,187,0.1); }
+    .tier-pill.gold   { color: #e8c84a; border-color: rgba(232,200,74,0.42); background: rgba(232,200,74,0.12); box-shadow: 0 0 16px rgba(232,200,74,0.13); }
 
     .tier-pip {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: currentColor;
       flex-shrink: 0;
     }
 
-    /* ── Category Selection ─────────────────────── */
+    /* ── Category cards ──────────────────────────── */
     #category-screen { display: block; }
     #quiz-screen     { display: none; }
     #results-screen  { display: none; }
 
     .category-grid {
       display: grid;
-      gap: 10px;
-      margin: 24px 0 20px;
+      gap: 12px;
+      margin: 28px 0 20px;
     }
 
     .category-card {
+      position: relative;
+      overflow: hidden;
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow), var(--glass-inset-highlight);
-      border-radius: 12px;
-      padding: 18px 18px 18px 0;
+      border-radius: 14px;
+      padding: 0;
       cursor: pointer;
       text-align: left;
       width: 100%;
       display: flex;
-      align-items: center;
-      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      flex-direction: column;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
       color: var(--text-primary);
-      overflow: hidden;
-      position: relative;
     }
 
     .category-card:hover {
+      border-color: var(--card-color, var(--glass-border-hover));
+      box-shadow: var(--glass-shadow), var(--glass-inset-highlight), 0 0 20px color-mix(in srgb, var(--card-color, #5eaeff) 20%, transparent);
       background: var(--glass-bg-hover);
-      border-color: var(--glass-border-hover);
-      box-shadow: var(--glass-shadow), var(--glass-inset-highlight), var(--accent-glow);
     }
 
-    /* Per-card accent colors */
     .category-card[data-category="general"]   { --card-color: #5b9bd5; }
     .category-card[data-category="rotations"] { --card-color: #e0844a; }
     .category-card[data-category="full"]      { --card-color: #d4aa40; }
 
-    .card-bar {
+    /* Top color bar */
+    .card-top-bar {
+      height: 4px;
+      background: var(--card-color);
+      width: 100%;
+      flex-shrink: 0;
+      border-radius: 14px 14px 0 0;
+    }
+
+    /* Subtle bloom at top-right */
+    .card-bloom {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--card-color) 18%, transparent) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-body {
+      display: flex;
+      align-items: center;
+      padding: 20px 20px 20px 0;
+      gap: 0;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-left-bar {
       width: 3px;
       align-self: stretch;
       background: var(--card-color);
       flex-shrink: 0;
-      margin-right: 16px;
+      margin-right: 18px;
+      border-radius: 0 2px 2px 0;
+      opacity: 0.5;
     }
 
     .card-icon-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: color-mix(in srgb, var(--card-color) 14%, transparent);
-      border: 1px solid color-mix(in srgb, var(--card-color) 28%, transparent);
+      border: 1px solid color-mix(in srgb, var(--card-color) 26%, transparent);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       color: var(--card-color);
-      margin-right: 14px;
+      margin-right: 16px;
+      transition: background 0.2s ease;
     }
 
-    .card-icon-box svg { width: 19px; height: 19px; }
+    .category-card:hover .card-icon-box {
+      background: color-mix(in srgb, var(--card-color) 22%, transparent);
+    }
+
+    .card-icon-box svg { width: 20px; height: 20px; }
 
     .card-text { flex: 1; min-width: 0; }
 
     .card-text h3 {
-      font-size: 0.97rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .card-text p {
       font-size: 0.8rem;
       color: var(--text-secondary);
       line-height: 1.45;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .card-meta {
+    .card-footer {
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
 
     .q-count {
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
+    }
+
+    .card-start {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--card-color);
+      opacity: 0.7;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      transition: opacity 0.15s ease, gap 0.15s ease;
+    }
+
+    .category-card:hover .card-start {
+      opacity: 1;
+      gap: 6px;
     }
 
     .card-chevron {
       width: 20px;
       height: 20px;
-      color: color-mix(in srgb, var(--card-color) 70%, transparent);
+      color: color-mix(in srgb, var(--card-color) 55%, transparent);
       flex-shrink: 0;
-      margin-left: 12px;
-      margin-right: 4px;
+      margin-left: 14px;
+      margin-right: 2px;
       transition: transform 0.2s ease, color 0.2s ease;
     }
 
     .category-card:hover .card-chevron {
-      transform: translateX(2px);
+      transform: translateX(3px);
       color: var(--card-color);
     }
 
     .disclaimer {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       text-align: center;
-      line-height: 1.6;
-      margin-top: 6px;
+      line-height: 1.65;
+      margin-top: 8px;
     }
 
-    /* ── Quiz Screen ────────────────────────────── */
+    /* ── Quiz screen ─────────────────────────────── */
     .quiz-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 8px;
+      gap: 12px;
+      padding: 20px 0 16px;
     }
 
     .back-btn {
@@ -226,10 +289,12 @@
       border: 1px solid var(--glass-border);
       border-radius: 8px;
       color: var(--text-secondary);
-      font-size: 0.85rem;
-      padding: 6px 12px;
+      font-size: 0.82rem;
+      padding: 7px 13px;
       cursor: pointer;
       transition: all 0.15s ease;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .back-btn:hover {
@@ -238,34 +303,52 @@
       color: var(--text-primary);
     }
 
+    .progress-wrap { flex: 1; min-width: 0; }
+
+    .progress-bar-track {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), rgba(94,174,255,0.7));
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
     #progress-text {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
     }
 
-    /* Question grid */
+    /* Q-box mini strip */
     .question-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-      margin-bottom: 16px;
+      gap: 4px;
+      justify-content: flex-start;
+      margin-bottom: 14px;
     }
 
     .q-box {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      font-size: 0.78rem;
+      font-size: 0.68rem;
       cursor: pointer;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       color: var(--text-muted);
-      transition: all 0.15s ease;
+      transition: all 0.12s ease;
       flex-shrink: 0;
     }
 
@@ -276,9 +359,9 @@
     }
 
     .q-box.current {
-      border-color: var(--accent);
+      border-color: rgba(94,174,255,0.6);
       color: var(--accent);
-      box-shadow: 0 0 8px rgba(94, 174, 255, 0.25);
+      background: rgba(94,174,255,0.08);
     }
 
     .q-box.correct {
@@ -300,14 +383,14 @@
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow), var(--glass-inset-highlight);
-      border-radius: 14px;
-      padding: 24px;
+      border-radius: 16px;
+      padding: 28px 24px;
       margin-bottom: 12px;
-      animation: card-in 0.2s ease;
+      animation: card-in 0.18s ease;
     }
 
     @keyframes card-in {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
@@ -315,59 +398,77 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .question-num {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
+      font-weight: 600;
     }
 
     .category-badge {
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.68rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
       color: var(--accent);
       background: var(--accent-bg);
       border: 1px solid var(--accent-border);
       border-radius: 5px;
-      padding: 1px 7px;
+      padding: 2px 8px;
     }
 
     .question-text {
-      font-size: 1.02rem;
+      font-size: 1.05rem;
       line-height: 1.65;
       color: var(--text-primary);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+      font-weight: 500;
     }
 
-    /* Options */
+    /* ── Options: 2×2 grid for MC, stacked for T/F ── */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .options-tf {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
     .option-btn {
-      display: block;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       width: 100%;
       text-align: left;
-      padding: 13px 16px;
+      padding: 14px 14px;
       border-radius: 10px;
-      background: var(--glass-bg);
+      background: rgba(255,255,255,0.04);
       border: 1px solid var(--glass-border);
       color: var(--text-secondary);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       cursor: pointer;
-      margin-bottom: 8px;
-      transition: all 0.15s ease;
+      transition: all 0.13s ease;
       line-height: 1.4;
+      min-height: 52px;
     }
 
     .option-btn:not(:disabled):hover {
-      background: var(--glass-bg-hover);
+      background: rgba(255,255,255,0.09);
       border-color: var(--glass-border-hover);
       color: var(--text-primary);
     }
 
     .option-btn.selected {
-      background: var(--accent-bg);
-      border-color: var(--accent-border);
+      background: rgba(94,174,255,0.12);
+      border-color: rgba(94,174,255,0.45);
       color: var(--text-primary);
     }
 
@@ -383,30 +484,38 @@
       color: var(--danger);
     }
 
-    .option-btn:disabled {
-      cursor: default;
-      opacity: 0.5;
-    }
-
+    .option-btn:disabled { cursor: default; opacity: 0.45; }
     .option-btn.correct-answer:disabled,
-    .option-btn.wrong-answer:disabled {
-      opacity: 1;
-    }
+    .option-btn.wrong-answer:disabled { opacity: 1; }
 
     .option-label {
-      font-weight: 700;
-      margin-right: 8px;
-      opacity: 0.6;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.07);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-top: 1px;
+      flex-shrink: 0;
     }
+
+    .option-btn.selected .option-label { background: rgba(94,174,255,0.2); color: var(--accent); }
+    .option-btn.correct-answer .option-label { background: rgba(46,204,113,0.2); color: var(--success); }
+    .option-btn.wrong-answer .option-label { background: rgba(231,76,60,0.2); color: var(--danger); }
 
     /* Explanation */
     .explanation {
       margin-top: 16px;
-      padding: 14px 16px;
+      padding: 16px 18px;
       border-radius: 10px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      animation: card-in 0.2s ease;
+      animation: card-in 0.18s ease;
     }
 
     .explanation-header {
@@ -416,18 +525,11 @@
       margin-bottom: 8px;
     }
 
-    .result-icon {
-      font-size: 1rem;
-    }
-
+    .result-icon { font-size: 1rem; }
     .result-icon.correct { color: var(--success); }
     .result-icon.wrong   { color: var(--danger); }
 
-    .result-label {
-      font-weight: 700;
-      font-size: 0.88rem;
-    }
-
+    .result-label { font-weight: 700; font-size: 0.88rem; }
     .result-label.correct { color: var(--success); }
     .result-label.wrong   { color: var(--danger); }
 
@@ -435,13 +537,13 @@
       font-size: 0.88rem;
       color: var(--text-secondary);
       line-height: 1.6;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .rule-badge {
       display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.7rem;
+      font-weight: 700;
       color: var(--accent);
       background: var(--accent-bg);
       border: 1px solid var(--accent-border);
@@ -449,11 +551,11 @@
       padding: 2px 8px;
     }
 
-    /* Submit / nav buttons */
+    /* Submit / nav */
     .submit-btn {
       display: block;
       width: 100%;
-      padding: 13px 24px;
+      padding: 14px 24px;
       border-radius: 10px;
       background: var(--accent-bg);
       border: 1px solid var(--accent-border);
@@ -461,25 +563,21 @@
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 4px;
+      margin-top: 12px;
       transition: all 0.15s ease;
     }
 
     .submit-btn:not(:disabled):hover {
-      background: rgba(94, 174, 255, 0.28);
+      background: rgba(94,174,255,0.28);
       box-shadow: var(--accent-glow);
     }
 
-    .submit-btn:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
+    .submit-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
     .nav-buttons {
       display: flex;
-      justify-content: space-between;
       gap: 10px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .nav-btn {
@@ -489,7 +587,7 @@
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       color: var(--text-secondary);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       cursor: pointer;
       transition: all 0.15s ease;
     }
@@ -500,15 +598,12 @@
       color: var(--text-primary);
     }
 
-    .nav-btn:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
+    .nav-btn:disabled { opacity: 0.28; cursor: default; }
 
     .finish-btn {
       display: block;
       width: 100%;
-      padding: 13px 24px;
+      padding: 14px 24px;
       border-radius: 10px;
       background: var(--success-bg);
       border: 1px solid var(--success-border);
@@ -521,70 +616,100 @@
     }
 
     .finish-btn:hover {
-      background: rgba(46, 204, 113, 0.28);
+      background: rgba(46,204,113,0.28);
       box-shadow: var(--success-glow);
     }
 
-    /* ── Results Screen ─────────────────────────── */
+    /* ── Results screen ──────────────────────────── */
     .results-container {
       max-width: 480px;
       margin: 0 auto;
       text-align: center;
-      padding-top: 16px;
+      padding: 24px 0 0;
+    }
+
+    /* Tier glow backdrop */
+    .result-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .result-glow.visible { opacity: 1; }
+    .result-glow.gold   { background: radial-gradient(ellipse at 50% 30%, rgba(241,196,15,0.08) 0%, transparent 65%); }
+    .result-glow.silver { background: radial-gradient(ellipse at 50% 30%, rgba(189,195,199,0.07) 0%, transparent 65%); }
+    .result-glow.bronze { background: radial-gradient(ellipse at 50% 30%, rgba(230,126,34,0.07) 0%, transparent 65%); }
+
+    .results-inner { position: relative; z-index: 1; }
+
+    .result-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
     }
 
     .score-circle-wrap {
-      margin: 24px auto;
-      width: 140px;
-      height: 140px;
+      margin: 20px auto 20px;
+      width: 168px;
+      height: 168px;
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 3px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       position: relative;
     }
 
-    .score-circle-wrap.gold-border   { border-color: #f1c40f; box-shadow: 0 0 24px rgba(241,196,15,0.3); }
-    .score-circle-wrap.silver-border { border-color: #bdc3c7; box-shadow: 0 0 24px rgba(189,195,199,0.3); }
-    .score-circle-wrap.bronze-border { border-color: #e67e22; box-shadow: 0 0 24px rgba(230,126,34,0.3); }
+    .score-circle-wrap.gold-border   { border-color: #f1c40f; box-shadow: 0 0 40px rgba(241,196,15,0.3), var(--glass-shadow); }
+    .score-circle-wrap.silver-border { border-color: #bdc3c7; box-shadow: 0 0 40px rgba(189,195,199,0.25), var(--glass-shadow); }
+    .score-circle-wrap.bronze-border { border-color: #e67e22; box-shadow: 0 0 40px rgba(230,126,34,0.25), var(--glass-shadow); }
 
     .score-pct {
-      font-size: 2.4rem;
+      font-size: 3rem;
       font-weight: 800;
       color: var(--text-primary);
       line-height: 1;
+      letter-spacing: -2px;
     }
 
     .score-label {
       font-size: 0.72rem;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .tier-badge {
-      display: inline-block;
-      font-size: 1.6rem;
+      display: block;
+      font-size: 2rem;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .tier-badge.gold   { color: #f1c40f; }
-    .tier-badge.silver { color: #bdc3c7; }
-    .tier-badge.bronze { color: #e67e22; }
-    .tier-badge.none   { color: var(--text-secondary); font-size: 1.1rem; letter-spacing: 0; }
+    .tier-badge.gold   { color: #f1c40f; text-shadow: 0 0 28px rgba(241,196,15,0.45); }
+    .tier-badge.silver { color: #bdc3c7; text-shadow: 0 0 24px rgba(189,195,199,0.35); }
+    .tier-badge.bronze { color: #e67e22; text-shadow: 0 0 24px rgba(230,126,34,0.35); }
+    .tier-badge.none   { color: var(--text-secondary); font-size: 1.1rem; letter-spacing: 0; font-weight: 600; }
 
     .score-fraction {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       margin-bottom: 24px;
     }
 
+    /* Diploma card */
     .diploma-section {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur));
@@ -597,17 +722,17 @@
     }
 
     .diploma-section h3 {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .name-input {
       width: 100%;
       padding: 12px 14px;
       border-radius: 10px;
-      background: var(--glass-bg);
+      background: rgba(255,255,255,0.05);
       border: 1px solid var(--glass-border);
       color: var(--text-primary);
       font-size: 0.95rem;
@@ -617,10 +742,7 @@
     }
 
     .name-input::placeholder { color: var(--text-muted); }
-    .name-input:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
+    .name-input:focus { outline: none; border-color: var(--accent); }
 
     .diploma-btn {
       display: block;
@@ -638,14 +760,14 @@
     }
 
     .diploma-btn:hover {
-      background: rgba(94, 174, 255, 0.28);
+      background: rgba(94,174,255,0.28);
       box-shadow: var(--accent-glow);
     }
 
     .result-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .result-btn {
@@ -656,7 +778,7 @@
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -669,24 +791,28 @@
     }
 
     .keep-studying {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-secondary);
-      line-height: 1.6;
+      line-height: 1.65;
       margin-bottom: 20px;
-      padding: 14px 16px;
+      padding: 16px 18px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 10px;
+      border-radius: 12px;
+      text-align: left;
     }
 
-    /* ── Responsive ─────────────────────────────── */
+    /* ── Responsive ──────────────────────────────── */
     @media (max-width: 480px) {
-      .quiz-hero h1       { font-size: 1.4rem; }
-      .question-card      { padding: 18px 14px; }
-      .q-box              { width: 32px; height: 32px; font-size: 0.7rem; }
-      .option-btn         { padding: 11px 13px; font-size: 0.88rem; }
-      .score-circle-wrap  { width: 120px; height: 120px; }
-      .score-pct          { font-size: 2rem; }
+      .quiz-hero h1    { font-size: 1.7rem; }
+      .quiz-hero       { padding: 36px 8px 24px; }
+      .question-card   { padding: 20px 16px; }
+      .options-grid    { grid-template-columns: 1fr; }
+      .options-tf      { grid-template-columns: 1fr 1fr; }
+      .q-box           { width: 24px; height: 24px; font-size: 0.62rem; border-radius: 5px; }
+      .score-circle-wrap { width: 140px; height: 140px; }
+      .score-pct       { font-size: 2.4rem; }
+      .tier-badge      { font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -711,11 +837,20 @@
     </div>
   </nav>
 
+  <!-- Tier glow backdrop (populated by JS on results) -->
+  <div class="result-glow" id="result-glow"></div>
+
   <div id="quiz-app" class="quiz-container">
 
-<!-- ── SCREEN 1: Category Selection ── -->
+    <!-- ── SCREEN 1: Category Selection ── -->
     <div id="category-screen">
       <div class="quiz-hero">
+        <div class="hero-icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+            <circle cx="12" cy="8" r="6"/>
+            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </div>
         <h1>Volleyball Rules Quiz</h1>
         <p class="subtitle">Based on the FIVB Official Volleyball Rules 2025&ndash;2028. Answer correctly, see the rule reference, and earn a diploma.</p>
         <div class="tier-row">
@@ -728,66 +863,84 @@
       <div class="category-grid">
 
         <button class="category-card" data-category="general">
-          <div class="card-bar"></div>
-          <div class="card-icon-box">
-            <!-- book-open (Feather) -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          <div class="card-top-bar"></div>
+          <div class="card-bloom"></div>
+          <div class="card-body">
+            <div class="card-left-bar"></div>
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+            </div>
+            <div class="card-text">
+              <h3>General Rules</h3>
+              <p>Net heights, scoring, serve rules, ball contact, libero restrictions, substitutions, and more.</p>
+              <div class="card-footer">
+                <span class="q-count">20 questions &middot; pool of 89</span>
+                <span class="card-start">Start
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
+              </div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
             </svg>
           </div>
-          <div class="card-text">
-            <h3>General Rules</h3>
-            <p>Net heights, scoring, serve rules, ball contact, libero restrictions, substitutions, and more.</p>
-            <div class="card-meta">
-              <span class="q-count">20 questions &middot; pool of 89</span>
-            </div>
-          </div>
-          <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
         </button>
 
         <button class="category-card" data-category="rotations">
-          <div class="card-bar"></div>
-          <div class="card-icon-box">
-            <!-- rotate-cw (Feather) -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="23 4 23 10 17 10"/>
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          <div class="card-top-bar"></div>
+          <div class="card-bloom"></div>
+          <div class="card-body">
+            <div class="card-left-bar"></div>
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+            </div>
+            <div class="card-text">
+              <h3>Rotations &amp; Positioning</h3>
+              <p>Overlap rules, zone numbering, rotation order, positional faults, and back-row restrictions.</p>
+              <div class="card-footer">
+                <span class="q-count">10 questions &middot; pool of 28</span>
+                <span class="card-start">Start
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
+              </div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
             </svg>
           </div>
-          <div class="card-text">
-            <h3>Rotations &amp; Positioning</h3>
-            <p>Overlap rules, zone numbering, rotation order, positional faults, and back-row restrictions.</p>
-            <div class="card-meta">
-              <span class="q-count">10 questions &middot; pool of 28</span>
-            </div>
-          </div>
-          <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
         </button>
 
         <button class="category-card" data-category="full">
-          <div class="card-bar"></div>
-          <div class="card-icon-box">
-            <!-- award (Feather) -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="6"/>
-              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+          <div class="card-top-bar"></div>
+          <div class="card-bloom"></div>
+          <div class="card-body">
+            <div class="card-left-bar"></div>
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="6"/>
+                <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+              </svg>
+            </div>
+            <div class="card-text">
+              <h3>Full Exam</h3>
+              <p>All categories combined for the ultimate test. Both general rules and rotations covered.</p>
+              <div class="card-footer">
+                <span class="q-count">25 questions &middot; full pool</span>
+                <span class="card-start">Start
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </span>
+              </div>
+            </div>
+            <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
             </svg>
           </div>
-          <div class="card-text">
-            <h3>Full Exam</h3>
-            <p>All categories combined for the ultimate test. Both general rules and rotations covered.</p>
-            <div class="card-meta">
-              <span class="q-count">25 questions &middot; full pool</span>
-            </div>
-          </div>
-          <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
         </button>
 
       </div>
@@ -799,7 +952,12 @@
     <div id="quiz-screen">
       <div class="quiz-header">
         <button class="back-btn" id="back-to-categories">&larr; Categories</button>
-        <span id="progress-text">0 of 0 answered</span>
+        <div class="progress-wrap">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+          <span id="progress-text">0 of 0 answered</span>
+        </div>
       </div>
 
       <div class="question-grid" id="question-grid"></div>
@@ -827,5 +985,19 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="js/quiz.js"></script>
+  <script>
+    // Nav hamburger
+    const navHamburger = document.getElementById('nav-hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    navHamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = navMenu.classList.toggle('open');
+      navHamburger.classList.toggle('open', open);
+    });
+    document.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      navHamburger.classList.remove('open');
+    });
+  </script>
 </body>
 </html>

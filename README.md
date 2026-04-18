@@ -15,7 +15,7 @@ The app has four parts:
 - **Viewer** (`index.html`) - Interactive court display for reviewing rotations during practice or games
 - **Editor** (`editor.html`) - Drag-and-drop editor for creating and modifying rotation files
 - **Learn** (`learn.html`) - Guide to volleyball rotations, player roles, court zones, overlap rules (FIVB 7.4), and the libero — verified against the FIVB 2025-2028 rulebook
-- **Quiz** (`quiz.html`) - Interactive rules quiz with 83 questions across General Rules and Rotations categories. Randomised per session, answer locking with FIVB rule references, score tiers (Bronze/Silver/Gold), and downloadable PDF diploma
+- **Quiz** (`quiz.html`) - Interactive rules quiz with 117 questions across General Rules and Rotations categories. Randomised per session, answer locking with FIVB rule references, score tiers (Bronze/Silver/Gold), and downloadable PDF diploma
 
 All pages run entirely in the browser with no server or dependencies required. Just open the HTML files directly or host them on any static server (GitHub Pages, etc.).
 
@@ -138,9 +138,9 @@ The quiz tests knowledge of volleyball rules based on the FIVB Official Volleyba
 
 | Category | Pool | Questions per quiz |
 |----------|------|--------------------|
-| General Rules | 65 questions | 20 (randomised) |
-| Rotations & Positioning | 18 questions | 10 (randomised) |
-| Full Exam | All 83 questions | 25 (randomised) |
+| General Rules | 89 questions | 20 (randomised) |
+| Rotations & Positioning | 28 questions | 10 (randomised) |
+| Full Exam | All 117 questions | 25 (randomised) |
 
 ### How it works
 
@@ -244,7 +244,7 @@ js/app.js               Viewer logic
 js/editor.js            Editor logic
 js/quiz.js              Quiz logic
 data/
-  quiz-questions.json   83 quiz questions (General Rules + Rotations)
+  quiz-questions.json   117 quiz questions (General Rules + Rotations)
 rotations/
   systems.json          List of available rotation systems
   5-1.json              5-1 system rotation data
@@ -254,7 +254,7 @@ rotations/
   6-2.json              6-2 system rotation data
 tools/
   validate-rotation.js  FIVB overlap rule validator for rotation files
-  position-analysis.md  Coordinate system and 5-1 pattern analysis
+  5-1-analysis.md       Coordinate system and 5-1 pattern analysis
   4-2-libero-analysis.md  Analysis of both 4-2 libero variants
   6-2-analysis.md       6-2 system analysis and position derivation
 ```

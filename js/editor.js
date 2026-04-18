@@ -1532,5 +1532,34 @@ function initEventHandlers() {
   }
 }
 
+// Initialize help panel
+(function initHelpPanel() {
+  const trigger   = document.getElementById('help-trigger');
+  const panel     = document.getElementById('help-panel');
+  const backdrop  = document.getElementById('help-panel-backdrop');
+  const closeBtn  = document.getElementById('help-panel-close');
+  if (!trigger || !panel) return;
+
+  const open = () => {
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+    panel.setAttribute('aria-hidden', 'false');
+    trigger.setAttribute('aria-expanded', 'true');
+    closeBtn.focus();
+  };
+  const close = () => {
+    panel.classList.remove('open');
+    backdrop.classList.remove('open');
+    panel.setAttribute('aria-hidden', 'true');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.focus();
+  };
+
+  trigger.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) close(); });
+})();
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', init);

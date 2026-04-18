@@ -194,6 +194,35 @@ body {
   color: rgba(255, 200, 120, 1);
 }
 
+/* Desktop nav tabs */
+.app-nav-tabs { display: none; }
+
+@media (min-width: 768px) {
+  .app-nav-tabs {
+    display: flex;
+    gap: 4px;
+    margin-left: 24px;
+    flex: 1;
+  }
+  .nav-tab {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-tab:hover { background: var(--glass-bg-hover); color: var(--text-primary); }
+  .nav-tab.active {
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+  /* Hide the internal duplicates inside the hamburger on desktop */
+  .nav-menu-internal { display: none; }
+}
+
 /* ============================
    Toggle Group (Switchable Buttons)
    — Serving/Receiving (viewer)
@@ -367,4 +396,87 @@ body {
 
 .btn-danger:hover {
   background: rgba(231, 76, 60, 0.28);
+}
+
+/* Help trigger button */
+.help-trigger {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+.help-trigger:hover { color: var(--accent); background: var(--accent-bg); transform: scale(1.05); }
+.help-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Slide-in panel */
+.help-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  max-width: 100vw;
+  height: 100dvh;
+  background: rgba(20, 32, 46, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid var(--glass-border);
+  box-shadow: -12px 0 40px rgba(0,0,0,0.4);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.help-panel.open { transform: translateX(0); }
+.help-panel[aria-hidden="true"] { visibility: hidden; }
+.help-panel.open[aria-hidden="true"] { visibility: visible; }
+
+.help-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 999;
+}
+.help-panel-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.help-panel-inner { padding: 20px 22px 40px; }
+.help-panel-head  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.help-panel-head h2 { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.help-panel-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: transparent; border: 1px solid var(--glass-border);
+  color: var(--text-secondary); font-size: 1.2rem; line-height: 1; cursor: pointer;
+}
+.help-panel-close:hover { color: var(--text-primary); background: var(--glass-bg-hover); }
+
+.help-topic { padding: 16px 0; border-top: 1px solid var(--glass-border); }
+.help-topic:first-of-type { border-top: none; }
+.help-topic h3 { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin: 0 0 6px; }
+.help-topic p  { font-size: 0.85rem; line-height: 1.6; color: var(--text-secondary); margin: 0 0 8px; }
+.help-topic strong { color: var(--text-primary); }
+.help-more {
+  display: inline-block; font-size: 0.78rem; font-weight: 600;
+  color: var(--accent); text-decoration: none; padding: 4px 0;
+}
+.help-more:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .help-panel { width: 100vw; border-left: none; }
 }

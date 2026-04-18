@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Volleyball Rotation System — Quick Court Viewer</title>
   <meta name="description" content="Quickly view volleyball player rotations for 5-1, 4-2, and 6-2 systems. Select your rotation, mode, and phase to see exactly where every player stands.">
   <meta name="keywords" content="volleyball rotation, volleyball positions, 5-1 rotation, 4-2 rotation, 6-2 rotation, serve receive, volleyball court">
@@ -33,15 +33,24 @@
   <!-- Navigation Shell -->
   <nav class="app-nav">
     <div class="app-nav-inner">
-      <h1 class="app-nav-title">Volleyball Rotation Viewer</h1>
+      <h1 class="app-nav-title">Volleyball Rotations</h1>
+
+      <!-- Desktop-only inline tabs -->
+      <div class="app-nav-tabs" aria-label="Primary">
+        <a href="index.html"  class="nav-tab active">Viewer</a>
+        <a href="editor.html" class="nav-tab">Editor</a>
+        <a href="learn.html"  class="nav-tab">Learn</a>
+        <a href="quiz.html"   class="nav-tab">Quiz</a>
+      </div>
+
       <div style="position:relative;">
-        <button class="app-nav-hamburger" id="nav-hamburger">☰</button>
+        <button class="app-nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
         <div class="app-nav-menu" id="nav-menu">
-          <a href="index.html" class="nav-menu-item active">Viewer</a>
-          <a href="editor.html" class="nav-menu-item">Editor</a>
-          <a href="learn.html" class="nav-menu-item">Learn</a>
-          <a href="quiz.html" class="nav-menu-item">Quiz</a>
-          <div class="nav-menu-sep"></div>
+          <a href="index.html"  class="nav-menu-item nav-menu-internal active">Viewer</a>
+          <a href="editor.html" class="nav-menu-item nav-menu-internal">Editor</a>
+          <a href="learn.html"  class="nav-menu-item nav-menu-internal">Learn</a>
+          <a href="quiz.html"   class="nav-menu-item nav-menu-internal">Quiz</a>
+          <div class="nav-menu-sep nav-menu-internal"></div>
           <a href="https://github.com/arvzie-sketch/Volleyball-Rotation-System" target="_blank" class="nav-menu-item">Help (GitHub)</a>
           <a href="https://buymeacoffee.com/theautomationguy" target="_blank" class="nav-menu-item nav-coffee">Buy Me a Coffee ☕</a>
         </div>
@@ -54,7 +63,7 @@
     <div class="title-bar">
       <h1>Rotation System</h1>
       <div class="system-dropdown" id="system-dropdown">
-        <button class="system-badge" id="system-badge">Loading...</button>
+        <button class="system-badge" id="system-badge">5-1</button>
         <div class="system-menu" id="system-menu"></div>
       </div>
     </div>
@@ -69,8 +78,9 @@
 
     <!-- Court area -->
     <div class="court-area">
+      <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
       <div class="court-container">
-        <svg class="court-svg" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet">
+        <svg class="court-svg" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
           <defs>
             <linearGradient id="courtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" style="stop-color:#e8844a" />
@@ -155,13 +165,69 @@
         <button class="zone-btn active" data-zone="1">1</button>
       </div>
       <div class="options">
-        <button class="option-btn active" id="toggle-zones" title="Show Zones"><span>#</span></button>
-        <button class="option-btn active" id="toggle-bench" title="Show Bench"><span>B</span></button>
+        <button class="option-btn active" id="toggle-zones" title="Show zones" aria-label="Toggle zone numbers"><span>#</span></button>
+        <button class="option-btn active" id="toggle-bench" title="Show bench" aria-label="Toggle bench"><span>B</span></button>
       </div>
     </div>
   </div>
 
   <input type="file" id="import-rotation" accept=".json" style="display:none">
+
+  <!-- Help Panel -->
+  <aside class="help-panel" id="help-panel" aria-hidden="true" aria-labelledby="help-panel-title">
+    <div class="help-panel-inner">
+      <div class="help-panel-head">
+        <h2 id="help-panel-title">What am I looking at?</h2>
+        <button class="help-panel-close" id="help-panel-close" aria-label="Close help panel">×</button>
+      </div>
+      <div class="help-panel-body">
+
+        <section class="help-topic">
+          <h3>Systems: 5-1, 4-2, 6-2</h3>
+          <p>The numbers are <strong>hitters / setters</strong>. 5-1 uses one setter who runs every rotation. 4-2 has two setters opposite each other. 6-2 has two setters who set only from the back row.</p>
+          <a href="learn.html#rotation-systems" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Serving vs Receiving</h3>
+          <p>Choose which side of the rally you want to see. Only the <strong>receiving</strong> team has to obey overlap rules at the moment of serve; the serving team can stand anywhere.</p>
+          <a href="learn.html#overlap-rules" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Phases (Base / Serve / Pass / Set / Attack / Switch)</h3>
+          <p>Each rally moves through phases. <strong>Base</strong> = starting positions. <strong>Serve/Pass</strong> = the moment the ball is hit. <strong>Set → Attack</strong> = offense setting up. <strong>Switch</strong> = players move to their preferred spots after the whistle.</p>
+          <a href="learn.html#serve-receive" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Court zones (1–6)</h3>
+          <p>1 = back-right (serve). Numbering goes counter-clockwise. Zones 2/3/4 are front row (can attack and block). Zones 1/5/6 are back row (attack only behind the 3m line).</p>
+          <a href="learn.html#court-zones" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Setter start zone</h3>
+          <p>Pick which zone the setter is in at the start of this rotation. The rest of the lineup shifts to match.</p>
+          <a href="learn.html#player-roles" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Player labels (S, O, M1/M2, H1/H2, L, DS)</h3>
+          <p>S = Setter. O = Opposite. M1/M2 = Middles. H1/H2 = Outside Hitters. L = Libero. DS = Defensive Specialist.</p>
+          <a href="learn.html#player-roles" class="help-more">Read more on Learn →</a>
+        </section>
+
+        <section class="help-topic">
+          <h3>Toggles: `#` and `B`</h3>
+          <p><strong>`#`</strong> shows the zone numbers faintly on the court. <strong>`B`</strong> shows bench players (subs and the libero swap).</p>
+        </section>
+
+      </div>
+    </div>
+  </aside>
+  <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
+
   <script src="js/app.js?v=3"></script>
   <script>
     // Nav hamburger
