@@ -985,19 +985,5 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="js/quiz.js?v=2"></script>
-  <script>
-    // Nav hamburger
-    const navHamburger = document.getElementById('nav-hamburger');
-    const navMenu = document.getElementById('nav-menu');
-    navHamburger.addEventListener('click', e => {
-      e.stopPropagation();
-      const open = navMenu.classList.toggle('open');
-      navHamburger.classList.toggle('open', open);
-    });
-    document.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      navHamburger.classList.remove('open');
-    });
-  </script>
 </body>
 </html>
