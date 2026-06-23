@@ -75,6 +75,7 @@ function populateSystemDropdown() {
       await loadRotation(systemName);
       renderPhaseButtons();
       initPlayers();
+      syncURL();
     });
     menu.appendChild(btn);
   });
@@ -278,6 +279,7 @@ function renderPhaseButtons() {
       document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       updatePlayers();
+      syncURL();
     });
     container.appendChild(btn);
   });
@@ -308,6 +310,7 @@ function initEventHandlers() {
       btn.classList.add('active');
       renderPhaseButtons();
       updatePlayers();
+      syncURL();
     });
   });
 
@@ -318,6 +321,7 @@ function initEventHandlers() {
       document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       updatePlayers();
+      syncURL();
     });
   });
 
@@ -336,15 +340,71 @@ function initEventHandlers() {
   });
 }
 
+// ---- Shareable URL state (deep links) ----
+// Lets other pages link straight to a court state, e.g.
+//   /?system=5-1&zone=3&mode=receiving&phase=pass
+const VALID_MODES = ['serving', 'receiving'];
+
+function readStateFromURL() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    system: p.get('system'),
+    mode: p.get('mode'),
+    phase: p.get('phase'),
+    zone: p.get('zone')
+  };
+}
+
+// Apply validated URL params to state + button active classes.
+// Call AFTER the rotation is loaded so phase can be validated against it.
+function applyURLState(params) {
+  if (VALID_MODES.includes(params.mode)) {
+    state.mode = params.mode;
+    document.querySelectorAll('.mode-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.mode === state.mode));
+  }
+
+  const zone = parseInt(params.zone, 10);
+  if (zone >= 1 && zone <= 6) {
+    state.setterPosition = zone;
+    document.querySelectorAll('.zone-btn').forEach(b =>
+      b.classList.toggle('active', parseInt(b.dataset.zone, 10) === zone));
+  }
+
+  const phases = state.rotationData && state.rotationData.phases
+    ? state.rotationData.phases[state.mode] : null;
+  if (params.phase && Array.isArray(phases) && phases.includes(params.phase)) {
+    state.phase = params.phase;
+  }
+}
+
+// Reflect current state into the URL without reloading (interaction only —
+// the homepage URL stays clean until the user changes something).
+function syncURL() {
+  const p = new URLSearchParams();
+  if (state.currentSystem) p.set('system', state.currentSystem);
+  p.set('mode', state.mode);
+  p.set('phase', state.phase);
+  p.set('zone', String(state.setterPosition));
+  history.replaceState(null, '', window.location.pathname + '?' + p.toString());
+}
+
 // Initialize app
 async function init() {
   initEventHandlers();
   await loadAvailableSystems();
   populateSystemDropdown();
 
-  // Load first available system
-  const defaultSystem = state.availableSystems[0] || '5-1';
-  await loadRotation(defaultSystem);
+  const urlState = readStateFromURL();
+
+  // Use the URL's system if it's one we have, else the first available.
+  let system = state.availableSystems[0] || '5-1';
+  if (urlState.system && state.availableSystems.includes(urlState.system)) {
+    system = urlState.system;
+  }
+
+  await loadRotation(system);
+  applyURLState(urlState);   // mode + zone + phase (phase validated against the loaded rotation)
   renderPhaseButtons();
   initPlayers();
 }
@@ -361,6 +421,7 @@ document.getElementById('import-rotation').addEventListener('change', async (e) 
     state.highlightedPlayer = null;
     renderPhaseButtons();
     initPlayers();
+    syncURL();
   } catch (err) {
     console.error('Failed to load rotation file:', err);
     alert('Could not load file — make sure it is a valid rotation JSON.');
