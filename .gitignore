@@ -21,8 +21,9 @@ docs/
 # Sample/test files
 Samples/
 
-# PDFs (copyrighted reference docs)
+# PDFs (copyrighted reference docs) — except the published cheat sheet
 *.pdf
+!assets/5-1-rotation-cheat-sheet.pdf
 
 # Google (Search Console, etc.)
 Google/

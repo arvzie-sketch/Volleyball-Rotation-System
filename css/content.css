@@ -234,3 +234,20 @@ html, body {
 .related-card:hover { border-color: var(--accent-border); background: var(--glass-bg-hover); }
 .related-card .rc-title { display: block; font-weight: 700; color: var(--text-primary); font-size: 0.95rem; margin-bottom: 3px; }
 .related-card .rc-sub { font-size: 0.82rem; color: var(--text-secondary); }
+
+/* ---- Printable cheat-sheet download card ---- */
+.sheet-download-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px 20px;
+  margin: 24px 0;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+}
+.sheet-download-meta { display: flex; flex-direction: column; gap: 2px; }
+.sheet-download-title { font-weight: 750; color: var(--text-primary); font-size: 1.05rem; }
+.sheet-download-sub { font-size: 0.85rem; color: var(--text-secondary); }

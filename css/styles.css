@@ -299,3 +299,17 @@
   .option-btn { width: 36px; height: 36px; }
   .options { gap: 4px; }
 }
+
+.sheet-cta { text-align: center; padding: 6px 0 2px; flex-shrink: 0; }
+.sheet-cta-btn {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 5px 12px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  background: var(--accent-bg);
+}
+.sheet-cta-btn:hover { background: var(--glass-bg-hover); }

@@ -110,11 +110,18 @@ async function loadRotation(systemName) {
       opt.classList.toggle('active', opt.dataset.system === systemName);
     });
 
+    updateSheetCta();
     return state.rotationData;
   } catch (error) {
     console.error('Error loading rotation:', error);
     return null;
   }
+}
+
+// Show the 5-1 cheat-sheet download only while the 5-1 system is active.
+function updateSheetCta() {
+  const cta = document.getElementById('sheet-cta');
+  if (cta) cta.hidden = state.currentSystem !== '5-1';
 }
 
 // Load rotation from a parsed JSON object (e.g. from file import)
@@ -123,6 +130,7 @@ function loadRotationFromData(data) {
   state.currentSystem = null;
   document.getElementById('system-badge').textContent = (data.name || 'Custom') + ' ▼';
   document.querySelectorAll('.system-option').forEach(opt => opt.classList.remove('active'));
+  updateSheetCta();
 }
 
 // Get phase key for position lookup
