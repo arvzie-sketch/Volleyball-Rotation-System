@@ -1,0 +1,224 @@
+/* ============================================================
+   content.css — shared styles for the dedicated guide pages
+   (5-1-rotation, serve-receive, overlap-rules).
+   Builds on the design tokens defined in glass-shared.css.
+   ============================================================ */
+
+.content-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* ---- Hero ---- */
+.content-hero {
+  position: relative;
+  overflow: hidden;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 56px 24px 40px;
+  text-align: center;
+}
+.content-hero .hero-court-bg {
+  position: absolute;
+  top: 50%;
+  right: -40px;
+  transform: translateY(-50%);
+  width: 280px;
+  height: auto;
+  opacity: 0.05;
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+}
+.content-hero h1 {
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+.content-hero .subtitle {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 620px;
+  margin: 0 auto;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 22px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.hero-meta-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+/* ---- Breadcrumb ---- */
+.breadcrumb {
+  font-size: 0.85rem;
+  margin: 4px 0 28px;
+}
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb span { color: var(--text-muted); }
+
+/* ---- Article sections ---- */
+.article-section { margin-bottom: 40px; }
+.article-section > h2 {
+  font-size: 1.5rem;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
+  scroll-margin-top: 80px;
+}
+.article-section h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 24px 0 8px;
+}
+.article-section p,
+.article-section li {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.article-section p { margin-bottom: 14px; }
+.article-section ul { margin: 0 0 16px; padding-left: 22px; }
+.article-section li { margin-bottom: 8px; }
+.article-section strong { color: var(--text-primary); font-weight: 650; }
+.article-section em { color: var(--text-primary); font-style: italic; }
+.article-section a { color: var(--accent); text-decoration: none; }
+.article-section a:hover { text-decoration: underline; }
+
+/* ---- Callout box ---- */
+.callout {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-left: 3px solid var(--accent-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout ul { margin-bottom: 0; }
+.callout p:last-child { margin-bottom: 0; }
+
+/* ---- Deep-link cards into the viewer ---- */
+.deep-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 18px 0 8px;
+}
+.deep-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.deep-link:hover {
+  border-color: var(--accent-border);
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+.deep-link .dl-title { font-weight: 700; color: var(--text-primary); font-size: 0.95rem; }
+.deep-link .dl-sub { font-size: 0.8rem; color: var(--text-secondary); }
+.deep-link .dl-go { font-size: 0.78rem; color: var(--accent); margin-top: 2px; }
+
+/* ---- Inline CTA link ---- */
+.cta-inline {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 650;
+  color: var(--accent);
+  text-decoration: none;
+}
+.cta-inline:hover { text-decoration: underline; }
+
+/* ---- CTA section + buttons ---- */
+.cta-section {
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin-top: 8px;
+}
+.cta-section h2 { font-size: 1.4rem; font-weight: 750; margin-bottom: 10px; }
+.cta-section p { color: var(--text-secondary); margin-bottom: 20px; }
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.cta-btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: transform .15s, background .15s, border-color .15s;
+}
+.cta-btn.primary {
+  color: #0c1520;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+}
+.cta-btn.primary:hover { transform: translateY(-2px); background: #7dbfff; }
+.cta-btn.secondary {
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-hover);
+}
+.cta-btn.secondary:hover { transform: translateY(-2px); border-color: var(--accent-border); }
+
+/* ---- Related pages ---- */
+.related-nav {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+}
+.related-nav h2 { font-size: 1rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 14px; text-transform: uppercase; }
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.related-card {
+  padding: 14px 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: border-color .15s, background .15s;
+}
+.related-card:hover { border-color: var(--accent-border); background: var(--glass-bg-hover); }
+.related-card .rc-title { display: block; font-weight: 700; color: var(--text-primary); font-size: 0.95rem; margin-bottom: 3px; }
+.related-card .rc-sub { font-size: 0.82rem; color: var(--text-secondary); }
