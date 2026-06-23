@@ -300,16 +300,32 @@
   .options { gap: 4px; }
 }
 
-.sheet-cta { text-align: center; padding: 6px 0 2px; flex-shrink: 0; }
-.sheet-cta-btn {
-  display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--accent);
+/* Title cluster: system badge + cheat-sheet chip sit together */
+.title-actions { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Cheat-sheet download chip — quiet glass sibling to the system badge */
+.sheet-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
   text-decoration: none;
-  padding: 5px 12px;
-  border: 1px solid var(--accent-border);
-  border-radius: 999px;
-  background: var(--accent-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
 }
-.sheet-cta-btn:hover { background: var(--glass-bg-hover); }
+.sheet-chip svg { width: 13px; height: 13px; }
+.sheet-chip:hover {
+  color: var(--text-primary);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+}
+/* inline-flex would otherwise override the `hidden` attribute used for 5-1 gating */
+.sheet-chip[hidden] { display: none; }

@@ -22,7 +22,7 @@
   <link rel="canonical" href="https://volleyball-rotations.com">
   <link rel="icon" type="image/svg+xml" href="assets/logo/vrs-logo-favicon.svg">
   <link rel="stylesheet" href="css/glass-shared.css?v=2">
-  <link rel="stylesheet" href="css/styles.css?v=5">
+  <link rel="stylesheet" href="css/styles.css?v=6">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -71,9 +71,20 @@
     <!-- Title -->
     <div class="title-bar">
       <h1>Rotation System</h1>
-      <div class="system-dropdown" id="system-dropdown">
-        <button class="system-badge" id="system-badge">5-1</button>
-        <div class="system-menu" id="system-menu"></div>
+      <div class="title-actions">
+        <div class="system-dropdown" id="system-dropdown">
+          <button class="system-badge" id="system-badge">5-1</button>
+          <div class="system-menu" id="system-menu"></div>
+        </div>
+        <!-- Cheat-sheet download (gated to the 5-1 system in app.js) -->
+        <a href="/assets/5-1-rotation-cheat-sheet.pdf" target="_blank" rel="noopener" class="sheet-chip" id="sheet-cta" title="Download 5-1 cheat sheet (PDF)" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          PDF
+        </a>
       </div>
     </div>
 
@@ -179,10 +190,6 @@
       </div>
     </div>
 
-    <!-- 5-1 cheat-sheet download (gated to the 5-1 system in app.js) -->
-    <div class="sheet-cta" id="sheet-cta" hidden>
-      <a href="/assets/5-1-rotation-cheat-sheet.pdf" target="_blank" rel="noopener" class="sheet-cta-btn">📄 Download 5-1 cheat sheet (PDF)</a>
-    </div>
   </div>
 
   <input type="file" id="import-rotation" accept=".json" style="display:none">
