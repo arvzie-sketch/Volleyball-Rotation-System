@@ -4,6 +4,18 @@
    Builds on the design tokens defined in glass-shared.css.
    ============================================================ */
 
+/* glass-shared.css locks html/body to a non-scrolling app shell (for the
+   interactive viewer). These article pages need normal document scrolling. */
+html, body {
+  height: auto;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* The hero court watermark read as a stray artefact in the top-right — hide it. */
+.content-hero .hero-court-bg { display: none; }
+
 .content-main {
   max-width: 760px;
   margin: 0 auto;
