@@ -502,12 +502,21 @@ function renderValidation(overridePlayer, overridePos) {
   } else {
     panel.style.display = 'block';
     panel.className = 'validation-panel has-violations';
-    panel.innerHTML = violations.map(v =>
-      `<div class="validation-item">` +
-      `<span class="validation-rule">FIVB ${v.rule}</span>` +
-      `<span class="validation-msg">${v.message}</span>` +
-      `</div>`
-    ).join('');
+    // Build with createElement + textContent so imported player labels are
+    // rendered as text, never parsed as HTML (prevents XSS via rotation files).
+    panel.textContent = '';
+    for (const v of violations) {
+      const item = document.createElement('div');
+      item.className = 'validation-item';
+      const rule = document.createElement('span');
+      rule.className = 'validation-rule';
+      rule.textContent = `FIVB ${v.rule}`;
+      const msg = document.createElement('span');
+      msg.className = 'validation-msg';
+      msg.textContent = v.message;
+      item.append(rule, msg);
+      panel.appendChild(item);
+    }
   }
 }
 
