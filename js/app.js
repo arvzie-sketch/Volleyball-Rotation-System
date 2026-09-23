@@ -17,11 +17,16 @@ const COURT_OFFSET_Y = 32;
 const PLAYER_RADIUS = 18;
 const BENCH_X = 12;
 
+// Token colours: dark token with a white ring; setter yellow, libero white.
+// Yellow (#ffc93c = --accent) also marks the selected player, as a dashed ring.
 const COLORS = {
-  player: '#efa581',
-  highlight: '#f1c40f',
-  libero: '#e74c3c',
-  text: '#f5f5f5'
+  player: '#101316',
+  setter: '#ffc93c',
+  libero: '#ffffff',
+  ring: '#ffffff',
+  text: '#ffffff',
+  textOnLight: '#101316',
+  select: '#ffc93c'
 };
 
 // App State
@@ -103,7 +108,7 @@ async function loadRotation(systemName) {
     if (!response.ok) throw new Error(`Failed to load ${systemName}.json`);
     state.rotationData = await response.json();
     state.currentSystem = systemName;
-    document.getElementById('system-badge').textContent = state.rotationData.name + ' ▼';
+    document.getElementById('system-badge').textContent = state.rotationData.name + ' ▾';
 
     // Update active state in dropdown
     document.querySelectorAll('.system-option').forEach(opt => {
@@ -128,7 +133,7 @@ function updateSheetCta() {
 function loadRotationFromData(data) {
   state.rotationData = data;
   state.currentSystem = null;
-  document.getElementById('system-badge').textContent = (data.name || 'Custom') + ' ▼';
+  document.getElementById('system-badge').textContent = (data.name || 'Custom') + ' ▾';
   document.querySelectorAll('.system-option').forEach(opt => opt.classList.remove('active'));
   updateSheetCta();
 }
@@ -167,11 +172,11 @@ function scalePos(pos) {
   };
 }
 
-// Get player color based on state
-function getPlayerColor(player) {
-  if (state.highlightedPlayer === player.id) return COLORS.highlight;
-  if (player.isLibero) return COLORS.libero;
-  return COLORS.player;
+// Token fill + label colour by role (setter and libero are told apart by more than colour: labels S / L)
+function getPlayerColors(player) {
+  if (player.role === 'setter') return { fill: COLORS.setter, text: COLORS.textOnLight };
+  if (player.isLibero) return { fill: COLORS.libero, text: COLORS.textOnLight };
+  return { fill: COLORS.player, text: COLORS.text };
 }
 
 // Create SVG element for a player
@@ -179,19 +184,33 @@ function createPlayerElement(player) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.style.cursor = 'pointer';
 
+  // Dashed selection ring, shown when the player is highlighted
+  const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  ring.setAttribute('r', PLAYER_RADIUS + 4);
+  ring.setAttribute('fill', 'none');
+  ring.setAttribute('stroke', COLORS.select);
+  ring.setAttribute('stroke-width', '1.5');
+  ring.setAttribute('stroke-dasharray', '3 3');
+  ring.style.display = 'none';
+
+  const colors = getPlayerColors(player);
+
   const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
   circle.setAttribute('r', PLAYER_RADIUS);
-  circle.setAttribute('stroke', COLORS.text);
-  circle.setAttribute('stroke-width', '2');
+  circle.setAttribute('fill', colors.fill);
+  circle.setAttribute('stroke', COLORS.ring);
+  circle.setAttribute('stroke-width', '1.5');
 
   const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   text.setAttribute('text-anchor', 'middle');
   text.setAttribute('dominant-baseline', 'central');
-  text.setAttribute('fill', COLORS.text);
-  text.setAttribute('font-size', '11');
+  text.setAttribute('fill', colors.text);
+  text.setAttribute('font-size', '13.5');
   text.setAttribute('font-weight', '700');
+  text.setAttribute('letter-spacing', '0.3');
   text.textContent = player.label;
 
+  g.appendChild(ring);
   g.appendChild(circle);
   g.appendChild(text);
 
@@ -200,7 +219,7 @@ function createPlayerElement(player) {
     updatePlayerColors();
   });
 
-  return { group: g, circle, text };
+  return { group: g, circle, text, ring };
 }
 
 // Initialize player elements
@@ -249,18 +268,19 @@ function updatePlayers(animate = true) {
     const duration = animate ? 500 : 0;
     elements.group.style.transition = `transform ${duration}ms ease-out, opacity ${duration}ms ease-out`;
     elements.group.style.transform = `translate(${scaled.x}px, ${scaled.y}px)`;
-    elements.circle.setAttribute('fill', getPlayerColor(player));
     elements.group.style.opacity = onBench ? '0.5' : '1';
   });
+
+  updatePlayerColors();
 }
 
-// Update player colors only
+// Update the highlight ring only (token colours are fixed by role)
 function updatePlayerColors() {
   if (!state.rotationData) return;
   state.rotationData.players.forEach(player => {
     const elements = playerElements[player.id];
     if (elements) {
-      elements.circle.setAttribute('fill', getPlayerColor(player));
+      elements.ring.style.display = state.highlightedPlayer === player.id ? '' : 'none';
     }
   });
 }

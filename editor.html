@@ -20,7 +20,10 @@
   <meta name="twitter:image" content="https://volleyball-rotations.com/assets/og-card.jpg">
   <link rel="canonical" href="https://volleyball-rotations.com/editor">
   <link rel="icon" type="image/svg+xml" href="assets/logo/vrs-logo-favicon.svg">
-  <link rel="stylesheet" href="css/glass-shared.css?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/glass-shared.css?v=3">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -37,7 +40,7 @@
   </script>
   <style>
     /* ==============================================
-       VOLLEYBALL ROTATION EDITOR — Glassmorphism
+       VOLLEYBALL ROTATION EDITOR — "7a Analyst"
        Tokens from glass-shared.css
        All class names preserved for JS compatibility
        ============================================== */
@@ -65,10 +68,11 @@
     }
 
     .title-bar h1 {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
       margin: 0;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
 
     .title-inputs {
@@ -79,27 +83,26 @@
     }
 
     .input-inline {
-      padding: 6px 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--text-primary);
+      height: 36px;
+      padding: 0 10px;
+      font-size: 15px;
+      font-weight: 700;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--text);
       transition: border-color 0.15s ease;
       min-width: 150px;
     }
 
     .input-inline:focus {
       outline: none;
-      border-color: var(--accent-border);
-      background: var(--glass-bg-hover);
+      border-color: var(--control-line-active);
     }
 
     .input-inline::placeholder {
       color: var(--text-muted);
+      font-weight: 500;
     }
 
     /* === TOP BAR === */
@@ -129,12 +132,9 @@
       flex: 0 0 280px;
       display: flex;
       flex-direction: column;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.1);
-      border-radius: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
       padding: 12px;
       overflow: hidden;
     }
@@ -144,15 +144,15 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
-      padding: 4px;
+      padding: 2px 0;
     }
 
     .panel-title {
-      font-size: 0.9rem;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-secondary);
+      letter-spacing: 1.4px;
+      color: var(--text-muted);
     }
 
     .panel-content {
@@ -164,9 +164,9 @@
 
     /* Custom scrollbar */
     .panel-content::-webkit-scrollbar { width: 6px; }
-    .panel-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 3px; }
-    .panel-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
-    .panel-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+    .panel-content::-webkit-scrollbar-track { background: transparent; }
+    .panel-content::-webkit-scrollbar-thumb { background: var(--control-line); border-radius: 3px; }
+    .panel-content::-webkit-scrollbar-thumb:hover { background: var(--control-line-active); }
 
     /* === PLAYER LIST (LEFT PANEL) === */
     .player-list {
@@ -180,31 +180,32 @@
       align-items: center;
       gap: 8px;
       padding: 8px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
+      background: transparent;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
 
     .player-item:hover {
-      background: var(--glass-bg-hover);
-      border-color: var(--glass-border-hover);
+      border-color: var(--control-line-active);
     }
 
     .player-item.selected {
-      background: var(--accent-bg);
-      border-color: var(--accent-border);
-      box-shadow: var(--accent-glow);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--on-accent);
     }
 
     .player-color {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.4);
+      border: 1.5px solid #ffffff;
       flex-shrink: 0;
     }
+
+    .player-item.selected .player-color { border-color: var(--on-accent); }
 
     .player-info {
       flex: 1;
@@ -212,7 +213,7 @@
     }
 
     .player-name {
-      font-size: 0.85rem;
+      font-size: 14px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -220,9 +221,11 @@
     }
 
     .player-role {
-      font-size: 0.7rem;
+      font-size: 12px;
       color: var(--text-muted);
     }
+
+    .player-item.selected .player-role { color: var(--on-accent); }
 
     .player-actions {
       display: flex;
@@ -234,28 +237,31 @@
       height: 28px;
       padding: 0;
       font-size: 0.9rem;
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
       cursor: pointer;
-      background: var(--glass-bg);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: transparent;
       color: var(--text-secondary);
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .icon-btn:hover {
-      background: var(--glass-bg-hover);
-      color: var(--text-primary);
+      border-color: var(--control-line-active);
+      color: var(--text);
     }
 
     .icon-btn.delete:hover {
-      background: var(--danger-bg);
-      border-color: var(--danger-border);
-      color: var(--danger);
+      background: var(--wrong-tint);
+      border-color: var(--wrong);
+      color: var(--wrong-text);
+    }
+
+    .player-item.selected .icon-btn {
+      border-color: rgba(16, 19, 22, 0.35);
+      color: var(--on-accent);
     }
 
     /* === COURT AREA (CENTER) === */
@@ -263,101 +269,87 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       min-width: 0;
     }
 
-    /* === NAVIGATION BAR === */
+    /* === NAVIGATION BAR — one grid ===
+       Label column + five equal columns, 36px rows. Phases line up by meaning
+       (Base | Serve/Pass | Set | Attack | Switch); unused cells are hatched.
+       Below a hairline: setter grid (cols 2–4), Mark done (col 5), progress (col 6). */
     .nav-bar {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 70px repeat(5, minmax(0, 1fr));
+      row-gap: 8px;
+      align-items: center;
       flex-shrink: 0;
     }
 
-    .nav-phases-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .nav-phases-row,
+    .nav-mode-group { display: contents; }
 
-    .nav-mode-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.15);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 6px 8px;
-    }
-
-    .nav-mode-group.active-mode {
-      border-color: var(--accent-border);
-    }
-
-    .nav-mode-label {
-      font-size: 0.65rem;
+    .nav-mode-label,
+    .setter-label-inline {
+      grid-column: 1;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.4px;
       color: var(--text-muted);
       white-space: nowrap;
     }
 
+    .nav-mode-group.active-mode .nav-mode-label { color: var(--text); }
+
+    /* Each phase row is one joined control */
     .nav-phase-btns {
-      display: flex;
-      gap: 3px;
-      flex-wrap: wrap;
-    }
-
-    /* === NAVIGATION BOTTOM ROW === */
-    .nav-bottom-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .setter-section {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .setter-label-inline {
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      letter-spacing: 0.5px;
-    }
-
-    /* Zone grid */
-    .zone-grid {
+      grid-column: 2 / -1;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      height: 36px;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
     }
+
+    .nav-phase-btns > * + * { border-left: 1px solid var(--control-line); }
+
+    .nav-mode-group.active-mode .nav-phase-btns,
+    .nav-mode-group.active-mode .nav-phase-btns > * + * { border-color: var(--control-line-active); }
+
+    .nav-phase-btns .phase-btn { font-size: 13px; padding: 0 2px; }
+
+    .nav-phase-empty {
+      background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(255, 255, 255, 0.05) 5px 6px);
+    }
+
+    .nav-divider {
+      grid-column: 1 / -1;
+      height: 1px;
+      background: var(--line);
+      margin: 2px 0;
+    }
+
+    .nav-bar .zone-grid { grid-column: 2 / 5; }
+    .nav-bar .zone-btn { height: 36px; padding: 0; min-width: 0; }
 
     /* Mark Done button */
     .mark-done-btn {
-      width: 42px;
+      grid-column: 5;
       align-self: stretch;
-      font-size: 1.1rem;
+      margin-left: 6px;
+      font-size: 18px;
       font-weight: 700;
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
       cursor: pointer;
-      transition: all 0.2s ease;
-      background: var(--glass-bg);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+      background: transparent;
       color: var(--text-secondary);
       padding: 0;
       display: flex;
@@ -366,44 +358,65 @@
     }
 
     .mark-done-btn:hover {
-      background: var(--glass-bg-hover);
-      color: var(--text-primary);
+      border-color: var(--control-line-active);
+      color: var(--text);
     }
 
-    .mark-done-btn.is-done {
-      background: var(--success-bg);
-      border-color: var(--success-border);
-      color: var(--success);
-      box-shadow: var(--success-glow);
-    }
-
+    .mark-done-btn.is-done,
     .mark-done-btn.is-done:hover {
-      background: rgba(46, 204, 113, 0.28);
+      background: var(--correct-tint);
+      border-color: var(--correct);
+      color: var(--correct-text);
+    }
+
+    .progress-block {
+      grid-column: 6;
+      min-width: 0;
+      padding-left: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 6px;
     }
 
     .progress-text {
-      font-size: 0.8rem;
+      font-size: 18px;
       font-weight: 700;
-      color: var(--text-secondary);
+      color: var(--text);
       white-space: nowrap;
-      margin-left: auto;
       font-variant-numeric: tabular-nums;
     }
 
-    .progress-text.complete {
-      color: var(--success);
+    .progress-total { color: var(--text-muted); font-weight: 600; }
+
+    .progress-text.complete,
+    .progress-text.complete .progress-total { color: var(--correct-text); }
+
+    .progress-track {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: var(--control-line);
     }
+
+    .progress-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .progress-block:has(.progress-text.complete) .progress-fill { background: var(--correct); }
 
     .court-wrapper {
       flex: 1;
       min-height: 0;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.1);
-      border-radius: 18px;
-      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -415,7 +428,6 @@
       max-height: 100%;
       width: auto;
       height: auto;
-      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.3));
     }
 
     /* === PHASE CONFIGURATION (RIGHT PANEL) === */
@@ -432,11 +444,11 @@
     }
 
     .mode-label {
-      font-size: 0.75rem;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      color: var(--text-secondary);
-      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      letter-spacing: 1.4px;
     }
 
     .phase-tags {
@@ -446,16 +458,16 @@
     }
 
     .phase-tag {
-      padding: 6px 10px;
-      font-size: 0.75rem;
+      padding: 6px 8px 6px 10px;
+      font-size: 13px;
       font-weight: 600;
-      border-radius: 8px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      background: transparent;
+      border: 1px solid var(--control-line);
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: background 0.15s ease;
     }
 
     .phase-tag button {
@@ -463,20 +475,20 @@
       height: 16px;
       padding: 0;
       border: none;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      color: var(--text-primary);
+      border-radius: 2px;
+      background: var(--control-line);
+      color: var(--text);
       font-size: 0.65rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .phase-tag button:hover {
-      background: var(--danger-bg);
-      color: var(--danger);
+      background: var(--wrong-tint);
+      color: var(--wrong-text);
     }
 
     /* Completion dots in phase tags */
@@ -490,30 +502,29 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.15);
+      background: var(--control-line);
     }
 
     .completion-dot.done {
-      background: var(--success);
+      background: var(--correct);
     }
 
     .add-phase-btn {
       padding: 6px 10px;
-      font-size: 0.75rem;
+      font-size: 13px;
       font-weight: 600;
-      border: 1px dashed var(--glass-border);
-      border-radius: 8px;
+      border: 1px dashed var(--control-line);
+      border-radius: var(--radius);
       background: transparent;
       color: var(--text-secondary);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, color 0.15s ease;
       align-self: flex-start;
     }
 
     .add-phase-btn:hover {
-      border-color: var(--accent-border);
-      color: var(--accent);
-      background: var(--accent-bg);
+      border-color: var(--control-line-active);
+      color: var(--text);
     }
 
     /* === POSITION INFO === */
@@ -521,7 +532,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      font-size: 0.85rem;
+      font-size: 14px;
     }
 
     .info-row {
@@ -529,52 +540,56 @@
       justify-content: space-between;
       align-items: center;
       padding: 6px 8px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
     }
 
     .info-label {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.2px;
     }
 
     .info-value {
-      font-weight: 700;
-      font-family: 'Courier New', monospace;
-      color: var(--accent);
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text);
     }
 
-    /* === VALIDATION PANEL === */
+    /* === VALIDATION PANEL — hairline box + 3px left rule in the status colour === */
     .validation-panel {
       display: none;
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 0.78rem;
+      border: 1px solid var(--line);
+      border-left-width: 3px;
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 500;
       line-height: 1.4;
       flex-shrink: 0;
     }
 
     .validation-panel.has-violations {
       display: block;
-      background: var(--danger-bg);
-      border: 1px solid var(--danger-border);
+      border-color: var(--wrong-line);
+      border-left-color: var(--wrong);
     }
 
     .validation-panel.valid {
       display: block;
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
-      color: var(--success);
+      border-color: var(--correct-line);
+      border-left-color: var(--correct);
+      color: var(--correct-text);
       font-weight: 600;
     }
 
     .validation-panel.info {
       display: block;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
+      border-left-color: var(--control-line-active);
       color: var(--text-muted);
     }
 
@@ -586,15 +601,16 @@
     }
 
     .validation-rule {
-      font-weight: 700;
-      color: var(--danger);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--wrong-text);
       white-space: nowrap;
-      font-size: 0.72rem;
+      font-size: 11px;
     }
 
     .validation-msg {
       flex: 1;
-      color: var(--text-secondary);
+      color: var(--text-body);
     }
 
     /* === DRAG AND DROP STYLES === */
@@ -608,13 +624,12 @@
     }
 
     .draggable-player.dragging {
-      opacity: 0.7;
+      opacity: 0.85;
       cursor: grabbing;
     }
 
-    .draggable-player:hover circle {
-      stroke: rgba(255,255,255,0.8);
-      stroke-width: 3;
+    .draggable-player:hover .player-token {
+      stroke-width: 2.5;
     }
 
     /* === MODAL STYLES === */
@@ -625,9 +640,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.6);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -638,20 +651,18 @@
     }
 
     .modal {
-      background: rgba(20, 32, 46, 0.95);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border);
-      border-radius: 18px;
+      background: var(--surface);
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
       padding: 20px;
       max-width: 400px;
       width: 90%;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
     }
 
     .modal-title {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
       margin-bottom: 16px;
     }
 
@@ -661,37 +672,36 @@
 
     .form-group label {
       display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.2px;
       margin-bottom: 6px;
-      color: var(--text-secondary);
+      color: var(--text-muted);
     }
 
     .form-group input,
     .form-group select {
       width: 100%;
       padding: 8px 10px;
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
-      background: var(--glass-bg);
-      color: var(--text-primary);
-      font-size: 0.85rem;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
       transition: border-color 0.15s ease;
     }
 
     .form-group input:focus,
     .form-group select:focus {
       outline: none;
-      border-color: var(--accent-border);
-      background: var(--glass-bg-hover);
+      border-color: var(--control-line-active);
     }
 
     /* Fix: Select dropdown options visible on Windows/light OS backgrounds */
     select option {
-      background: #2c3e50;
-      color: #ffffff;
+      background: var(--surface);
+      color: var(--text);
     }
 
     .form-group input::placeholder {
@@ -714,6 +724,10 @@
     .checkbox-group label {
       margin: 0;
       text-transform: none;
+      letter-spacing: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
       cursor: pointer;
     }
 
@@ -736,25 +750,25 @@
 
     .library-item {
       padding: 12px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
+      background: transparent;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
 
     .library-item:hover {
-      background: var(--glass-bg-hover);
-      border-color: var(--accent-border);
+      background: var(--surface-hover);
+      border-color: var(--control-line-active);
     }
 
     .library-item-name {
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 15px;
     }
 
     .library-item-desc {
-      font-size: 0.75rem;
+      font-size: 13px;
       color: var(--text-muted);
       margin-top: 2px;
     }
@@ -769,23 +783,22 @@
     .menu-btn {
       width: 36px;
       height: 36px;
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--text-primary);
-      font-size: 1.2rem;
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 16px;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s ease;
+      transition: border-color 0.15s ease, color 0.15s ease;
     }
 
     .menu-btn:hover {
-      background: var(--glass-bg-hover);
-      border-color: var(--glass-border-hover);
+      border-color: var(--control-line-active);
+      color: var(--text);
     }
 
     .menu-dropdown {
@@ -794,14 +807,11 @@
       top: 100%;
       right: 0;
       margin-top: 4px;
-      background: rgba(20, 32, 46, 0.95);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border);
-      border-radius: 14px;
-      padding: 6px;
+      background: var(--surface);
+      border: 1px solid var(--control-line);
+      border-radius: var(--radius);
+      padding: 4px;
       min-width: 170px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
       z-index: 100;
     }
 
@@ -814,25 +824,25 @@
       width: 100%;
       padding: 10px 12px;
       border: none;
-      border-radius: 10px;
+      border-radius: 2px;
       background: transparent;
       color: var(--text-secondary);
-      font-size: 0.82rem;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
       text-align: left;
-      transition: background 0.1s ease;
+      transition: background 0.1s ease, color 0.1s ease;
     }
 
     .menu-item:hover {
-      background: var(--glass-bg-hover);
-      color: var(--text-primary);
+      background: var(--surface-hover);
+      color: var(--text);
     }
 
-    .menu-item .mi-icon { opacity: 0.5; width: 20px; text-align: center; flex-shrink: 0; }
+    .menu-item .mi-icon { opacity: 0.6; width: 20px; text-align: center; flex-shrink: 0; }
     .menu-item.primary { color: var(--accent); font-weight: 700; }
-    .menu-item.danger { color: var(--danger); }
-    .menu-sep { height: 1px; background: var(--glass-border); margin: 4px 6px; }
+    .menu-item.danger { color: var(--wrong-text); }
+    .menu-sep { height: 1px; background: var(--line); margin: 4px 0; }
 
     /* === MOBILE TAB LAYOUT === */
     .mobile-tabs {
@@ -841,42 +851,36 @@
 
     /* === RESPONSIVE DESIGN === */
     @media (max-width: 900px) {
+      /* Underlined tabs: 2px yellow underline on the active tab */
       .mobile-tabs {
         display: flex;
-        gap: 4px;
         flex-shrink: 0;
-        border-radius: 14px;
-        padding: 4px;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid var(--glass-border);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
       }
 
       .mobile-tab {
         flex: 1;
-        padding: 11px 8px;
-        font-size: 0.9rem;
+        padding: 10px 0 9px;
+        margin-bottom: -1px;
+        font-size: 15px;
         font-weight: 600;
-        border: 1px solid transparent;
-        border-radius: 11px;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
         cursor: pointer;
-        transition: all 0.25s ease;
+        transition: color 0.15s ease, border-color 0.15s ease;
         background: transparent;
-        color: var(--text-secondary);
-        letter-spacing: 0.3px;
+        color: var(--text-muted);
       }
 
       .mobile-tab.active {
-        background: var(--glass-bg-active);
-        border-color: var(--glass-border-active);
-        color: var(--text-primary);
-        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        color: var(--text);
+        font-weight: 700;
+        border-bottom-color: var(--accent);
       }
 
       .mobile-tab:not(.active):hover {
-        color: var(--text-primary);
-        background: rgba(255,255,255,0.05);
+        color: var(--text);
       }
 
       /* Hide inactive panels on mobile */
@@ -917,35 +921,9 @@
         aspect-ratio: 300 / 320;
       }
 
-      /* Compact nav bar on mobile */
-      .nav-bar {
-        padding: 6px 8px;
-        gap: 4px;
-      }
-
-      .phase-btn {
-        padding: 6px 6px;
-        font-size: 0.7rem;
-      }
-
-      .zone-btn {
-        padding: 4px 8px;
-        font-size: 0.8rem;
-        min-width: 34px;
-      }
-
-      .mark-done-btn {
-        width: 34px;
-        font-size: 0.95rem;
-      }
-
-      .nav-mode-group {
-        padding: 4px 6px;
-      }
-
       .title-bar {
-        gap: 6px;
-        padding: 4px 0;
+        gap: 8px;
+        padding: 2px 0;
         flex-wrap: nowrap;
       }
 
@@ -965,8 +943,6 @@
       .input-inline {
         flex: 1;
         min-width: 80px;
-        font-size: 0.8rem;
-        padding: 6px 8px;
       }
 
       .menu-wrapper {
@@ -976,23 +952,12 @@
       .top-bar {
         display: none;
       }
-
-      .nav-phases-row {
-        flex-direction: column;
-        gap: 4px;
-      }
     }
 
     @media (max-height: 600px) {
-      .phase-btn {
-        padding: 6px 8px;
-        font-size: 0.75rem;
-      }
-
-      .zone-btn {
-        padding: 4px 8px;
-        font-size: 0.8rem;
-      }
+      .nav-bar { row-gap: 6px; padding: 8px 10px; }
+      .nav-phase-btns { height: 32px; }
+      .nav-bar .zone-btn { height: 32px; }
     }
 
     /* === UTILITY CLASSES === */
@@ -1093,22 +1058,22 @@
         <!-- Navigation Bar -->
         <div class="nav-bar">
           <div class="nav-phases-row" id="nav-phases">
-            <!-- Dynamically rendered: Serving phases + Receiving phases -->
+            <!-- Dynamically rendered: Serving + Receiving rows (label + joined phase control) -->
           </div>
-          <div class="nav-bottom-row">
-            <div class="setter-section">
-              <span class="setter-label-inline">SETTER</span>
-              <div class="zone-grid" id="zone-grid">
-                <button class="zone-btn" data-zone="4">4</button>
-                <button class="zone-btn" data-zone="3">3</button>
-                <button class="zone-btn" data-zone="2">2</button>
-                <button class="zone-btn" data-zone="5">5</button>
-                <button class="zone-btn" data-zone="6">6</button>
-                <button class="zone-btn active" data-zone="1">1</button>
-              </div>
-              <button class="mark-done-btn" id="btn-mark-done" title="Mark current combination as done">✓</button>
-            </div>
+          <div class="nav-divider" aria-hidden="true"></div>
+          <span class="setter-label-inline">SETTER</span>
+          <div class="zone-grid" id="zone-grid">
+            <button class="zone-btn" data-zone="4">4</button>
+            <button class="zone-btn" data-zone="3">3</button>
+            <button class="zone-btn" data-zone="2">2</button>
+            <button class="zone-btn" data-zone="5">5</button>
+            <button class="zone-btn" data-zone="6">6</button>
+            <button class="zone-btn active" data-zone="1">1</button>
+          </div>
+          <button class="mark-done-btn" id="btn-mark-done" title="Mark current combination as done" aria-label="Mark current combination as done">✓</button>
+          <div class="progress-block">
             <span class="progress-text" id="progress-text">0 / 0</span>
+            <span class="progress-track" aria-hidden="true"><span class="progress-fill" id="progress-fill"></span></span>
           </div>
         </div>
 
@@ -1119,69 +1084,46 @@
           <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
           <svg class="court-svg" id="editor-court" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
             <defs>
-              <linearGradient id="courtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#e8844a" />
-                <stop offset="50%" style="stop-color:#d4753a" />
-                <stop offset="100%" style="stop-color:#e8844a" />
-              </linearGradient>
-              <pattern id="netPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-                <rect width="8" height="8" fill="#333"/>
-                <rect x="0" y="0" width="4" height="4" fill="#444"/>
-                <rect x="4" y="4" width="4" height="4" fill="#444"/>
+              <pattern id="netMesh" width="6" height="6" patternUnits="userSpaceOnUse">
+                <path d="M0 0 L6 0 M0 0 L0 6" stroke="#ffffff" stroke-opacity="0.4" stroke-width="0.7"/>
               </pattern>
-              <filter id="playerShadow" x="-50%" y="-50%" width="200%" height="200%">
-                <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.4"/>
-              </filter>
-              <filter id="playerGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f1c40f" flood-opacity="0.6"/>
-              </filter>
-              <filter id="courtShadow" x="-5%" y="-5%" width="110%" height="110%">
-                <feDropShadow dx="3" dy="4" stdDeviation="8" flood-opacity="0.35"/>
-              </filter>
             </defs>
 
-            <!-- Court surround -->
-            <rect x="0" y="0" width="300" height="320" fill="rgba(74, 144, 164, 0.5)" rx="10"/>
-            <rect x="0" y="0" width="300" height="320" fill="rgba(255,255,255,0.05)" rx="10"/>
+            <!-- Court surround (free zone) -->
+            <rect x="0" y="0" width="300" height="320" fill="#2f5d6b"/>
 
-            <!-- Net area -->
-            <rect x="25" y="8" width="250" height="24" fill="url(#netPattern)" rx="3"/>
-            <rect x="25" y="8" width="250" height="24" fill="rgba(255,255,255,0.06)" rx="3"/>
-            <text x="150" y="24" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-weight="600" letter-spacing="1">NET</text>
-
-            <!-- Net poles -->
-            <rect x="21" y="6" width="5" height="28" fill="rgba(80,80,90,0.8)" rx="2"/>
-            <rect x="274" y="6" width="5" height="28" fill="rgba(80,80,90,0.8)" rx="2"/>
+            <!-- Net: dark band, thin white mesh, white top tape -->
+            <rect x="25" y="12" width="250" height="18" fill="#0b0f13"/>
+            <rect x="25" y="14.5" width="250" height="15.5" fill="url(#netMesh)"/>
+            <rect x="25" y="12" width="250" height="2.5" fill="#ffffff"/>
+            <text x="150" y="25.5" text-anchor="middle" fill="#ffffff" font-size="8.5" font-weight="700" letter-spacing="3">NET</text>
 
             <!-- Court surface -->
-            <g filter="url(#courtShadow)">
-              <rect x="25" y="32" width="250" height="250" fill="url(#courtGradient)" rx="4"/>
-            </g>
-            <rect x="25" y="32" width="250" height="250" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2.5" rx="4"/>
+            <rect x="25" y="32" width="250" height="250" fill="#d8703b" stroke="#ffffff" stroke-width="2.5"/>
 
             <!-- 3m Attack line -->
-            <line x1="25" y1="115" x2="275" y2="115" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
-            <line x1="8" y1="115" x2="25" y2="115" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="4,3"/>
-            <line x1="275" y1="115" x2="292" y2="115" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="4,3"/>
+            <line x1="25" y1="115" x2="275" y2="115" stroke="#ffffff" stroke-width="2"/>
+            <line x1="8" y1="115" x2="25" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="275" y1="115" x2="292" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
 
             <!-- Center line at net -->
-            <line x1="8" y1="32" x2="292" y2="32" stroke="rgba(255,255,255,0.9)" stroke-width="3.5"/>
+            <line x1="8" y1="32" x2="292" y2="32" stroke="#ffffff" stroke-width="2.5"/>
 
             <!-- Zone labels -->
             <g id="zone-labels">
-              <text x="67" y="78" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">4</text>
-              <text x="150" y="78" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">3</text>
-              <text x="233" y="78" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">2</text>
-              <text x="67" y="210" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">5</text>
-              <text x="150" y="210" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">6</text>
-              <text x="233" y="210" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">1</text>
+              <text x="67" y="78" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">4</text>
+              <text x="150" y="78" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">3</text>
+              <text x="233" y="78" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">2</text>
+              <text x="67" y="210" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">5</text>
+              <text x="150" y="210" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">6</text>
+              <text x="233" y="210" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">1</text>
             </g>
 
             <!-- Bench area -->
-            <rect x="3" y="200" width="18" height="100" fill="rgba(0,0,0,0.15)" rx="4"/>
+            <rect x="3" y="200" width="18" height="100" fill="#000000" fill-opacity="0.15"/>
 
             <!-- Players container -->
-            <g id="editor-players" filter="url(#playerShadow)"></g>
+            <g id="editor-players"></g>
           </svg>
         </div>
       </div>
@@ -1340,7 +1282,7 @@
     </div>
   </div>
 
-  <script src="js/editor.js?v=4"></script>
+  <script src="js/editor.js?v=5"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');

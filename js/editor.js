@@ -11,12 +11,21 @@ const COURT_OFFSET_Y = 32;
 const PLAYER_RADIUS = 18;
 const BENCH_X = 12;
 
+// Token colours: dark token with a white ring; setter yellow, libero white.
+// Yellow (#ffc93c = --accent) also marks the selected / dragged player, as a dashed ring.
 const COLORS = {
-  player: '#efa581',
-  highlight: '#f1c40f',
-  libero: '#e74c3c',
-  text: '#f5f5f5'
+  player: '#101316',
+  setter: '#ffc93c',
+  libero: '#ffffff',
+  ring: '#ffffff',
+  text: '#ffffff',
+  textOnLight: '#101316',
+  select: '#ffc93c'
 };
+
+// Nav grid: phase columns line up by meaning — Base | Serve/Pass | Set | Attack | Switch
+const PHASE_SLOTS = { base: 0, serve: 1, pass: 1, set: 2, attack: 3, switch: 4 };
+const NAV_SLOT_COUNT = 5;
 
 // Default rotation template
 const DEFAULT_ROTATION = {
@@ -183,6 +192,22 @@ function removeCompletionForPhase(mode, phase) {
 // NAVIGATION (Phase Buttons + Zone Grid)
 // ==========================================
 
+// Place a mode's phases into the five nav columns; empty cells are null.
+// A custom set that doesn't fit the standard columns falls back to plain order.
+function layoutPhaseSlots(phases) {
+  const slots = new Array(NAV_SLOT_COUNT).fill(null);
+  for (const phase of phases) {
+    const i = PHASE_SLOTS[phase];
+    if (i === undefined || slots[i] !== null) {
+      const seq = phases.slice();
+      while (seq.length < NAV_SLOT_COUNT) seq.push(null);
+      return seq;
+    }
+    slots[i] = phase;
+  }
+  return slots;
+}
+
 // Render the full navigation bar (phase buttons + zone grid)
 function renderNavigation() {
   const container = document.getElementById('nav-phases');
@@ -203,7 +228,19 @@ function renderNavigation() {
     btns.className = 'nav-phase-btns';
 
     const phases = state.rotation.phases[mode] || [];
-    phases.forEach(phase => {
+    const slots = layoutPhaseSlots(phases);
+    if (slots.length > NAV_SLOT_COUNT) {
+      btns.style.gridTemplateColumns = `repeat(${slots.length}, minmax(0, 1fr))`;
+    }
+    slots.forEach(phase => {
+      if (!phase) {
+        const empty = document.createElement('span');
+        empty.className = 'nav-phase-empty';
+        empty.setAttribute('aria-hidden', 'true');
+        btns.appendChild(empty);
+        return;
+      }
+
       const btn = document.createElement('button');
       btn.className = 'phase-btn';
       btn.dataset.mode = mode;
@@ -278,8 +315,13 @@ function updateNavVisuals() {
   // Update progress counter
   const { done, total } = getCompletionCount();
   const progressEl = document.getElementById('progress-text');
-  progressEl.textContent = `${done} / ${total}`;
+  const totalEl = document.createElement('span');
+  totalEl.className = 'progress-total';
+  totalEl.textContent = ` / ${total}`;
+  progressEl.replaceChildren(String(done), totalEl);
   progressEl.classList.toggle('complete', done === total && total > 0);
+  const fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = total > 0 ? `${(done / total) * 100}%` : '0%';
 }
 
 // ==========================================
@@ -520,14 +562,12 @@ function renderValidation(overridePlayer, overridePos) {
   }
 }
 
-// Get player color
-function getPlayerColor(playerId) {
+// Token fill + label colour by role (setter and libero are told apart by more than colour: their labels)
+function getPlayerColors(playerId) {
   const player = state.rotation.players.find(p => p.id === playerId);
-  if (!player) return COLORS.player;
-
-  if (player.isLibero) return COLORS.libero;
-  if (state.selectedPlayer === playerId) return COLORS.highlight;
-  return COLORS.player;
+  if (player && player.role === 'setter') return { fill: COLORS.setter, text: COLORS.textOnLight };
+  if (player && player.isLibero) return { fill: COLORS.libero, text: COLORS.textOnLight };
+  return { fill: COLORS.player, text: COLORS.text };
 }
 
 // ==========================================
@@ -548,7 +588,7 @@ function renderPlayerList() {
 
     const color = document.createElement('div');
     color.className = 'player-color';
-    color.style.background = getPlayerColor(player.id);
+    color.style.background = getPlayerColors(player.id).fill;
 
     const info = document.createElement('div');
     info.className = 'player-info';
@@ -676,17 +716,22 @@ function renderCourtPlayers() {
     g.classList.add('draggable-player');
     g.dataset.playerId = player.id;
 
+    const colors = getPlayerColors(player.id);
+
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.classList.add('player-token');
     circle.setAttribute('r', PLAYER_RADIUS);
-    circle.setAttribute('stroke', COLORS.text);
-    circle.setAttribute('stroke-width', '2');
+    circle.setAttribute('fill', colors.fill);
+    circle.setAttribute('stroke', COLORS.ring);
+    circle.setAttribute('stroke-width', '1.5');
 
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('dominant-baseline', 'central');
-    text.setAttribute('fill', COLORS.text);
-    text.setAttribute('font-size', '11');
+    text.setAttribute('fill', colors.text);
+    text.setAttribute('font-size', '13.5');
     text.setAttribute('font-weight', '700');
+    text.setAttribute('letter-spacing', '0.3');
     text.textContent = player.label;
 
     // Larger touch target on mobile
@@ -695,6 +740,16 @@ function renderCourtPlayers() {
     hitArea.setAttribute('fill', 'transparent');
     hitArea.setAttribute('stroke', 'none');
     g.appendChild(hitArea);
+
+    // Dashed selection ring: the selected player, including while being dragged
+    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    ring.setAttribute('r', PLAYER_RADIUS + 4);
+    ring.setAttribute('fill', 'none');
+    ring.setAttribute('stroke', COLORS.select);
+    ring.setAttribute('stroke-width', '1.5');
+    ring.setAttribute('stroke-dasharray', '3 3');
+    ring.style.display = state.selectedPlayer === player.id ? '' : 'none';
+    g.appendChild(ring);
 
     g.appendChild(circle);
     g.appendChild(text);
@@ -707,8 +762,6 @@ function renderCourtPlayers() {
       g.setAttribute('transform', 'translate(150, 157)');
       g.style.opacity = '0.5';
     }
-
-    circle.setAttribute('fill', getPlayerColor(player.id));
 
     g.style.pointerEvents = 'all';
     g.style.cursor = 'grab';
@@ -730,7 +783,7 @@ function renderCourtPlayers() {
     });
 
     container.appendChild(g);
-    playerElements[player.id] = { group: g, circle, text };
+    playerElements[player.id] = { group: g, circle, text, ring };
   });
 
   renderValidation();
@@ -771,10 +824,7 @@ function selectPlayer(playerId) {
   state.selectedPlayer = state.selectedPlayer === playerId ? null : playerId;
 
   Object.entries(playerElements).forEach(([id, elements]) => {
-    const player = state.rotation.players.find(p => p.id === id);
-    if (player) {
-      elements.circle.setAttribute('fill', getPlayerColor(id));
-    }
+    elements.ring.style.display = state.selectedPlayer === id ? '' : 'none';
   });
 
   document.querySelectorAll('.player-item').forEach(item => {
@@ -1254,7 +1304,7 @@ async function openLibraryModal() {
     });
 
   } catch (error) {
-    list.innerHTML = '<p style="color: #e74c3c;">Failed to load rotation library. Make sure the app is served via a web server (not opened as a local file).</p>';
+    list.innerHTML = '<p style="color: var(--wrong-text);">Failed to load rotation library. Make sure the app is served via a web server (not opened as a local file).</p>';
     console.error('Library load error:', error);
   }
 }

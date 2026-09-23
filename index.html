@@ -21,8 +21,11 @@
   <meta name="twitter:image" content="https://volleyball-rotations.com/assets/og-card.jpg">
   <link rel="canonical" href="https://volleyball-rotations.com">
   <link rel="icon" type="image/svg+xml" href="assets/logo/vrs-logo-favicon.svg">
-  <link rel="stylesheet" href="css/glass-shared.css?v=2">
-  <link rel="stylesheet" href="css/styles.css?v=6">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/glass-shared.css?v=3">
+  <link rel="stylesheet" href="css/styles.css?v=7">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -88,84 +91,61 @@
       </div>
     </div>
 
-    <!-- Mode toggle -->
-    <div class="top-bar">
-      <div class="mode-toggle">
-        <button class="mode-btn active" data-mode="serving">Serving</button>
-        <button class="mode-btn" data-mode="receiving">Receiving</button>
-      </div>
-    </div>
-
     <!-- Court area -->
     <div class="court-area">
       <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
       <div class="court-container">
         <svg class="court-svg" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
           <defs>
-            <linearGradient id="courtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style="stop-color:#e8844a" />
-              <stop offset="50%" style="stop-color:#d4753a" />
-              <stop offset="100%" style="stop-color:#e8844a" />
-            </linearGradient>
-            <pattern id="netPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-              <rect width="8" height="8" fill="#333"/>
-              <rect x="0" y="0" width="4" height="4" fill="#444"/>
-              <rect x="4" y="4" width="4" height="4" fill="#444"/>
+            <pattern id="netMesh" width="6" height="6" patternUnits="userSpaceOnUse">
+              <path d="M0 0 L6 0 M0 0 L0 6" stroke="#ffffff" stroke-opacity="0.4" stroke-width="0.7"/>
             </pattern>
-            <filter id="playerShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.4"/>
-            </filter>
-            <filter id="playerGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f1c40f" flood-opacity="0.6"/>
-            </filter>
-            <filter id="courtShadow" x="-5%" y="-5%" width="110%" height="110%">
-              <feDropShadow dx="3" dy="4" stdDeviation="8" flood-opacity="0.35"/>
-            </filter>
           </defs>
 
-          <!-- Court surround -->
-          <rect x="0" y="0" width="300" height="320" fill="rgba(74, 144, 164, 0.5)" rx="10"/>
-          <rect x="0" y="0" width="300" height="320" fill="rgba(255,255,255,0.05)" rx="10"/>
+          <!-- Court surround (free zone) -->
+          <rect x="0" y="0" width="300" height="320" fill="#2f5d6b"/>
 
-          <!-- Net area -->
-          <rect x="25" y="8" width="250" height="24" fill="url(#netPattern)" rx="3"/>
-          <rect x="25" y="8" width="250" height="24" fill="rgba(255,255,255,0.06)" rx="3"/>
-          <text x="150" y="24" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-weight="600" letter-spacing="1">NET</text>
-
-          <!-- Net poles -->
-          <rect x="21" y="6" width="5" height="28" fill="rgba(80,80,90,0.8)" rx="2"/>
-          <rect x="274" y="6" width="5" height="28" fill="rgba(80,80,90,0.8)" rx="2"/>
+          <!-- Net: dark band, thin white mesh, white top tape -->
+          <rect x="25" y="12" width="250" height="18" fill="#0b0f13"/>
+          <rect x="25" y="14.5" width="250" height="15.5" fill="url(#netMesh)"/>
+          <rect x="25" y="12" width="250" height="2.5" fill="#ffffff"/>
+          <text x="150" y="25.5" text-anchor="middle" fill="#ffffff" font-size="8.5" font-weight="700" letter-spacing="3">NET</text>
 
           <!-- Court surface -->
-          <g filter="url(#courtShadow)">
-            <rect x="25" y="32" width="250" height="250" fill="url(#courtGradient)" rx="4"/>
-          </g>
-          <rect x="25" y="32" width="250" height="250" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2.5" rx="4"/>
+          <rect x="25" y="32" width="250" height="250" fill="#d8703b" stroke="#ffffff" stroke-width="2.5"/>
 
           <!-- 3m Attack line -->
-          <line x1="25" y1="115" x2="275" y2="115" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
-          <line x1="8" y1="115" x2="25" y2="115" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="4,3"/>
-          <line x1="275" y1="115" x2="292" y2="115" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="4,3"/>
+          <line x1="25" y1="115" x2="275" y2="115" stroke="#ffffff" stroke-width="2"/>
+          <line x1="8" y1="115" x2="25" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <line x1="275" y1="115" x2="292" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
 
           <!-- Center line at net -->
-          <line x1="8" y1="32" x2="292" y2="32" stroke="rgba(255,255,255,0.9)" stroke-width="3.5"/>
+          <line x1="8" y1="32" x2="292" y2="32" stroke="#ffffff" stroke-width="2.5"/>
 
           <!-- Zone labels -->
           <g id="zone-labels">
-            <text x="67" y="78" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">4</text>
-            <text x="150" y="78" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">3</text>
-            <text x="233" y="78" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">2</text>
-            <text x="67" y="210" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">5</text>
-            <text x="150" y="210" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">6</text>
-            <text x="233" y="210" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="24" font-weight="700">1</text>
+            <text x="67" y="78" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">4</text>
+            <text x="150" y="78" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">3</text>
+            <text x="233" y="78" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">2</text>
+            <text x="67" y="210" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">5</text>
+            <text x="150" y="210" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">6</text>
+            <text x="233" y="210" text-anchor="middle" fill="#ffffff" fill-opacity="0.2" font-size="24" font-weight="700">1</text>
           </g>
 
           <!-- Bench area -->
-          <rect x="3" y="200" width="18" height="100" fill="rgba(0,0,0,0.15)" rx="4"/>
+          <rect x="3" y="200" width="18" height="100" fill="#000000" fill-opacity="0.15"/>
 
           <!-- Players container -->
-          <g id="players" filter="url(#playerShadow)"></g>
+          <g id="players"></g>
         </svg>
+      </div>
+
+      <!-- Mode toggle: court → which side of the rally → which moment of it -->
+      <div class="top-bar">
+        <div class="mode-toggle">
+          <button class="mode-btn active" data-mode="serving">Serving</button>
+          <button class="mode-btn" data-mode="receiving">Receiving</button>
+        </div>
       </div>
 
       <div class="phase-controls">
@@ -254,7 +234,7 @@
   </aside>
   <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
-  <script src="js/app.js?v=6"></script>
+  <script src="js/app.js?v=7"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');

@@ -41,6 +41,29 @@ function getCategoryBadgeText(cat) {
   return { general: 'General', rotations: 'Rotations', full: 'Mixed' }[cat] || cat;
 }
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Optional illustration per question, shown on a light panel above the answers:
+//   "image": { "src": "assets/quiz/q7.svg", "alt": "Referee signal", "credit": "Illustration: …" }
+// (a plain "image": "path" string also works). Use original artwork only — FIVB rulebook
+// illustrations are copyrighted.
+function buildFigure(image) {
+  const img = typeof image === 'string' ? { src: image } : image;
+  if (!img || !img.src) return '';
+  const alt = img.alt || 'Question illustration';
+  const credit = img.credit ? `<figcaption class="question-credit">${escapeHtml(img.credit)}</figcaption>` : '';
+  return `<figure class="question-figure"><img src="${escapeHtml(img.src)}" alt="${escapeHtml(alt)}">${credit}</figure>`;
+}
+
+// Four short answers sit in a 2×2 grid on phones too
+const SHORT_OPTION_MAX = 20;
+
 function showScreen(id) {
   ['category-screen', 'quiz-screen', 'results-screen'].forEach(s => {
     document.getElementById(s).style.display = s === id ? 'block' : 'none';
@@ -127,14 +150,17 @@ function renderQuestion(index) {
     <p class="question-text">${q.question}</p>
   `;
 
-  // Build options — 2×2 grid for MC, side-by-side for T/F
+  if (q.image) html += buildFigure(q.image);
+
+  // Build options — 2×2 grid for MC (stacked on phones unless short), side-by-side for T/F
   if (q.type === 'truefalse') {
     html += '<div class="options-tf">';
     const opts = [{ label: 'True', value: true }, { label: 'False', value: false }];
     opts.forEach(opt => { html += buildOptionBtn(opt.value, opt.label, null, q, ans, locked); });
     html += '</div>';
   } else {
-    html += '<div class="options-grid">';
+    const short = q.options.every(o => String(o).length <= SHORT_OPTION_MAX);
+    html += `<div class="options-grid${short ? ' options-short' : ''}">`;
     q.options.forEach((text, i) => { html += buildOptionBtn(i, text, OPTION_LABELS[i], q, ans, locked); });
     html += '</div>';
   }
@@ -149,7 +175,7 @@ function renderQuestion(index) {
     html += `
       <div class="explanation">
         <div class="explanation-header">
-          <span class="result-icon ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '&#10004;' : '&#10008;'}</span>
+          <span class="result-icon ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '&#10003;' : '&#10005;'}</span>
           <span class="result-label ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? 'Correct!' : 'Incorrect'}</span>
         </div>
         <p>${q.explanation}</p>
@@ -327,6 +353,7 @@ function showResults() {
   });
 
   if (tier) {
+    loadDiplomaFonts();   // warm up so the download is instant
     document.getElementById('download-diploma-btn').addEventListener('click', generateDiploma);
     document.getElementById('diploma-name').addEventListener('input', () => {
       document.getElementById('diploma-name').style.borderColor = '';
@@ -335,7 +362,76 @@ function showResults() {
 }
 
 // ── PDF Diploma ───────────────────────────────────────────────
-function generateDiploma() {
+// Ivory certificate: guilloche border, condensed title, the name in a serif italic
+// on a signature line, and a foil seal with ribbons in the tier's metal colour.
+
+// Fonts (OFL, subset to Latin) — fetched only when a diploma is made.
+const DIPLOMA_FONTS = [
+  { file: 'BarlowSemiCondensed-SemiBold.ttf', family: 'BarlowSC',  style: 'normal' },
+  { file: 'Barlow-Regular.ttf',               family: 'Barlow',    style: 'normal' },
+  { file: 'CormorantGaramond-SemiBoldItalic.ttf', family: 'Cormorant', style: 'italic' },
+];
+// Built-in fallbacks if the font files can't be loaded (e.g. offline)
+const DIPLOMA_FALLBACK = {
+  BarlowSC:  ['helvetica', 'bold'],
+  Barlow:    ['helvetica', 'normal'],
+  Cormorant: ['times', 'bolditalic'],
+};
+
+// Print-safe metal tones on ivory paper
+const DIPLOMA_METALS = {
+  gold:   { deep: '#86651b', mid: '#b58e2e', light: '#dfc277' },
+  silver: { deep: '#56606b', mid: '#8a95a0', light: '#c6cdd4' },
+  bronze: { deep: '#7a4722', mid: '#a86a3a', light: '#d8a677' },
+};
+const DIPLOMA_PAPER = '#fbf8f1';
+const DIPLOMA_INK = { main: '#1a1f25', soft: '#465260', muted: '#7d8793' };
+
+let diplomaFontsPromise = null;
+
+function bufferToBase64(buf) {
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(bin);
+}
+
+function loadDiplomaFonts() {
+  if (!diplomaFontsPromise) {
+    diplomaFontsPromise = Promise.all(DIPLOMA_FONTS.map(async f => {
+      const res = await fetch('assets/fonts/' + f.file);
+      if (!res.ok) throw new Error(`${f.file}: ${res.status}`);
+      return { ...f, data: bufferToBase64(await res.arrayBuffer()) };
+    })).catch(err => {
+      console.warn('Diploma fonts unavailable, using built-in fonts:', err);
+      diplomaFontsPromise = null;   // retry next time
+      return null;
+    });
+  }
+  return diplomaFontsPromise;
+}
+
+// Relative-segment polyline through absolute points
+function drawPath(doc, pts, style, closed) {
+  const segs = [];
+  for (let i = 1; i < pts.length; i++) segs.push([pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]]);
+  doc.lines(segs, pts[0][0], pts[0][1], [1, 1], style, closed);
+}
+
+// Closed polar curve r(θ) around (cx, cy)
+function polarPoints(cx, cy, r, steps) {
+  const pts = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * Math.PI * 2;
+    const rr = r(t);
+    pts.push([cx + rr * Math.cos(t), cy + rr * Math.sin(t)]);
+  }
+  return pts;
+}
+
+async function generateDiploma() {
   const nameInput = document.getElementById('diploma-name');
   const name = nameInput.value.trim();
   if (!name) {
@@ -350,112 +446,184 @@ function generateDiploma() {
   const tier       = getTier(percentage);
   if (!tier) return;
 
-  const tierLabel  = tier.charAt(0).toUpperCase() + tier.slice(1);
-  const { jsPDF }  = window.jspdf;
-  const doc        = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  const w = 297, h = 210;
+  const btn = document.getElementById('download-diploma-btn');
+  if (btn) btn.disabled = true;
+  const fonts = await loadDiplomaFonts();
+  if (btn) btn.disabled = false;
 
-  // Background
-  doc.setFillColor(12, 21, 32);
-  doc.rect(0, 0, w, h, 'F');
+  const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
+  const metal = DIPLOMA_METALS[tier];
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
+  const W = 297, H = 210, CX = W / 2;
 
-  // Subtle gradient effect via overlay rectangles (jsPDF doesn't support gradients)
-  doc.setFillColor(15, 35, 55);
-  doc.rect(0, 0, w / 2, h, 'F');
+  if (fonts) {
+    fonts.forEach(f => {
+      doc.addFileToVFS(f.file, f.data);
+      doc.addFont(f.file, f.family, f.style);
+    });
+  }
+  const font = (family, size) => {
+    if (fonts) doc.setFont(family, DIPLOMA_FONTS.find(f => f.family === family).style);
+    else doc.setFont(...DIPLOMA_FALLBACK[family]);
+    doc.setFontSize(size);
+  };
+  // Built-in fonts can't encode dashes/quotes reliably
+  const txt = s => (fonts ? s : s.replace(/[–—]/g, '-').replace(/[‘’]/g, "'"));
+  // jsPDF doesn't include charSpace when measuring or centring, so do it here
+  const widthOf = (s, space = 0) => doc.getTextWidth(txt(s)) + space * Math.max(txt(s).length - 1, 0);
+  const centred = (s, x, y, space = 0) => {
+    doc.text(txt(s), x - widthOf(s, space) / 2, y, { charSpace: space });
+  };
+  // Largest size up to `size` at which `s` fits in `maxWidth`
+  const fitFont = (family, size, s, maxWidth, space = 0, min = 4) => {
+    font(family, size);
+    while (widthOf(s, space) > maxWidth && size > min) font(family, (size -= 0.5));
+  };
 
-  // Outer border
-  const borderColors = { Gold: [241, 196, 15], Silver: [189, 195, 199], Bronze: [230, 126, 34] };
-  const bc = borderColors[tierLabel];
-  doc.setDrawColor(bc[0], bc[1], bc[2]);
-  doc.setLineWidth(1.5);
-  doc.roundedRect(8, 8, w - 16, h - 16, 4, 4, 'S');
+  // Paper
+  doc.setFillColor(DIPLOMA_PAPER);
+  doc.rect(0, 0, W, H, 'F');
 
-  // Inner border (thinner, accent blue)
-  doc.setDrawColor(94, 174, 255);
+  // Faint guilloche rosette behind the body text
+  doc.saveGraphicsState();
+  doc.setGState(new doc.GState({ opacity: 0.09, 'stroke-opacity': 0.09 }));
+  doc.setDrawColor(metal.mid);
+  doc.setLineWidth(0.18);
+  for (let k = 0; k < 6; k++) {
+    const phase = (k / 6) * Math.PI * 2;
+    drawPath(doc, polarPoints(CX, 104, t => 46 + 12 * Math.sin(9 * t + phase) + 4 * Math.sin(27 * t), 540), 'S');
+  }
+  doc.restoreGraphicsState();
+
+  // Frame: outer rule, guilloche band, inner rules
+  const O = 8, I = 14;
+  doc.setDrawColor(metal.mid);
+  doc.setLineWidth(0.7);
+  doc.rect(O, O, W - 2 * O, H - 2 * O, 'S');
   doc.setLineWidth(0.3);
-  doc.roundedRect(12, 12, w - 24, h - 24, 3, 3, 'S');
+  doc.rect(I, I, W - 2 * I, H - 2 * I, 'S');
+  doc.setDrawColor(metal.light);
+  doc.setLineWidth(0.15);
+  doc.rect(I + 2, I + 2, W - 2 * (I + 2), H - 2 * (I + 2), 'S');
 
-  // Corner accents
-  doc.setFillColor(bc[0], bc[1], bc[2]);
-  const corners = [[8,8],[w-8,8],[8,h-8],[w-8,h-8]];
-  corners.forEach(([cx, cy]) => {
-    doc.circle(cx, cy, 2, 'F');
-  });
+  // Two interlaced waves in the 6mm band between the rules
+  const mid = (O + I) / 2, amp = 1.7, period = 5.2, step = 0.4;
+  doc.setDrawColor(metal.mid);
+  doc.setLineWidth(0.16);
+  for (const phase of [0, Math.PI]) {
+    const wave = s => amp * Math.sin((2 * Math.PI * s) / period + phase);
+    const horiz = y => { const pts = []; for (let x = I; x <= W - I; x += step) pts.push([x, y + wave(x - I)]); return pts; };
+    const vert = x => { const pts = []; for (let y = I; y <= H - I; y += step) pts.push([x + wave(y - I), y]); return pts; };
+    drawPath(doc, horiz(mid), 'S');
+    drawPath(doc, horiz(H - mid), 'S');
+    drawPath(doc, vert(mid), 'S');
+    drawPath(doc, vert(W - mid), 'S');
+  }
 
-  // Title
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(150, 170, 190);
-  doc.text('CERTIFICATE OF ACHIEVEMENT', w / 2, 30, { align: 'center' });
+  // Corner blocks with a diamond
+  for (const [x, y] of [[O, O], [W - I, O], [O, H - I], [W - I, H - I]]) {
+    doc.setFillColor(DIPLOMA_PAPER);
+    doc.setDrawColor(metal.mid);
+    doc.setLineWidth(0.3);
+    doc.rect(x, y, I - O, I - O, 'FD');
+    const c = [x + (I - O) / 2, y + (I - O) / 2], d = 1.7;
+    doc.setFillColor(metal.mid);
+    drawPath(doc, [[c[0], c[1] - d], [c[0] + d, c[1]], [c[0], c[1] + d], [c[0] - d, c[1]]], 'F', true);
+  }
 
-  doc.setFontSize(28);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(255, 255, 255);
-  doc.text('Volleyball Rules Knowledge', w / 2, 48, { align: 'center' });
+  // Header
+  doc.setTextColor(DIPLOMA_INK.muted);
+  font('BarlowSC', 8);
+  centred('VOLLEYBALL-ROTATIONS.COM', CX, 31, 1.1);
 
-  // Divider line
-  doc.setDrawColor(60, 80, 100);
-  doc.setLineWidth(0.4);
-  doc.line(60, 55, w - 60, 55);
+  doc.setTextColor(DIPLOMA_INK.main);
+  font('BarlowSC', 36);
+  centred('CERTIFICATE', CX, 51, 2.4);
 
-  // Certifies text
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(160, 175, 190);
-  doc.text('This certifies that', w / 2, 68, { align: 'center' });
+  doc.setTextColor(metal.deep);
+  font('BarlowSC', 10.5);
+  centred('OF ACHIEVEMENT', CX, 60, 1.9);
 
-  // Name
-  doc.setFontSize(30);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(94, 174, 255);
-  doc.text(name, w / 2, 86, { align: 'center' });
+  // Ornament: rule — diamond — rule
+  doc.setDrawColor(metal.mid);
+  doc.setLineWidth(0.3);
+  doc.line(CX - 42, 67, CX - 5, 67);
+  doc.line(CX + 5, 67, CX + 42, 67);
+  doc.setFillColor(metal.mid);
+  drawPath(doc, [[CX, 65.2], [CX + 1.8, 67], [CX, 68.8], [CX - 1.8, 67]], 'F', true);
 
-  // Underline the name
-  const nameWidth = doc.getTextWidth(name);
-  const nameX = w / 2 - nameWidth / 2;
-  doc.setDrawColor(94, 174, 255);
-  doc.setLineWidth(0.5);
-  doc.line(nameX, 89, nameX + nameWidth, 89);
+  // Recipient
+  doc.setTextColor(DIPLOMA_INK.soft);
+  font('Cormorant', 16);
+  centred('This certifies that', CX, 82);
 
-  // Achievement text
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(160, 175, 190);
-  doc.text(`has demonstrated ${tierLabel}-level knowledge of volleyball rules`, w / 2, 101, { align: 'center' });
-  doc.text(`by scoring ${correct}/${total} (${percentage}%) on the ${getCategoryLabel(quizCategory)}`, w / 2, 112, { align: 'center' });
+  doc.setTextColor(DIPLOMA_INK.main);
+  fitFont('Cormorant', 46, name, 172, 0, 22);   // stays within the 176mm name line
+  centred(name, CX, 102);
 
-  // Tier badge (large, centred)
-  doc.setFontSize(40);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(bc[0], bc[1], bc[2]);
-  doc.text(tierLabel.toUpperCase(), w / 2, 143, { align: 'center' });
+  doc.setDrawColor(metal.mid);
+  doc.setLineWidth(0.3);
+  doc.line(CX - 88, 107, CX + 88, 107);
 
-  // Stars around tier
-  doc.setFontSize(14);
-  doc.text('*   *   *', w / 2, 155, { align: 'center' });
+  doc.setTextColor(DIPLOMA_INK.soft);
+  font('Barlow', 12);
+  centred(`has demonstrated ${tierLabel}-level knowledge of volleyball rules`, CX, 118);
+  centred(`by scoring ${correct}/${total} (${percentage}%) on the ${getCategoryLabel(quizCategory)}`, CX, 125);
 
-  // Divider
-  doc.setDrawColor(60, 80, 100);
-  doc.setLineWidth(0.4);
-  doc.line(60, 163, w - 60, 163);
+  // Seal: ribbons, foil starburst, disc with a guilloche ring
+  const SY = 154;
+  doc.setFillColor(metal.deep);
+  for (const s of [-1, 1]) {
+    drawPath(doc, [
+      [CX + s * 10.5, SY + 3], [CX + s * 2.5, SY + 7.5], [CX + s * 7.5, SY + 27],
+      [CX + s * 11.2, SY + 23.2], [CX + s * 15.5, SY + 25.5],
+    ], 'F', true);
+  }
+  doc.setFillColor(metal.mid);
+  drawPath(doc, polarPoints(CX, SY, t => (Math.round((t / (Math.PI * 2)) * 96) % 2 ? 14.9 : 16.2), 96), 'F', true);
+  doc.setFillColor(metal.deep);
+  doc.circle(CX, SY, 13.4, 'F');
+  doc.setDrawColor(metal.light);
+  doc.setLineWidth(0.14);
+  for (const phase of [0, Math.PI]) {
+    drawPath(doc, polarPoints(CX, SY, t => 11.3 + 0.9 * Math.sin(20 * t + phase), 360), 'S');
+  }
+  doc.setLineWidth(0.25);
+  doc.circle(CX, SY, 9.3, 'S');
 
-  // Footer info
+  // Text sized to sit inside the inner ring (r 9.3)
+  doc.setTextColor(metal.light);
+  fitFont('BarlowSC', 5.5, 'RULES QUIZ', 14, 0.5);
+  centred('RULES QUIZ', CX, SY - 4.2, 0.5);
+  doc.setTextColor(DIPLOMA_PAPER);
+  fitFont('BarlowSC', 15, tierLabel.toUpperCase(), 13.5, 0.6);
+  centred(tierLabel.toUpperCase(), CX, SY + 2.3, 0.6);
+  doc.setTextColor(metal.light);
+  font('BarlowSC', 6.5);
+  centred(`${percentage}%`, CX, SY + 6.9, 0.3);
+
+  // Date and rule edition, on signature-style lines either side of the seal
   const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(130, 145, 160);
-  doc.text(`Issued: ${dateStr}`, w / 2 - 60, 173, { align: 'center' });
-  doc.text('Based on FIVB Official Volleyball Rules 2025-2028', w / 2 + 40, 173, { align: 'center' });
-
-  doc.setFontSize(9);
-  doc.setTextColor(94, 174, 255);
-  doc.text('volleyball-rotations.com', w / 2, 182, { align: 'center' });
+  for (const [x, value, label] of [
+    [62, dateStr, 'DATE OF ISSUE'],
+    [W - 62, 'FIVB Official Rules 2025–2028', 'BASED ON'],
+  ]) {
+    doc.setTextColor(DIPLOMA_INK.main);
+    font('Barlow', 11);
+    centred(value, x, 157);
+    doc.setDrawColor(metal.mid);
+    doc.setLineWidth(0.25);
+    doc.line(x - 34, 160.5, x + 34, 160.5);
+    doc.setTextColor(DIPLOMA_INK.muted);
+    font('BarlowSC', 7);
+    centred(label, x, 165.5, 0.8);
+  }
 
   // Disclaimer
-  doc.setFontSize(6.5);
-  doc.setTextColor(80, 95, 110);
-  doc.text('For educational purposes only. Not affiliated with or endorsed by the FIVB.', w / 2, 197, { align: 'center' });
+  doc.setTextColor(DIPLOMA_INK.muted);
+  font('Barlow', 6.5);
+  centred('For educational purposes only. Not affiliated with or endorsed by the FIVB.', CX, 190);
 
   doc.save(`volleyball-quiz-${tier}-diploma.pdf`);
 }
