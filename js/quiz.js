@@ -366,6 +366,8 @@ function showResults() {
 // on a signature line, and a foil seal with ribbons in the tier's metal colour.
 
 // Fonts (OFL, subset to Latin) — fetched only when a diploma is made.
+// Bump DIPLOMA_FONTS_VERSION if a font file changes (Cloudflare caches assets for hours).
+const DIPLOMA_FONTS_VERSION = 1;
 const DIPLOMA_FONTS = [
   { file: 'BarlowSemiCondensed-SemiBold.ttf', family: 'BarlowSC',  style: 'normal' },
   { file: 'Barlow-Regular.ttf',               family: 'Barlow',    style: 'normal' },
@@ -401,7 +403,7 @@ function bufferToBase64(buf) {
 function loadDiplomaFonts() {
   if (!diplomaFontsPromise) {
     diplomaFontsPromise = Promise.all(DIPLOMA_FONTS.map(async f => {
-      const res = await fetch('assets/fonts/' + f.file);
+      const res = await fetch(`assets/fonts/${f.file}?v=${DIPLOMA_FONTS_VERSION}`);
       if (!res.ok) throw new Error(`${f.file}: ${res.status}`);
       return { ...f, data: bufferToBase64(await res.arrayBuffer()) };
     })).catch(err => {
