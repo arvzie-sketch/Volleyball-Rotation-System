@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/glass-shared.css?v=3">
-  <link rel="stylesheet" href="css/styles.css?v=8">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,39 +91,16 @@
           </svg>
           PDF
         </a>
+        <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
       </div>
     </div>
 
     <!-- Court area -->
     <div class="court-area">
-      <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
-      <div class="court-container">
+      <div class="court-container" id="court-container">
         <svg class="court-svg" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
-          <defs>
-            <pattern id="netMesh" width="6" height="6" patternUnits="userSpaceOnUse">
-              <path d="M0 0 L6 0 M0 0 L0 6" stroke="#ffffff" stroke-opacity="0.4" stroke-width="0.7"/>
-            </pattern>
-          </defs>
-
-          <!-- Court surround (free zone) -->
-          <rect x="0" y="0" width="300" height="320" fill="#2f5d6b"/>
-
-          <!-- Net: dark band, thin white mesh, white top tape -->
-          <rect x="25" y="12" width="250" height="18" fill="#0b0f13"/>
-          <rect x="25" y="14.5" width="250" height="15.5" fill="url(#netMesh)"/>
-          <rect x="25" y="12" width="250" height="2.5" fill="#ffffff"/>
-          <text x="150" y="25.5" text-anchor="middle" fill="#ffffff" font-size="8.5" font-weight="700" letter-spacing="3">NET</text>
-
-          <!-- Court surface -->
-          <rect x="25" y="32" width="250" height="250" fill="#d8703b" stroke="#ffffff" stroke-width="2.5"/>
-
-          <!-- 3m Attack line -->
-          <line x1="25" y1="115" x2="275" y2="115" stroke="#ffffff" stroke-width="2"/>
-          <line x1="8" y1="115" x2="25" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
-          <line x1="275" y1="115" x2="292" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
-
-          <!-- Center line at net -->
-          <line x1="8" y1="32" x2="292" y2="32" stroke="#ffffff" stroke-width="2.5"/>
+          <!-- Hardwood floor, net and lines (built by js/court-floor.js) -->
+          <g id="floor"></g>
 
           <!-- Zone labels -->
           <g id="zone-labels">
@@ -138,9 +115,47 @@
           <!-- Bench area -->
           <rect x="3" y="200" width="18" height="100" fill="#000000" fill-opacity="0.15"/>
 
+          <!-- Movement layer: start circles + arrows (filled by app.js) -->
+          <g id="movement" pointer-events="none"></g>
+
           <!-- Players container -->
           <g id="players"></g>
         </svg>
+
+        <!-- Court settings -->
+        <button type="button" class="court-ctl gear-btn" id="settings-btn" aria-label="Court settings" aria-expanded="false" aria-controls="settings-menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+            <circle cx="9" cy="7" r="2.2" fill="#15191d"/><circle cx="15" cy="12" r="2.2" fill="#15191d"/><circle cx="8" cy="17" r="2.2" fill="#15191d"/>
+          </svg>
+        </button>
+        <div class="settings-menu" id="settings-menu" hidden>
+          <div class="set-row"><span id="lbl-zones">Zone numbers</span><button type="button" class="set-switch" id="toggle-zones" role="switch" aria-checked="true" aria-labelledby="lbl-zones"></button></div>
+          <div class="set-row"><span id="lbl-bench">Bench</span><button type="button" class="set-switch" id="toggle-bench" role="switch" aria-checked="true" aria-labelledby="lbl-bench"></button></div>
+          <div class="set-label" id="lbl-move">Movement arrows</div>
+          <div class="set-seg" id="seg-move" role="group" aria-labelledby="lbl-move">
+            <button type="button" data-v="off">Off</button><button type="button" data-v="base">From Base</button><button type="button" data-v="prev">Previous</button>
+          </div>
+          <div class="set-label" id="lbl-style">Arrow style</div>
+          <div class="set-seg" id="seg-style" role="group" aria-labelledby="lbl-style">
+            <button type="button" data-v="solid">Solid</button><button type="button" data-v="dashed">Dashed</button><button type="button" data-v="chevron">Chevron</button>
+          </div>
+          <div class="set-label"><label for="arrow-alpha">Arrow opacity</label><span id="arrow-alpha-val">50%</span></div>
+          <input id="arrow-alpha" type="range" min="15" max="100" value="50">
+        </div>
+        <button type="button" class="court-ctl play-btn" id="play-btn" aria-pressed="false">
+          <svg class="ico-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>
+          <svg class="ico-stop" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="2" width="8" height="8"/></svg>
+          <span id="play-label">Play</span>
+        </button>
+        <div class="view-seg" id="view-seg" role="group" aria-label="Court view">
+          <button type="button" data-view="2d" class="active" aria-pressed="true">2D</button>
+          <button type="button" data-view="3d" aria-pressed="false">3D</button>
+        </div>
+        <div class="court3d-stage" id="court3d-stage" aria-hidden="true">
+          <canvas id="court3d-canvas" role="img" aria-label="3D volleyball court showing player positions for the selected rotation and phase"></canvas>
+        </div>
+        <div class="court-msg" id="court-msg" role="status" aria-live="polite" hidden></div>
       </div>
 
       <!-- Mode toggle: court → which side of the rally → which moment of it -->
@@ -166,10 +181,6 @@
         <button class="zone-btn" data-zone="5">5</button>
         <button class="zone-btn" data-zone="6">6</button>
         <button class="zone-btn active" data-zone="1">1</button>
-      </div>
-      <div class="options">
-        <button class="option-btn active" id="toggle-zones" title="Show zones" aria-label="Toggle zone numbers"><span>#</span></button>
-        <button class="option-btn active" id="toggle-bench" title="Show bench" aria-label="Toggle bench"><span>B</span></button>
       </div>
     </div>
 
@@ -223,8 +234,9 @@
         </section>
 
         <section class="help-topic">
-          <h3>Toggles: `#` and `B`</h3>
-          <p><strong>`#`</strong> shows the zone numbers faintly on the court. <strong>`B`</strong> shows bench players (subs and the libero swap).</p>
+          <h3>Arrows, Play and 3D</h3>
+          <p><strong>Arrows</strong> show where each player came from; the dashed circle is the starting spot. Tap a player to follow only their path. <strong>Play</strong> steps through the phases. <strong>3D</strong> tilts the court: drag to look around, pinch to zoom.</p>
+          <p>The settings button on the court shows or hides zone numbers and the bench, and changes the arrows.</p>
         </section>
 
         <section class="help-topic">
@@ -237,7 +249,9 @@
   </aside>
   <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
-  <script src="js/app.js?v=7"></script>
+  <script src="js/arrow-routing.js?v=1"></script>
+  <script src="js/court-floor.js?v=2"></script>
+  <script src="js/app.js?v=13"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');

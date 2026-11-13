@@ -33,14 +33,15 @@ The viewer displays player positions on a volleyball court for any combination o
 | Control | Location | Description |
 |---------|----------|-------------|
 | System dropdown | Top bar | Switch between rotation systems |
-| Serving / Receiving | Below title | Toggle between modes |
+| Serving / Receiving | Below the court | Toggle between modes |
 | Phase buttons | Below the court | Select the phase of play |
 | Zone grid (1-6) | Bottom bar | Select which rotation (setter position) |
-| `#` toggle | Bottom bar | Show/hide zone number overlays on court |
-| `L` toggle | Bottom bar | Show/hide bench (substituted players) |
-| `?` toggle | Bottom bar | Color legend |
+| Settings button | Top left of the court | Zone numbers, bench, movement arrows (Off / From Base / Previous), arrow style and opacity. Saved on the device. |
+| Play | Bottom left of the court | Steps through the phases of the current mode |
+| 2D / 3D | Top right of the court | Switches between the flat court and an optional 3D court (drag to look around, pinch to zoom) |
+| `?` | Title row | Opens the help panel |
 
-Click any player on the court to highlight them in yellow. This helps track a single player across phase transitions.
+Click any player to follow them: the other players dim and only that player's movement arrow is shown. Click the player again, or the floor, to clear.
 
 ## Editor
 
