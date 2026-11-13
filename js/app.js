@@ -166,6 +166,7 @@ function initSettingsMenu() {
 function refresh(animate = true) {
   updatePlayers(animate);
   renderMovement();
+  sync3D(animate);
 }
 
 // Load available systems from manifest
@@ -389,6 +390,7 @@ function initPlayers() {
     playersGroup.appendChild(elements.group);
   });
 
+  if (court3d) court3d.setPlayers(state.rotationData.players);
   refresh(false);
 }
 
@@ -436,6 +438,7 @@ function togglePlayerSelection(id) {
   state.highlightedPlayer = (id && id !== state.highlightedPlayer) ? id : null;
   updateSelection();
   renderMovement();
+  sync3D();
 }
 
 // ---- Movement: start circles + arrows from an earlier phase to the current one ----
@@ -669,6 +672,180 @@ function initEventHandlers() {
   });
 }
 
+// ---- 3D view: three.js + js/court3d.js, loaded on demand ----
+// Bump the ?v= here whenever js/court3d.js changes (it is not referenced from index.html).
+const VIEW3D_SCRIPTS = ['assets/vendor/three-r128.min.js', 'js/court3d.js?v=1'];
+let lib3dPromise = null;   // the two scripts
+let court3d = null;        // live VRSCourt3D instance
+let viewBusy = false;
+let msgTimer = null;
+
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = () => reject(new Error('Could not load ' + src));
+    document.head.appendChild(s);
+  });
+}
+
+function load3DLib() {
+  if (!lib3dPromise) {
+    lib3dPromise = VIEW3D_SCRIPTS
+      .reduce((p, src) => p.then(() => loadScript(src)), Promise.resolve())
+      .catch(err => { lib3dPromise = null; throw err; });
+  }
+  return lib3dPromise;
+}
+
+// Download the 3D files in the background so the first tap on 3D does not wait on the network.
+// Download only: nothing is parsed or run. Skipped on Data Saver and 2G.
+function prefetch3D() {
+  const c = navigator.connection;
+  if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return;
+  VIEW3D_SCRIPTS.forEach(src => {
+    const link = document.createElement('link');
+    if (link.relList && link.relList.supports && link.relList.supports('prefetch')) {
+      link.rel = 'prefetch'; link.as = 'script'; link.href = src;
+      document.head.appendChild(link);
+    } else {
+      fetch(src).catch(() => {});   // Safari: warm the HTTP cache
+    }
+  });
+}
+
+function showCourtMessage(text) {
+  const el = document.getElementById('court-msg');
+  el.textContent = text;
+  el.hidden = false;
+  clearTimeout(msgTimer);
+  msgTimer = setTimeout(() => { el.hidden = true; }, 4500);
+}
+
+function setViewButtons(view, busy) {
+  const seg = document.getElementById('view-seg');
+  seg.setAttribute('aria-busy', String(!!busy));
+  seg.querySelectorAll('button').forEach(b => {
+    const on = b.dataset.view === view;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+}
+
+async function ensureCourt3D() {
+  if (court3d) return court3d;
+  await load3DLib();
+  // Canvas labels bake the font in, so Barlow must be ready first
+  if (document.fonts && document.fonts.load) {
+    try { await Promise.race([document.fonts.load('700 60px Barlow'), wait(1500)]); } catch (e) { /* use fallback font */ }
+  }
+  court3d = window.VRSCourt3D.create({
+    stage: document.getElementById('court3d-stage'),
+    canvas: document.getElementById('court3d-canvas'),
+    getSvgRect: () => document.querySelector('.court-svg').getBoundingClientRect(),
+    onPick: id => togglePlayerSelection(id),
+    onContextLost: handle3DLost
+  });
+  court3d.setPlayers(state.rotationData ? state.rotationData.players : []);
+  return court3d;
+}
+
+// Push the current court state to the 3D court (no-op until 3D has been opened once)
+function sync3D(animate = true) {
+  if (!court3d || !state.rotationData) return;
+  const cur = getPositions();
+  const pos = Object.create(null), benched = Object.create(null);
+  state.rotationData.players.forEach(p => {
+    const v = cur[p.id];
+    if (!v) return;
+    pos[p.id] = toWorld(v);
+    if (isOnBench(v)) benched[p.id] = true;
+  });
+  court3d.setScene({
+    pos, benched,
+    showBench: state.showBench, showZones: state.showZones,
+    sel: state.highlightedPlayer, movement: state.movement,
+    style: state.arrowStyle, alpha: state.arrowAlpha,
+    duration: moveDuration(animate)
+  });
+}
+
+function show2D() {
+  document.querySelector('.court-svg').style.visibility = '';
+  const stageEl = document.getElementById('court3d-stage');
+  stageEl.classList.remove('on');
+  stageEl.setAttribute('aria-hidden', 'true');
+  state.view = '2d';
+}
+
+// Switch between the SVG court and the 3D court. opts.silent: do not save or touch the URL (page load).
+async function setView(view, opts = {}) {
+  if (viewBusy || view === state.view) return;
+  stopPlay();
+  const stageEl = document.getElementById('court3d-stage');
+  const svg = document.querySelector('.court-svg');
+  const instant = reducedMotion.matches;
+  viewBusy = true;
+  setViewButtons(view, true);
+  try {
+    if (view === '3d') {
+      const c3 = await ensureCourt3D();
+      c3.resize();
+      sync3D(false);
+      c3.setView('flat', { instant: true });            // top-down, lined up with the SVG
+      stageEl.classList.add('on');                      // fade in over the SVG
+      stageEl.setAttribute('aria-hidden', 'false');
+      if (!instant) await wait(170);
+      svg.style.visibility = 'hidden';                  // keeps its box, so nothing shifts
+      state.view = '3d';
+      await new Promise(done => c3.setView('tilt', { instant, onDone: done }));
+    } else {
+      if (court3d) await new Promise(done => court3d.setView('flat', { instant, onDone: done }));
+      show2D();
+    }
+    if (!opts.silent) { saveSettings(); syncURL(); }
+  } catch (err) {
+    console.error('3D view failed:', err);
+    show2D();
+    showCourtMessage('3D is not available on this device.');
+  } finally {
+    viewBusy = false;
+    setViewButtons(state.view, false);
+  }
+}
+
+// The GPU dropped the WebGL context: go back to 2D and start clean next time
+function handle3DLost() {
+  const lost = court3d;
+  court3d = null;
+  show2D();
+  setViewButtons('2d', false);
+  try { if (lost) lost.dispose(); } catch (e) { /* already gone */ }
+  const cv = document.getElementById('court3d-canvas');
+  cv.replaceWith(cv.cloneNode(false));                  // a lost canvas cannot be reused
+  showCourtMessage('3D stopped on this device. Showing 2D.');
+}
+
+function initViewSwitch() {
+  const seg = document.getElementById('view-seg');
+  seg.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (b) setView(b.dataset.view);
+  });
+  // Start parsing as soon as intent shows
+  const warm = () => { load3DLib().catch(() => {}); };
+  const btn3d = seg.querySelector('[data-view="3d"]');
+  btn3d.addEventListener('pointerenter', warm, { once: true });
+  btn3d.addEventListener('focus', warm, { once: true });
+  // Background download once the page has settled
+  const idle = window.requestIdleCallback || (fn => setTimeout(fn, 2500));
+  if (document.readyState === 'complete') idle(prefetch3D);
+  else window.addEventListener('load', () => idle(prefetch3D), { once: true });
+}
+
 // ---- Shareable URL state (deep links) ----
 // Lets other pages link straight to a court state, e.g.
 //   /?system=5-1&zone=3&mode=receiving&phase=pass
@@ -680,7 +857,8 @@ function readStateFromURL() {
     system: p.get('system'),
     mode: p.get('mode'),
     phase: p.get('phase'),
-    zone: p.get('zone')
+    zone: p.get('zone'),
+    view: p.get('view')
   };
 }
 
@@ -715,6 +893,7 @@ function syncURL() {
   p.set('mode', state.mode);
   p.set('phase', state.phase);
   p.set('zone', String(state.setterPosition));
+  if (state.view === '3d') p.set('view', '3d');
   history.replaceState(null, '', window.location.pathname + '?' + p.toString());
 }
 
@@ -723,6 +902,7 @@ async function init() {
   loadSettings();
   initEventHandlers();
   initSettingsMenu();
+  initViewSwitch();
   applySettingsUI();
   await loadAvailableSystems();
   populateSystemDropdown();
@@ -739,6 +919,11 @@ async function init() {
   applyURLState(urlState);   // mode + zone + phase (phase validated against the loaded rotation)
   renderPhaseButtons();
   initPlayers();
+
+  // View: a link wins over the saved choice; default is 2D. The SVG is already on screen, so a
+  // 3D start shows the normal transition once the 3D files are ready.
+  const wantView = (urlState.view === '2d' || urlState.view === '3d') ? urlState.view : state.savedView;
+  if (wantView === '3d') setView('3d', { silent: true });
 }
 
 // Same minimum the editor requires, so a wrong file is refused before it replaces the court

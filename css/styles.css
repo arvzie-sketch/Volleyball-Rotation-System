@@ -417,3 +417,69 @@
 .play-btn.on { border-color: var(--accent); color: var(--accent); }
 .play-btn.on .ico-play { display: none; }
 .play-btn.on .ico-stop { display: block; }
+
+.view-seg {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 6;
+  display: flex;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(21, 25, 29, 0.88);
+}
+.view-seg button {
+  padding: 6px 9px;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.view-seg button + button { border-left: 1px solid var(--control-line); }
+.view-seg button.active { background: var(--accent); color: var(--on-accent); }
+.view-seg[aria-busy="true"] button { cursor: progress; }
+.view-seg[aria-busy="true"] button.active { opacity: 0.7; }
+
+/* 3D canvas, stacked over the SVG court; faded in and out by app.js */
+.court3d-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.16s ease, visibility 0s linear 0.16s;
+}
+.court3d-stage.on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.16s ease;
+}
+.court3d-stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+.court-msg {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  z-index: 6;
+  transform: translateX(-50%);
+  max-width: calc(100% - 100px);
+  padding: 6px 10px;
+  border: 1px solid var(--control-line-active);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.court-msg[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .court3d-stage, .court3d-stage.on { transition: none; }
+}

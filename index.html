@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/glass-shared.css?v=3">
-  <link rel="stylesheet" href="css/styles.css?v=11">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -171,6 +171,14 @@
           <svg class="ico-stop" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="2" width="8" height="8"/></svg>
           <span id="play-label">Play</span>
         </button>
+        <div class="view-seg" id="view-seg" role="group" aria-label="Court view">
+          <button type="button" data-view="2d" class="active" aria-pressed="true">2D</button>
+          <button type="button" data-view="3d" aria-pressed="false">3D</button>
+        </div>
+        <div class="court3d-stage" id="court3d-stage" aria-hidden="true">
+          <canvas id="court3d-canvas" role="img" aria-label="3D volleyball court showing player positions for the selected rotation and phase"></canvas>
+        </div>
+        <div class="court-msg" id="court-msg" role="status" aria-live="polite" hidden></div>
       </div>
 
       <!-- Mode toggle: court → which side of the rally → which moment of it -->
@@ -264,7 +272,7 @@
   <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
   <script src="js/arrow-routing.js?v=1"></script>
-  <script src="js/app.js?v=10"></script>
+  <script src="js/app.js?v=11"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');

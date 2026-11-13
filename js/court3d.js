@@ -284,7 +284,7 @@
         R.chevrons(cv).forEach(function (ch) {
           var cm = new THREE.Mesh(chevGeo, new THREE.MeshBasicMaterial(
             { color: col, transparent: true, opacity: alpha * ch.fade, depthWrite: false, side: THREE.DoubleSide }));
-          cm.rotation.x = -Math.PI / 2;
+          cm.rotation.x = -Math.PI / 2; cm.renderOrder = 2;   // above the flat skin (0.5) and the start circles (1)
           var grp = new THREE.Group(); grp.add(cm);
           grp.position.set(ch.p[0], 0.065, ch.p[1]);
           grp.rotation.y = Math.atan2(-ch.t[1], ch.t[0]);
@@ -297,13 +297,13 @@
       var body = R.head(cv, 0.92), mat = arrowMat(col, alpha);
       var curve = new THREE.QuadraticBezierCurve3(v(body.s), v(body.c), v(body.e));
       if (style === 'solid') {
-        overlay.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 32, 0.055, 8, false), mat));
+        var tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 32, 0.055, 8, false), mat); tube.renderOrder = 2; overlay.add(tube);
       } else {
         var L = curve.getLength(), d = 0;
         while (d < L - 0.05) {
           var u0 = d / L, u1 = Math.min(L, d + 0.34) / L, p = [];
           for (var k = 0; k <= 3; k++) p.push(curve.getPointAt(u0 + (u1 - u0) * k / 3));
-          overlay.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(p), 3, 0.055, 5, false), mat));
+          var dash = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(p), 3, 0.055, 5, false), mat); dash.renderOrder = 2; overlay.add(dash);
           d += 0.56;
         }
       }
@@ -311,7 +311,7 @@
       var cone = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.5, 16), mat);
       cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tan);
       cone.position.set(cv.e[0], 0.07, cv.e[1]).addScaledVector(tan, -0.25);
-      cone.position.y = 0.07;
+      cone.position.y = 0.07; cone.renderOrder = 2;
       overlay.add(cone);
     }
 
