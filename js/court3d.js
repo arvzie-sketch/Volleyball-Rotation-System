@@ -150,6 +150,13 @@
       return m;
     })();
 
+    // Plain panel-coloured plane under the skin: as the camera goes top-down it hides the hardwood,
+    // the far court and the ground, so the flat view looks like the 2D one at any orbit angle.
+    var backdrop = new THREE.Mesh(new THREE.PlaneGeometry(200, 200),
+      new THREE.MeshBasicMaterial({ color: 0x15191d, transparent: true, opacity: 0, depthWrite: false }));
+    backdrop.rotation.x = -Math.PI / 2; backdrop.position.set(0, 0.016, SKIN_Z); backdrop.renderOrder = 0.4;
+    scene.add(backdrop);
+
     // ---- Figures ----
     var figs = Object.create(null), sel = null;
 
@@ -487,6 +494,7 @@
 
       var k = morphK(), gs = 0.86 + 0.14 * k;
       skin.material.opacity = k; skin.visible = k > 0.01;
+      backdrop.material.opacity = k; backdrop.visible = k > 0.01;
       netGroup.visible = k < 0.985;
       overlay.children.forEach(function (o) { if (o.userData.ghost) o.scale.set(gs, gs, 1); });
       Object.keys(figs).forEach(function (id) {
