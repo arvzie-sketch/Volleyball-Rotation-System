@@ -39,11 +39,86 @@ const state = {
   setterPosition: 1,
   highlightedPlayer: null,
   showZones: true,
-  showBench: true
+  showBench: true,
+  // Saved viewer settings (see loadSettings)
+  moveMode: 'base',       // 'off' | 'base' | 'prev'
+  arrowStyle: 'dashed',   // 'solid' | 'dashed' | 'chevron'
+  arrowAlpha: 0.5,
+  view: '2d',             // '2d' | '3d' (what is on screen now)
+  savedView: '2d',        // last view chosen on this device
+  playing: false,
+  movement: null          // last computed start circles + arrows
 };
 
 // Player elements cache
 let playerElements = {};
+
+// ---- Viewer settings, saved on this device ----
+const SETTINGS_KEY = 'vrs-viewer-settings';
+const MOVE_MODES = ['off', 'base', 'prev'];
+const ARROW_STYLES = ['solid', 'dashed', 'chevron'];
+
+function loadSettings() {
+  try {
+    const o = JSON.parse(localStorage.getItem(SETTINGS_KEY) || 'null');
+    if (!o || typeof o !== 'object') return;
+    if (typeof o.zones === 'boolean') state.showZones = o.zones;
+    if (typeof o.bench === 'boolean') state.showBench = o.bench;
+    if (MOVE_MODES.includes(o.move)) state.moveMode = o.move;
+    if (ARROW_STYLES.includes(o.style)) state.arrowStyle = o.style;
+    if (typeof o.alpha === 'number' && o.alpha >= 0.15 && o.alpha <= 1) state.arrowAlpha = o.alpha;
+    if (o.view === '2d' || o.view === '3d') state.savedView = o.view;
+  } catch (e) { /* storage blocked or corrupt: keep defaults */ }
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+      v: 1, zones: state.showZones, bench: state.showBench,
+      move: state.moveMode, style: state.arrowStyle, alpha: state.arrowAlpha, view: state.view
+    }));
+  } catch (e) { /* ignore */ }
+}
+
+// Reflect settings in the menu and on the SVG court
+function applySettingsUI() {
+  document.getElementById('toggle-zones').setAttribute('aria-checked', String(state.showZones));
+  document.getElementById('toggle-bench').setAttribute('aria-checked', String(state.showBench));
+  document.getElementById('zone-labels').style.display = state.showZones ? '' : 'none';
+}
+
+function initSettingsMenu() {
+  const btn = document.getElementById('settings-btn');
+  const menu = document.getElementById('settings-menu');
+  const setOpen = (open, returnFocus) => {
+    menu.hidden = !open;
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    if (open) { const first = menu.querySelector('button, input'); if (first) first.focus(); }
+    else if (returnFocus) btn.focus();
+  };
+  btn.addEventListener('click', e => { e.stopPropagation(); setOpen(menu.hidden); });
+  document.addEventListener('pointerdown', e => {
+    if (!menu.hidden && !e.target.closest('#settings-menu') && !e.target.closest('#settings-btn')) setOpen(false);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !menu.hidden) setOpen(false, true);
+  });
+
+  document.getElementById('toggle-zones').addEventListener('click', () => {
+    state.showZones = !state.showZones;
+    saveSettings(); applySettingsUI(); refresh(false);
+  });
+  document.getElementById('toggle-bench').addEventListener('click', () => {
+    state.showBench = !state.showBench;
+    saveSettings(); applySettingsUI(); refresh(false);
+  });
+}
+
+// Single redraw entry point for the court
+function refresh(animate = true) {
+  updatePlayers(animate);
+}
 
 // Load available systems from manifest
 async function loadAvailableSystems() {
@@ -152,7 +227,7 @@ function getPhaseKey() {
 function getPositions() {
   if (!state.rotationData) return {};
   const phaseData = state.rotationData.positions[getPhaseKey()];
-  return phaseData ? phaseData[state.setterPosition] : {};
+  return (phaseData && phaseData[state.setterPosition]) || {};
 }
 
 // Check if player is on bench (substituted out)
@@ -236,7 +311,7 @@ function initPlayers() {
     playersGroup.appendChild(elements.group);
   });
 
-  updatePlayers(false);
+  refresh(false);
 }
 
 // Update player positions
@@ -306,7 +381,7 @@ function renderPhaseButtons() {
       state.phase = phase;
       document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      updatePlayers();
+      refresh();
       syncURL();
     });
     container.appendChild(btn);
@@ -337,7 +412,7 @@ function initEventHandlers() {
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderPhaseButtons();
-      updatePlayers();
+      refresh();
       syncURL();
     });
   });
@@ -348,23 +423,9 @@ function initEventHandlers() {
       state.setterPosition = parseInt(btn.dataset.zone);
       document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      updatePlayers();
+      refresh();
       syncURL();
     });
-  });
-
-  // Toggle zones
-  document.getElementById('toggle-zones').addEventListener('click', (e) => {
-    state.showZones = !state.showZones;
-    e.currentTarget.classList.toggle('active', state.showZones);
-    document.getElementById('zone-labels').style.display = state.showZones ? '' : 'none';
-  });
-
-  // Toggle bench
-  document.getElementById('toggle-bench').addEventListener('click', (e) => {
-    state.showBench = !state.showBench;
-    e.currentTarget.classList.toggle('active', state.showBench);
-    updatePlayers();
   });
 }
 
@@ -419,7 +480,10 @@ function syncURL() {
 
 // Initialize app
 async function init() {
+  loadSettings();
   initEventHandlers();
+  initSettingsMenu();
+  applySettingsUI();
   await loadAvailableSystems();
   populateSystemDropdown();
 
@@ -437,6 +501,13 @@ async function init() {
   initPlayers();
 }
 
+// Same minimum the editor requires, so a wrong file is refused before it replaces the court
+function isRotationData(d) {
+  return !!d && typeof d === 'object' && Array.isArray(d.players) &&
+    !!d.phases && Array.isArray(d.phases.serving) && Array.isArray(d.phases.receiving) &&
+    !!d.positions && typeof d.positions === 'object';
+}
+
 // Handle imported rotation file
 document.getElementById('import-rotation').addEventListener('change', async (e) => {
   const file = e.target.files[0];
@@ -444,8 +515,9 @@ document.getElementById('import-rotation').addEventListener('change', async (e) 
   try {
     const text = await file.text();
     const data = JSON.parse(text);
+    if (!isRotationData(data)) throw new Error('Not a rotation file');
     loadRotationFromData(data);
-    state.phase = 'base';
+    state.phase = data.phases[state.mode][0] || 'base';
     state.highlightedPlayer = null;
     renderPhaseButtons();
     initPlayers();

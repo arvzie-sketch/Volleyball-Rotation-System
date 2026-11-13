@@ -170,6 +170,7 @@
 }
 
 .court-container {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -241,46 +242,6 @@
   font-size: 17px;
 }
 
-/* Options: # / B toggles — a compact secondary pair, centred beside the setter grid */
-.options {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  align-self: center;
-  width: 34px;
-  border: 1px solid var(--control-line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--surface);
-}
-
-.option-btn {
-  width: 100%;
-  height: 32px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.option-btn + .option-btn { border-top: 1px solid var(--control-line); }
-
-/* On = bright; off = muted + struck through (not colour alone) */
-.option-btn span { font-size: 13px; text-decoration: line-through; }
-.option-btn.active { color: var(--text-secondary); }
-.option-btn.active span { text-decoration: none; }
-
-.option-btn:hover {
-  background: var(--surface-hover);
-  color: var(--text);
-}
-
 /* Responsive — small screens (shorter than Pixel 9's 892px) */
 @media (max-height: 750px) {
   .app-container { padding: 8px; gap: 6px; }
@@ -291,7 +252,6 @@
   .phase-btn { padding: 6px 4px; font-size: 13px; }
   .bottom-bar { padding: 8px; gap: 8px; }
   .bottom-bar .zone-btn { min-height: 44px; font-size: 16px; }
-  .option-btn { height: 30px; }
 }
 
 /* Title cluster: system badge + cheat-sheet chip sit together */
@@ -320,3 +280,94 @@
 }
 /* inline-flex would otherwise override the `hidden` attribute used for 5-1 gating */
 .sheet-chip[hidden] { display: none; }
+
+/* Help button lives in the title row (base rule is in glass-shared.css) */
+.title-actions .help-trigger {
+  position: static;
+  width: 27px;
+  height: 27px;
+  border-radius: var(--radius);
+  background: transparent;
+  border: 1px solid var(--control-line);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.title-actions .help-trigger:hover {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--control-line-active);
+}
+.title-actions .help-trigger:focus-visible { outline-color: var(--text); }
+
+/* Controls that sit on top of the court */
+.court-ctl {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 31px;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  background: rgba(21, 25, 29, 0.88);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.court-ctl:hover { border-color: var(--control-line-active); color: var(--text); }
+
+.gear-btn { top: 2px; left: 2px; width: 34px; padding: 0; }
+.gear-btn svg { width: 18px; height: 18px; }
+.gear-btn.open { border-color: var(--accent); color: var(--accent); }
+
+.settings-menu {
+  position: absolute;
+  top: 38px;
+  left: 2px;
+  z-index: 7;
+  width: min(250px, calc(100% - 4px));
+  max-height: calc(100% - 42px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--control-line-active);
+  border-radius: var(--radius);
+}
+.settings-menu[hidden] { display: none; }
+
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.set-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--control-line);
+  border-radius: 11px;
+  background: var(--line);
+  cursor: pointer;
+}
+.set-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: left 0.15s ease, background 0.15s ease;
+}
+.set-switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
+.set-switch[aria-checked="true"]::after { left: 20px; background: var(--on-accent); }

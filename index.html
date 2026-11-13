@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/glass-shared.css?v=3">
-  <link rel="stylesheet" href="css/styles.css?v=8">
+  <link rel="stylesheet" href="css/styles.css?v=9">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,13 +91,13 @@
           </svg>
           PDF
         </a>
+        <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
       </div>
     </div>
 
     <!-- Court area -->
     <div class="court-area">
-      <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
-      <div class="court-container">
+      <div class="court-container" id="court-container">
         <svg class="court-svg" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
           <defs>
             <pattern id="netMesh" width="6" height="6" patternUnits="userSpaceOnUse">
@@ -141,6 +141,18 @@
           <!-- Players container -->
           <g id="players"></g>
         </svg>
+
+        <!-- Court settings -->
+        <button type="button" class="court-ctl gear-btn" id="settings-btn" aria-label="Court settings" aria-expanded="false" aria-controls="settings-menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+            <circle cx="9" cy="7" r="2.2" fill="#15191d"/><circle cx="15" cy="12" r="2.2" fill="#15191d"/><circle cx="8" cy="17" r="2.2" fill="#15191d"/>
+          </svg>
+        </button>
+        <div class="settings-menu" id="settings-menu" hidden>
+          <div class="set-row"><span id="lbl-zones">Zone numbers</span><button type="button" class="set-switch" id="toggle-zones" role="switch" aria-checked="true" aria-labelledby="lbl-zones"></button></div>
+          <div class="set-row"><span id="lbl-bench">Bench</span><button type="button" class="set-switch" id="toggle-bench" role="switch" aria-checked="true" aria-labelledby="lbl-bench"></button></div>
+        </div>
       </div>
 
       <!-- Mode toggle: court → which side of the rally → which moment of it -->
@@ -166,10 +178,6 @@
         <button class="zone-btn" data-zone="5">5</button>
         <button class="zone-btn" data-zone="6">6</button>
         <button class="zone-btn active" data-zone="1">1</button>
-      </div>
-      <div class="options">
-        <button class="option-btn active" id="toggle-zones" title="Show zones" aria-label="Toggle zone numbers"><span>#</span></button>
-        <button class="option-btn active" id="toggle-bench" title="Show bench" aria-label="Toggle bench"><span>B</span></button>
       </div>
     </div>
 
@@ -237,7 +245,7 @@
   </aside>
   <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
-  <script src="js/app.js?v=7"></script>
+  <script src="js/app.js?v=8"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');
