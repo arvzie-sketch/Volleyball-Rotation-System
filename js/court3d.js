@@ -150,8 +150,8 @@
       return m;
     })();
 
-    // Plain panel-coloured plane under the skin: as the camera goes top-down it hides the hardwood,
-    // the far court and the ground, so the flat view looks like the 2D one at any orbit angle.
+    // Plain panel-coloured plane under the skin: during the 2D <-> 3D switch it hides the hardwood,
+    // the far court and the ground, so the flat pose matches the 2D view. Free orbiting shows the hardwood.
     var backdrop = new THREE.Mesh(new THREE.PlaneGeometry(200, 200),
       new THREE.MeshBasicMaterial({ color: 0x15191d, transparent: true, opacity: 0, depthWrite: false }));
     backdrop.rotation.x = -Math.PI / 2; backdrop.position.set(0, 0.016, SKIN_Z); backdrop.renderOrder = 0.4;
@@ -464,7 +464,7 @@
     }
 
     // ---- Render on demand ----
-    var running = false, dead = false, last = 0;
+    var running = false, dead = false, last = 0, skinMix = 1;   // skinMix: 1 = flat skin may show (switch), 0 = hardwood (free orbit)
     function invalidate() { if (!running && !dead) { running = true; last = 0; requestAnimationFrame(loop); } }
 
     function draw(now) {
@@ -493,8 +493,11 @@
       });
 
       var k = morphK(), gs = 0.86 + 0.14 * k;
-      skin.material.opacity = k; skin.visible = k > 0.01;
-      backdrop.material.opacity = k; backdrop.visible = k > 0.01;
+      var mixT = view === 'custom' ? 0 : 1, dm = mixT - skinMix;
+      if (Math.abs(dm) > 0.005) { skinMix += dm * Math.min(1, a * 2.2); moving = true; } else skinMix = mixT;
+      var sk = k * skinMix;
+      skin.material.opacity = sk; skin.visible = sk > 0.01;
+      backdrop.material.opacity = sk; backdrop.visible = sk > 0.01;
       netGroup.visible = k < 0.985;
       overlay.children.forEach(function (o) { if (o.userData.ghost) o.scale.set(gs, gs, 1); });
       Object.keys(figs).forEach(function (id) {
