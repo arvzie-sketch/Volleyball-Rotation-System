@@ -338,7 +338,14 @@ function tokenOpacity(id, onBench) {
 }
 
 // Token fill + label colour by role (setter and libero are told apart by more than colour: labels S / L)
-function getPlayerColors(player) {
+// 6-2: a setter in the front row is an attacker, so draw them like the other hitters
+function isFrontRowAttacker(player, pos) {
+  return player.role === 'setter' && state.rotationData && state.rotationData.name === '6-2' &&
+    !!pos && !isOnBench(pos) && pos[1] < 450;
+}
+
+function getPlayerColors(player, asAttacker) {
+  if (asAttacker) return { fill: COLORS.player, text: COLORS.text };
   if (player.role === 'setter') return { fill: COLORS.setter, text: COLORS.textOnLight };
   if (player.isLibero) return { fill: COLORS.libero, text: COLORS.textOnLight };
   return { fill: COLORS.player, text: COLORS.text };
@@ -421,6 +428,9 @@ function updatePlayers(animate = true) {
     }
 
     elements.group.style.display = '';
+    const colors = getPlayerColors(player, isFrontRowAttacker(player, pos));
+    elements.circle.setAttribute('fill', colors.fill);
+    elements.text.setAttribute('fill', colors.text);
     const scaled = scalePos(pos);
     elements.group.style.transition =
       `transform ${duration}ms cubic-bezier(0.65, 0, 0.35, 1), opacity 200ms ease`;
@@ -684,7 +694,7 @@ function initEventHandlers() {
 
 // ---- 3D view: three.js + js/court3d.js, loaded on demand ----
 // Bump the ?v= here whenever js/court3d.js changes (it is not referenced from index.html).
-const VIEW3D_SCRIPTS = ['assets/vendor/three-r128.min.js', 'js/court3d.js?v=6'];
+const VIEW3D_SCRIPTS = ['assets/vendor/three-r128.min.js', 'js/court3d.js?v=7'];
 let lib3dPromise = null;   // the two scripts
 let court3d = null;        // live VRSCourt3D instance
 let viewBusy = false;
@@ -770,15 +780,16 @@ function sync3D(animate = true, force = false) {
   if (!court3d || !state.rotationData) return;
   if (state.view !== '3d' && !force) return;
   const cur = getPositions();
-  const pos = Object.create(null), benched = Object.create(null);
+  const pos = Object.create(null), benched = Object.create(null), attacker = Object.create(null);
   state.rotationData.players.forEach(p => {
     const v = cur[p.id];
     if (!v) return;
     pos[p.id] = toWorld(v);
     if (isOnBench(v)) benched[p.id] = true;
+    if (isFrontRowAttacker(p, v)) attacker[p.id] = true;
   });
   court3d.setScene({
-    pos, benched,
+    pos, benched, attacker,
     showBench: state.showBench, showZones: state.showZones,
     sel: state.highlightedPlayer, movement: state.movement,
     style: state.arrowStyle, alpha: state.arrowAlpha,

@@ -149,8 +149,11 @@
         Mk(new THREE.CylinderGeometry(0.095, 0.085, 0.42, 12), shorts, s * 0.1, 0.68, 0);
         Mk(new THREE.BoxGeometry(0.12, 0.07, 0.26), 0xffffff, s * 0.1, 0.035, -0.05);
       });
+      var shirtMats = [];
       var torso = Mk(new THREE.CylinderGeometry(0.2, 0.17, 0.6, 16), shirt, 0, 1.13, 0); torso.scale.z = 0.62;
+      shirtMats.push(torso.material);
       var stripe = Mk(new THREE.CylinderGeometry(0.205, 0.205, 0.07, 16, 1, true), trim, 0, 1.2, 0); stripe.scale.z = 0.62;
+      var stripeMat = stripe.material;
       Mk(new THREE.CylinderGeometry(0.05, 0.055, 0.07, 10), skinC, 0, 1.47, 0);
       Mk(new THREE.SphereGeometry(0.115, 18, 14), skinC, 0, 1.6, 0);
       Mk(new THREE.SphereGeometry(0.122, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2.2), 0x2a2118, 0, 1.61, 0.012);
@@ -158,14 +161,15 @@
         var pivot = new THREE.Group(); pivot.position.set(s * 0.255, 1.38, 0); pivot.rotation.x = 0.55; pivot.rotation.z = s * 0.1;
         var sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.055, 0.18, 10), new THREE.MeshLambertMaterial({ color: shirt })); sleeve.position.y = -0.09; sleeve.castShadow = true; pivot.add(sleeve);
         var arm = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.04, 0.46, 10), new THREE.MeshLambertMaterial({ color: skinC })); arm.position.y = -0.41; arm.castShadow = true; pivot.add(arm);
-        body.add(pivot);
+        shirtMats.push(sleeve.material); body.add(pivot);
       });
       var ring = new THREE.Mesh(new THREE.RingGeometry(0.42, 0.5, 32), new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }));
       ring.rotation.x = -Math.PI / 2; ring.position.y = 0.02; body.add(ring);
       var bg = kind === 's' ? '#ffc93c' : kind === 'l' ? '#ffffff' : '#101316', fg = kind === 'p' ? '#ffffff' : '#101316';
-      var spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(labelCanvas(label, bg, fg, '#ffffff')), depthTest: false, transparent: true }));
+      var texS = new THREE.CanvasTexture(labelCanvas(label, bg, fg, '#ffffff')), texA = kind === 's' ? new THREE.CanvasTexture(labelCanvas(label, '#101316', '#ffffff', '#ffffff')) : null;
+      var spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: texS, depthTest: false, transparent: true }));
       spr.scale.set(0.9, 0.9, 1); spr.position.y = 2.35; spr.renderOrder = 10; body.add(spr);
-      var disc = new THREE.Mesh(new THREE.CircleGeometry(0.622, 40), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(labelCanvas(label, bg, fg, '#ffffff')), transparent: true, opacity: 0, depthWrite: false }));
+      var disc = new THREE.Mesh(new THREE.CircleGeometry(0.622, 40), new THREE.MeshBasicMaterial({ map: texS, transparent: true, opacity: 0, depthWrite: false }));
       disc.rotation.x = -Math.PI / 2; disc.position.y = 0.05; disc.renderOrder = 5; disc.visible = false; g.add(disc);
       g.scale.setScalar(1.12);
       scene.add(g);
@@ -176,7 +180,7 @@
       // Tap target: covers body and floating label, stays put while the body squashes
       var proxy = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 2.6, 12), new THREE.MeshBasicMaterial({ visible: false }));
       proxy.position.y = 1.3; proxy.userData.pid = pl.id; g.add(proxy);
-      return { g: g, body: body, spr: spr, disc: disc, proxy: proxy, mats: mats, selRing: selRing,
+      return { stripeMat: stripeMat, shirtMats: shirtMats, texS: texS, texA: texA, kind: kind, asA: false, g: g, body: body, spr: spr, disc: disc, proxy: proxy, mats: mats, selRing: selRing,
                dim: 1, cur: null, goal: [0, 0], on: true, bench: false };
     }
 
@@ -191,7 +195,7 @@
     }
 
     function setPlayers(players) {
-      Object.keys(figs).forEach(function (id) { scene.remove(figs[id].g); disposeTree(figs[id].g); });
+      Object.keys(figs).forEach(function (id) { scene.remove(figs[id].g); disposeTree(figs[id].g); if (figs[id].texA) figs[id].texA.dispose(); });
       figs = Object.create(null);
       clearOverlay();
       Object.keys(ghostTex).forEach(function (k) { ghostTex[k].dispose(); });
@@ -289,6 +293,14 @@
         f.bench = !!s.benched[id];
         f.on = !!w && (s.showBench || !f.bench);
         f.g.visible = f.on;
+        if (f.kind === 's' && f.asA !== !!(s.attacker && s.attacker[id])) {
+          f.asA = !f.asA;
+          var tex = f.asA ? f.texA : f.texS;
+          f.shirtMats.forEach(function (m) { m.color.setHex(f.asA ? 0x1b1f24 : YELLOW); });
+          f.stripeMat.color.setHex(f.asA ? 0xffffff : 0x15181c);
+          f.spr.material.map = tex; f.spr.material.needsUpdate = true;
+          f.disc.material.map = tex; f.disc.material.needsUpdate = true;
+        }
         if (!w) return;
         if (!f.cur || !s.duration) { f.cur = [w[0], w[1]]; f.goal = w; f.t0 = undefined; }
         else if (Math.abs(f.goal[0] - w[0]) + Math.abs(f.goal[1] - w[1]) > 0.001) {
