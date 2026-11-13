@@ -371,3 +371,34 @@
 }
 .set-switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
 .set-switch[aria-checked="true"]::after { left: 20px; background: var(--on-accent); }
+
+.set-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.set-seg {
+  display: flex;
+  flex-shrink: 0;   /* the menu is a scrolling flex column: rows must not squash on short screens */
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.set-seg button {
+  flex: 1;
+  padding: 8px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.set-seg button + button { border-left: 1px solid var(--control-line); }
+.set-seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.settings-menu input[type="range"] { width: 100%; flex-shrink: 0; accent-color: var(--accent); }

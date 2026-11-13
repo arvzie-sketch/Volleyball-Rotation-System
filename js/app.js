@@ -18,16 +18,35 @@ const PLAYER_RADIUS = 18;
 const BENCH_X = 12;
 
 // Token colours: dark token with a white ring; setter yellow, libero white.
-// Yellow (#ffc93c = --accent) also marks the selected player, as a dashed ring.
+// On the court yellow (#ffc93c = --accent) means "setter" only; the selected player gets a white ring.
 const COLORS = {
   player: '#101316',
   setter: '#ffc93c',
   libero: '#ffffff',
   ring: '#ffffff',
   text: '#ffffff',
-  textOnLight: '#101316',
-  select: '#ffc93c'
+  textOnLight: '#101316'
 };
+
+// Court geometry in metres, shared by the SVG arrows and the 3D court.
+// 900 data units = 9 m. Net at z = -4.5, our baseline at z = +4.5, x from -4.5 to 4.5.
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const M_PER_UNIT = 9 / 900;
+const SVG_PER_M = 250 / 9;
+const BENCH_WX = (BENCH_X - 150) / SVG_PER_M;   // the bench column, where the SVG draws it
+
+// Movement thresholds and arrow sizes (metres, from the prototype)
+const MOVE_MIN = 0.5;     // shorter moves show nothing
+const ARROW_MIN = 1.7;    // shorter moves show the start circle only
+const ARROW_W = 0.11;
+const HEAD_LEN = 0.5;
+const HEAD_HALF = 0.22;
+const DIM_OPACITY = 0.35;
+
+// Slide timing
+const MOVE_MS = 850;
+const PLAY_MOVE_MS = 1700;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // App State
 const state = {
@@ -85,6 +104,13 @@ function applySettingsUI() {
   document.getElementById('toggle-zones').setAttribute('aria-checked', String(state.showZones));
   document.getElementById('toggle-bench').setAttribute('aria-checked', String(state.showBench));
   document.getElementById('zone-labels').style.display = state.showZones ? '' : 'none';
+  document.querySelectorAll('#seg-move button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === state.moveMode)));
+  document.querySelectorAll('#seg-style button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.v === state.arrowStyle)));
+  const pct = Math.round(state.arrowAlpha * 100);
+  document.getElementById('arrow-alpha').value = pct;
+  document.getElementById('arrow-alpha-val').textContent = pct + '%';
 }
 
 function initSettingsMenu() {
@@ -113,11 +139,33 @@ function initSettingsMenu() {
     state.showBench = !state.showBench;
     saveSettings(); applySettingsUI(); refresh(false);
   });
+  document.getElementById('seg-move').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    state.moveMode = b.dataset.v;
+    saveSettings(); applySettingsUI(); refresh(false);
+  });
+  document.getElementById('seg-style').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    state.arrowStyle = b.dataset.v;
+    saveSettings(); applySettingsUI(); refresh(false);
+  });
+  document.getElementById('arrow-alpha').addEventListener('input', e => {
+    state.arrowAlpha = Math.max(0.15, Math.min(1, e.target.value / 100));
+    saveSettings(); applySettingsUI(); refresh(false);
+  });
+
+  // Tap the floor to clear the followed player
+  document.querySelector('.court-svg').addEventListener('click', () => {
+    if (state.highlightedPlayer) togglePlayerSelection(null);
+  });
 }
 
 // Single redraw entry point for the court
 function refresh(animate = true) {
   updatePlayers(animate);
+  renderMovement();
 }
 
 // Load available systems from manifest
@@ -182,6 +230,7 @@ async function loadRotation(systemName) {
     const response = await fetch(`rotations/${systemName}.json`);
     if (!response.ok) throw new Error(`Failed to load ${systemName}.json`);
     state.rotationData = await response.json();
+    routeCache.clear();
     state.currentSystem = systemName;
     document.getElementById('system-badge').textContent = state.rotationData.name + ' ▾';
 
@@ -206,6 +255,7 @@ function updateSheetCta() {
 
 // Load rotation from a parsed JSON object (e.g. from file import)
 function loadRotationFromData(data) {
+  routeCache.clear();
   state.rotationData = data;
   state.currentSystem = null;
   document.getElementById('system-badge').textContent = (data.name || 'Custom') + ' ▾';
@@ -247,6 +297,34 @@ function scalePos(pos) {
   };
 }
 
+function toWorld(pos) {
+  const z = -4.5 + pos[1] * M_PER_UNIT;
+  return isOnBench(pos) ? [BENCH_WX, z] : [pos[0] * M_PER_UNIT - 4.5, z];
+}
+
+function worldToSvg(w) {
+  return [150 + w[0] * SVG_PER_M, COURT_OFFSET_Y + (w[1] + 4.5) * SVG_PER_M];
+}
+
+function phaseKeyFor(mode, phase) {
+  return mode + phase.charAt(0).toUpperCase() + phase.slice(1);
+}
+
+function getPositionsFor(mode, phase) {
+  const d = state.rotationData && state.rotationData.positions[phaseKeyFor(mode, phase)];
+  return (d && d[state.setterPosition]) || {};
+}
+
+function moveDuration(animate) {
+  if (!animate || reducedMotion.matches) return 0;
+  return state.playing ? PLAY_MOVE_MS : MOVE_MS;
+}
+
+function tokenOpacity(id, onBench) {
+  const dim = state.highlightedPlayer && state.highlightedPlayer !== id ? DIM_OPACITY : 1;
+  return Math.min(dim, onBench ? 0.5 : 1);
+}
+
 // Token fill + label colour by role (setter and libero are told apart by more than colour: labels S / L)
 function getPlayerColors(player) {
   if (player.role === 'setter') return { fill: COLORS.setter, text: COLORS.textOnLight };
@@ -259,13 +337,12 @@ function createPlayerElement(player) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.style.cursor = 'pointer';
 
-  // Dashed selection ring, shown when the player is highlighted
-  const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  ring.setAttribute('r', PLAYER_RADIUS + 4);
+  // Solid white selection ring, shown when the player is followed
+  const ring = document.createElementNS(SVG_NS, 'circle');
+  ring.setAttribute('r', PLAYER_RADIUS + 3.5);
   ring.setAttribute('fill', 'none');
-  ring.setAttribute('stroke', COLORS.select);
-  ring.setAttribute('stroke-width', '1.5');
-  ring.setAttribute('stroke-dasharray', '3 3');
+  ring.setAttribute('stroke', COLORS.ring);            // white: yellow is for the setter only
+  ring.setAttribute('stroke-width', '2');
   ring.style.display = 'none';
 
   const colors = getPlayerColors(player);
@@ -283,15 +360,15 @@ function createPlayerElement(player) {
   text.setAttribute('font-size', '13.5');
   text.setAttribute('font-weight', '700');
   text.setAttribute('letter-spacing', '0.3');
-  text.textContent = player.label;
+  text.textContent = String(player.label);
 
   g.appendChild(ring);
   g.appendChild(circle);
   g.appendChild(text);
 
-  g.addEventListener('click', () => {
-    state.highlightedPlayer = state.highlightedPlayer === player.id ? null : player.id;
-    updatePlayerColors();
+  g.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePlayerSelection(player.id);
   });
 
   return { group: g, circle, text, ring };
@@ -316,48 +393,164 @@ function initPlayers() {
 
 // Update player positions
 function updatePlayers(animate = true) {
-  const posData = getPositions();
   if (!state.rotationData) return;
+  const posData = getPositions();
+  const duration = moveDuration(animate);
 
   state.rotationData.players.forEach(player => {
     const elements = playerElements[player.id];
     if (!elements) return;
 
     const pos = posData[player.id];
-    if (!pos) {
-      elements.group.style.display = 'none';
-      return;
-    }
-
-    const onBench = isOnBench(pos);
-
-    // Hide benched players if bench display is off
-    if (onBench && !state.showBench) {
+    if (!pos || (isOnBench(pos) && !state.showBench)) {
       elements.group.style.display = 'none';
       return;
     }
 
     elements.group.style.display = '';
-
     const scaled = scalePos(pos);
-    const duration = animate ? 500 : 0;
-    elements.group.style.transition = `transform ${duration}ms ease-out, opacity ${duration}ms ease-out`;
+    elements.group.style.transition =
+      `transform ${duration}ms cubic-bezier(0.65, 0, 0.35, 1), opacity 200ms ease`;
     elements.group.style.transform = `translate(${scaled.x}px, ${scaled.y}px)`;
-    elements.group.style.opacity = onBench ? '0.5' : '1';
+    elements.group.style.opacity = String(tokenOpacity(player.id, isOnBench(pos)));
+    elements.ring.style.display = state.highlightedPlayer === player.id ? '' : 'none';
   });
-
-  updatePlayerColors();
 }
 
-// Update the highlight ring only (token colours are fixed by role)
-function updatePlayerColors() {
+// Selection only: ring + dimming. Leaves transforms alone so a tap mid-slide does not snap tokens.
+function updateSelection() {
   if (!state.rotationData) return;
+  const posData = getPositions();
   state.rotationData.players.forEach(player => {
     const elements = playerElements[player.id];
-    if (elements) {
-      elements.ring.style.display = state.highlightedPlayer === player.id ? '' : 'none';
-    }
+    const pos = posData[player.id];
+    if (!elements || !pos) return;
+    elements.group.style.opacity = String(tokenOpacity(player.id, isOnBench(pos)));
+    elements.ring.style.display = state.highlightedPlayer === player.id ? '' : 'none';
   });
+}
+
+// Tap a player to follow only their path; tap again (or the floor: id = null) to clear
+function togglePlayerSelection(id) {
+  state.highlightedPlayer = (id && id !== state.highlightedPlayer) ? id : null;
+  updateSelection();
+  renderMovement();
+}
+
+// ---- Movement: start circles + arrows from an earlier phase to the current one ----
+const routeCache = new Map();   // cleared whenever a rotation is loaded
+
+function getFromPhase() {
+  if (state.moveMode === 'off' || !state.rotationData) return null;
+  const phases = state.rotationData.phases[state.mode] || [];
+  const i = phases.indexOf(state.phase);
+  if (i <= 0) return null;
+  return state.moveMode === 'prev' ? phases[i - 1] : phases[0];
+}
+
+// Renderer-independent model, in metres: { ghosts: [{id,label,at}], arrows: [{id,a,b,bend,setter}] }
+function buildMovement() {
+  const out = { ghosts: [], arrows: [] };
+  const fromPhase = getFromPhase();
+  if (!fromPhase) return out;
+
+  const cur = getPositions();
+  const from = getPositionsFor(state.mode, fromPhase);
+  const specs = [], fixed = [];
+
+  state.rotationData.players.forEach(player => {
+    const a = from[player.id], b = cur[player.id];
+    if (!a || !b) return;
+    if (!state.showBench && (isOnBench(a) || isOnBench(b))) return;
+    const wa = toWorld(a), wb = toWorld(b);
+    if (state.highlightedPlayer && player.id !== state.highlightedPlayer) { fixed.push(wa, wb); return; }
+    const d = Math.hypot(wa[0] - wb[0], wa[1] - wb[1]);
+    if (d < MOVE_MIN) { fixed.push(wb); return; }
+    out.ghosts.push({ id: player.id, label: String(player.label), at: wa, setter: player.role === 'setter' });
+    if (d < ARROW_MIN) { fixed.push(wa, wb); return; }
+    specs.push({ id: player.id, a: wa, b: wb, setter: player.role === 'setter' });
+  });
+
+  const key = [state.mode, state.setterPosition, fromPhase, state.phase, state.highlightedPlayer, state.showBench].join('|');
+  const cached = routeCache.get(key);
+  if (cached && cached.length === specs.length) {
+    specs.forEach((s, i) => { s.bend = cached[i]; });
+  } else {
+    VRSRouting.route(specs, fixed);
+    routeCache.set(key, specs.map(s => s.bend));
+  }
+  out.arrows = specs;
+  return out;
+}
+
+function svgEl(name, attrs) {
+  const el = document.createElementNS(SVG_NS, name);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+const f2 = n => n.toFixed(2);
+function svgPt(w) { const p = worldToSvg(w); return f2(p[0]) + ' ' + f2(p[1]); }
+const CHEVRON_D = 'M' + VRSRouting.CHEVRON.map(p => p[0] + ' ' + p[1]).join('L') + 'Z';
+
+function drawSvgArrow(a) {
+  const R = VRSRouting;
+  const cv = R.curve(a.a, a.b, a.bend);
+  const color = a.setter ? COLORS.setter : '#ffffff';
+  const g = svgEl('g', { opacity: String(state.arrowAlpha) });   // group opacity: head and line never double up
+
+  if (state.arrowStyle === 'chevron') {
+    R.chevrons(cv).forEach(ch => {
+      const p = worldToSvg(ch.p);
+      const deg = Math.atan2(ch.t[1], ch.t[0]) * 180 / Math.PI;
+      g.appendChild(svgEl('path', {
+        d: CHEVRON_D, fill: color, 'fill-opacity': f2(ch.fade),
+        transform: `translate(${f2(p[0])} ${f2(p[1])}) rotate(${f2(deg)}) scale(${f2(ch.scale * SVG_PER_M)})`
+      }));
+    });
+    return g;
+  }
+
+  const body = R.head(cv, 0.92);
+  const line = svgEl('path', {
+    d: `M${svgPt(body.s)} Q${svgPt(body.c)} ${svgPt(body.e)}`,
+    fill: 'none', stroke: color, 'stroke-width': f2(ARROW_W * SVG_PER_M)
+  });
+  if (state.arrowStyle === 'dashed') {
+    line.setAttribute('stroke-dasharray', f2(0.34 * SVG_PER_M) + ' ' + f2(0.22 * SVG_PER_M));
+  }
+  g.appendChild(line);
+
+  // Head: tip at the end of the curve, pointing along its final direction
+  const tip = cv.e, t = R.tangentAt(cv, 1);
+  const bx = tip[0] - t[0] * HEAD_LEN, bz = tip[1] - t[1] * HEAD_LEN;
+  const pts = [tip, [bx - t[1] * HEAD_HALF, bz + t[0] * HEAD_HALF], [bx + t[1] * HEAD_HALF, bz - t[0] * HEAD_HALF]];
+  g.appendChild(svgEl('polygon', { points: pts.map(svgPt).join(' '), fill: color }));
+  return g;
+}
+
+function renderMovement() {
+  const layer = document.getElementById('movement');
+  layer.textContent = '';
+  if (!state.rotationData) { state.movement = null; return; }
+  const mv = state.movement = buildMovement();
+
+  mv.ghosts.forEach(gh => {
+    const p = worldToSvg(gh.at);
+    const g = svgEl('g', { transform: `translate(${f2(p[0])} ${f2(p[1])})` });
+    g.appendChild(svgEl('circle', {
+      r: PLAYER_RADIUS, fill: '#ffffff', 'fill-opacity': '0.1',
+      stroke: gh.setter ? COLORS.setter : '#ffffff', 'stroke-opacity': '0.85', 'stroke-width': '1.2', 'stroke-dasharray': '2.8 2.3'
+    }));
+    const label = svgEl('text', {
+      'text-anchor': 'middle', 'dominant-baseline': 'central',
+      fill: '#ffffff', 'fill-opacity': '0.7', 'font-size': '11', 'font-weight': '700'
+    });
+    label.textContent = gh.label;
+    g.appendChild(label);
+    layer.appendChild(g);
+  });
+  mv.arrows.forEach(a => layer.appendChild(drawSvgArrow(a)));
 }
 
 // Render phase buttons based on current mode

@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/glass-shared.css?v=3">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/styles.css?v=10">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -138,6 +138,9 @@
           <!-- Bench area -->
           <rect x="3" y="200" width="18" height="100" fill="#000000" fill-opacity="0.15"/>
 
+          <!-- Movement layer: start circles + arrows (filled by app.js) -->
+          <g id="movement" pointer-events="none"></g>
+
           <!-- Players container -->
           <g id="players"></g>
         </svg>
@@ -152,6 +155,16 @@
         <div class="settings-menu" id="settings-menu" hidden>
           <div class="set-row"><span id="lbl-zones">Zone numbers</span><button type="button" class="set-switch" id="toggle-zones" role="switch" aria-checked="true" aria-labelledby="lbl-zones"></button></div>
           <div class="set-row"><span id="lbl-bench">Bench</span><button type="button" class="set-switch" id="toggle-bench" role="switch" aria-checked="true" aria-labelledby="lbl-bench"></button></div>
+          <div class="set-label" id="lbl-move">Movement arrows</div>
+          <div class="set-seg" id="seg-move" role="group" aria-labelledby="lbl-move">
+            <button type="button" data-v="off">Off</button><button type="button" data-v="base">From Base</button><button type="button" data-v="prev">Previous</button>
+          </div>
+          <div class="set-label" id="lbl-style">Arrow style</div>
+          <div class="set-seg" id="seg-style" role="group" aria-labelledby="lbl-style">
+            <button type="button" data-v="solid">Solid</button><button type="button" data-v="dashed">Dashed</button><button type="button" data-v="chevron">Chevron</button>
+          </div>
+          <div class="set-label"><label for="arrow-alpha">Arrow opacity</label><span id="arrow-alpha-val">50%</span></div>
+          <input id="arrow-alpha" type="range" min="15" max="100" value="50">
         </div>
       </div>
 
@@ -245,7 +258,8 @@
   </aside>
   <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
-  <script src="js/app.js?v=8"></script>
+  <script src="js/arrow-routing.js?v=1"></script>
+  <script src="js/app.js?v=9"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');
