@@ -1086,31 +1086,8 @@
         <div class="court-wrapper" style="position:relative;">
           <button class="help-trigger" id="help-trigger" aria-label="Open help panel" aria-controls="help-panel" aria-expanded="false">?</button>
           <svg class="court-svg" id="editor-court" viewBox="0 0 300 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Volleyball court showing player positions for the selected rotation and phase">
-            <defs>
-              <pattern id="netMesh" width="6" height="6" patternUnits="userSpaceOnUse">
-                <path d="M0 0 L6 0 M0 0 L0 6" stroke="#ffffff" stroke-opacity="0.4" stroke-width="0.7"/>
-              </pattern>
-            </defs>
-
-            <!-- Court surround (free zone) -->
-            <rect x="0" y="0" width="300" height="320" fill="#2f5d6b"/>
-
-            <!-- Net: dark band, thin white mesh, white top tape -->
-            <rect x="25" y="12" width="250" height="18" fill="#0b0f13"/>
-            <rect x="25" y="14.5" width="250" height="15.5" fill="url(#netMesh)"/>
-            <rect x="25" y="12" width="250" height="2.5" fill="#ffffff"/>
-            <text x="150" y="25.5" text-anchor="middle" fill="#ffffff" font-size="8.5" font-weight="700" letter-spacing="3">NET</text>
-
-            <!-- Court surface -->
-            <rect x="25" y="32" width="250" height="250" fill="#d8703b" stroke="#ffffff" stroke-width="2.5"/>
-
-            <!-- 3m Attack line -->
-            <line x1="25" y1="115" x2="275" y2="115" stroke="#ffffff" stroke-width="2"/>
-            <line x1="8" y1="115" x2="25" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
-            <line x1="275" y1="115" x2="292" y2="115" stroke="#ffffff" stroke-opacity="0.65" stroke-width="1.5" stroke-dasharray="4 3"/>
-
-            <!-- Center line at net -->
-            <line x1="8" y1="32" x2="292" y2="32" stroke="#ffffff" stroke-width="2.5"/>
+            <!-- Hardwood floor, net and lines (built by js/court-floor.js) -->
+            <g id="floor"></g>
 
             <!-- Zone labels -->
             <g id="zone-labels">
@@ -1285,6 +1262,8 @@
     </div>
   </div>
 
+  <script src="js/court-floor.js?v=2"></script>
+  <script>VRSFloor.build(document.getElementById('floor'));</script>
   <script src="js/editor.js?v=5"></script>
   <script>
     // Nav hamburger

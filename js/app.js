@@ -674,7 +674,7 @@ function initEventHandlers() {
 
 // ---- 3D view: three.js + js/court3d.js, loaded on demand ----
 // Bump the ?v= here whenever js/court3d.js changes (it is not referenced from index.html).
-const VIEW3D_SCRIPTS = ['assets/vendor/three-r128.min.js', 'js/court3d.js?v=3'];
+const VIEW3D_SCRIPTS = ['assets/vendor/three-r128.min.js', 'js/court3d.js?v=6'];
 let lib3dPromise = null;   // the two scripts
 let court3d = null;        // live VRSCourt3D instance
 let viewBusy = false;
@@ -899,6 +899,7 @@ function syncURL() {
 
 // Initialize app
 async function init() {
+  VRSFloor.build(document.getElementById('floor'));
   loadSettings();
   initEventHandlers();
   initSettingsMenu();

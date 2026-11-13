@@ -9,7 +9,7 @@
 
   var FOV = 32, FLAT_EL = 89.9, TILT_EL = 38;
   var M = 9 / 250;                        // metres per SVG viewBox unit
-  var SKIN_Z = (160 - 32) * M - 4.5;      // world z under the centre of the SVG viewBox (300 x 320)
+  var SKIN_Z = (160 - 32) * M - 4.5;      // world z under the centre of the SVG viewBox (300 x 320): where the flat pose looks
   var YELLOW = 0xffc93c;
   var DIM = 0.35;
 
@@ -59,14 +59,14 @@
     ground.rotation.x = -Math.PI / 2; ground.position.y = -0.03; scene.add(ground);
     var fz = new THREE.Mesh(new THREE.PlaneGeometry(15, 25), new THREE.MeshStandardMaterial({ map: woodTex(205, 16, 16, 3, 70, 7), roughness: 0.55, metalness: 0 }));
     fz.rotation.x = -Math.PI / 2; fz.position.y = -0.006; fz.position.z = -4.5; fz.receiveShadow = true; scene.add(fz);
-    var court = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshStandardMaterial({ map: woodTex(21, 70, 50, 6, 50, 13), roughness: 0.4, metalness: 0 }));
+    var court = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshStandardMaterial({ map: woodTex(21, 54, 50, 6, 50, 13), color: 0xe0e0e0, roughness: 0.4, metalness: 0 }));
     court.rotation.x = -Math.PI / 2; court.receiveShadow = true; scene.add(court);
     var zone = new THREE.Mesh(new THREE.PlaneGeometry(9, 3), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.07, depthWrite: false }));
     zone.rotation.x = -Math.PI / 2; zone.position.set(0, 0.006, -3); scene.add(zone);
     var white = new THREE.MeshBasicMaterial({ color: 0xffffff });
     function strip(w, d, x, z) { var m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), white); m.rotation.x = -Math.PI / 2; m.position.set(x, 0.012, z); scene.add(m); }
     strip(9.05, 0.05, 0, -4.5); strip(9.05, 0.05, 0, 4.5); strip(0.05, 9.05, -4.5, 0); strip(0.05, 9.05, 4.5, 0); strip(9, 0.04, 0, -1.5);
-    var far = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshStandardMaterial({ map: court.material.map, color: 0xa4a4a4, roughness: 0.45, metalness: 0 }));
+    var far = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshStandardMaterial({ map: court.material.map, color: 0xaeaeae, roughness: 0.45, metalness: 0 }));
     far.rotation.x = -Math.PI / 2; far.position.set(0, 0, -9); far.receiveShadow = true; scene.add(far);
     var zone2 = zone.clone(); zone2.position.z = -6; scene.add(zone2);
     strip(9.05, 0.05, 0, -13.5); strip(0.05, 9.05, -4.5, -9); strip(0.05, 9.05, 4.5, -9); strip(9, 0.04, 0, -7.5);
@@ -117,45 +117,6 @@
       var a = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.8, 10), new THREE.MeshBasicMaterial({ map: antTex }));
       a.position.set(s * 4.5, NETTOP + 0.4, NETZ); netGroup.add(a);
     });
-
-    // ---- Flat skin: a canvas copy of the 2D SVG court. Opaque when the camera is top-down, so the
-    //      swap from the SVG is seamless; fades into the hardwood as the camera tilts. ----
-    var skin = (function () {
-      var S = 4, c = document.createElement('canvas'); c.width = 300 * S; c.height = 320 * S;
-      var g = c.getContext('2d'); g.scale(S, S);
-      g.fillStyle = '#2f5d6b'; g.fillRect(0, 0, 300, 320);                    // surround
-      g.fillStyle = '#0b0f13'; g.fillRect(25, 12, 250, 18);                   // net band
-      g.fillStyle = 'rgba(255,255,255,0.4)';                                  // mesh (matches the SVG pattern)
-      for (var x = 30; x < 275; x += 6) g.fillRect(x, 14.5, 0.35, 15.5);
-      for (var y = 18; y < 30; y += 6) g.fillRect(25, y, 250, 0.35);
-      g.fillStyle = '#ffffff'; g.fillRect(25, 12, 250, 2.5);                  // top tape
-      g.font = '700 8.5px Barlow, sans-serif'; g.textAlign = 'center';
-      if ('letterSpacing' in g) { g.letterSpacing = '3px'; g.fillText('NET', 150, 25.5); g.letterSpacing = '0px'; }
-      else ['N', 'E', 'T'].forEach(function (ch, i) { g.fillText(ch, 140.5 + i * 8.3, 25.5); });
-      g.fillStyle = '#d8703b'; g.fillRect(25, 32, 250, 250);                  // court
-      g.strokeStyle = '#ffffff'; g.lineWidth = 2.5; g.strokeRect(25, 32, 250, 250);
-      g.lineWidth = 2; g.beginPath(); g.moveTo(25, 115); g.lineTo(275, 115); g.stroke();   // attack line
-      g.globalAlpha = 0.65; g.lineWidth = 1.5; g.setLineDash([4, 3]); g.beginPath();
-      g.moveTo(8, 115); g.lineTo(25, 115); g.moveTo(275, 115); g.lineTo(292, 115); g.stroke();
-      g.setLineDash([]); g.globalAlpha = 1;
-      g.lineWidth = 2.5; g.beginPath(); g.moveTo(8, 32); g.lineTo(292, 32); g.stroke();    // centre line
-      g.fillStyle = 'rgba(0,0,0,0.15)'; g.fillRect(3, 200, 18, 100);          // bench strip
-      var tex = new THREE.CanvasTexture(c); tex.anisotropy = 8;
-      var m = new THREE.Mesh(new THREE.PlaneGeometry(300 * M, 320 * M),
-        new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
-      m.rotation.x = -Math.PI / 2;
-      m.position.set(0, 0.02, SKIN_Z);
-      m.renderOrder = 0.5;
-      scene.add(m);
-      return m;
-    })();
-
-    // Plain panel-coloured plane under the skin: during the 2D <-> 3D switch it hides the hardwood,
-    // the far court and the ground, so the flat pose matches the 2D view. Free orbiting shows the hardwood.
-    var backdrop = new THREE.Mesh(new THREE.PlaneGeometry(200, 200),
-      new THREE.MeshBasicMaterial({ color: 0x15191d, transparent: true, opacity: 0, depthWrite: false }));
-    backdrop.rotation.x = -Math.PI / 2; backdrop.position.set(0, 0.016, SKIN_Z); backdrop.renderOrder = 0.4;
-    scene.add(backdrop);
 
     // ---- Figures ----
     var figs = Object.create(null), sel = null;
@@ -291,7 +252,7 @@
         R.chevrons(cv).forEach(function (ch) {
           var cm = new THREE.Mesh(chevGeo, new THREE.MeshBasicMaterial(
             { color: col, transparent: true, opacity: alpha * ch.fade, depthWrite: false, side: THREE.DoubleSide }));
-          cm.rotation.x = -Math.PI / 2; cm.renderOrder = 2;   // above the flat skin (0.5) and the start circles (1)
+          cm.rotation.x = -Math.PI / 2; cm.renderOrder = 2;   // above the start circles (1)
           var grp = new THREE.Group(); grp.add(cm);
           grp.position.set(ch.p[0], 0.065, ch.p[1]);
           grp.rotation.y = Math.atan2(-ch.t[1], ch.t[0]);
@@ -464,7 +425,7 @@
     }
 
     // ---- Render on demand ----
-    var running = false, dead = false, last = 0, skinMix = 1;   // skinMix: 1 = flat skin may show (switch), 0 = hardwood (free orbit)
+    var running = false, dead = false, last = 0;
     function invalidate() { if (!running && !dead) { running = true; last = 0; requestAnimationFrame(loop); } }
 
     function draw(now) {
@@ -493,11 +454,6 @@
       });
 
       var k = morphK(), gs = 0.86 + 0.14 * k;
-      var mixT = view === 'custom' ? 0 : 1, dm = mixT - skinMix;
-      if (Math.abs(dm) > 0.005) { skinMix += dm * Math.min(1, a * 2.2); moving = true; } else skinMix = mixT;
-      var sk = k * skinMix;
-      skin.material.opacity = sk; skin.visible = sk > 0.01;
-      backdrop.material.opacity = sk; backdrop.visible = sk > 0.01;
       netGroup.visible = k < 0.985;
       overlay.children.forEach(function (o) { if (o.userData.ghost) o.scale.set(gs, gs, 1); });
       Object.keys(figs).forEach(function (id) {
