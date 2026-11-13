@@ -24,6 +24,7 @@ Samples/
 # PDFs (copyrighted reference docs) — except the published cheat sheet
 *.pdf
 !assets/5-1-rotation-cheat-sheet.pdf
+!assets/6-2-rotation-cheat-sheet.pdf
 
 # Google (Search Console, etc.)
 Google/

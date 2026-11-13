@@ -249,10 +249,20 @@ async function loadRotation(systemName) {
   }
 }
 
-// Show the 5-1 cheat-sheet download only while the 5-1 system is active.
+// Show the cheat-sheet download only for systems that have a PDF.
+const CHEAT_SHEETS = {
+  '5-1': { href: '/assets/5-1-rotation-cheat-sheet.pdf', title: 'Download 5-1 cheat sheet (PDF)' },
+  '6-2': { href: '/assets/6-2-rotation-cheat-sheet.pdf', title: 'Download 6-2 cheat sheet (PDF)' }
+};
 function updateSheetCta() {
   const cta = document.getElementById('sheet-cta');
-  if (cta) cta.hidden = state.currentSystem !== '5-1';
+  if (!cta) return;
+  const sheet = CHEAT_SHEETS[state.currentSystem];
+  cta.hidden = !sheet;
+  if (sheet) {
+    cta.href = sheet.href;
+    cta.title = sheet.title;
+  }
 }
 
 // Load rotation from a parsed JSON object (e.g. from file import)
