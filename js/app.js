@@ -753,9 +753,12 @@ async function ensureCourt3D() {
   return court3d;
 }
 
-// Push the current court state to the 3D court (no-op until 3D has been opened once)
-function sync3D(animate = true) {
+// Push the current court state to the 3D court (no-op until 3D has been opened once).
+// Skipped while 2D is on screen: a hidden 3D court would still rebuild its arrows and render every
+// frame of each slide, which made 2D stutter on weak tablets. setView('3d') catches it up (force).
+function sync3D(animate = true, force = false) {
   if (!court3d || !state.rotationData) return;
+  if (state.view !== '3d' && !force) return;
   const cur = getPositions();
   const pos = Object.create(null), benched = Object.create(null);
   state.rotationData.players.forEach(p => {
@@ -794,7 +797,7 @@ async function setView(view, opts = {}) {
     if (view === '3d') {
       const c3 = await ensureCourt3D();
       c3.resize();
-      sync3D(false);
+      sync3D(false, true);
       c3.setView('flat', { instant: true });            // top-down, lined up with the SVG
       stageEl.classList.add('on');                      // fade in over the SVG
       stageEl.setAttribute('aria-hidden', 'false');
