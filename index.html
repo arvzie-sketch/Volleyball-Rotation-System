@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/glass-shared.css?v=3">
-  <link rel="stylesheet" href="css/styles.css?v=10">
+  <link rel="stylesheet" href="css/styles.css?v=11">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -166,6 +166,11 @@
           <div class="set-label"><label for="arrow-alpha">Arrow opacity</label><span id="arrow-alpha-val">50%</span></div>
           <input id="arrow-alpha" type="range" min="15" max="100" value="50">
         </div>
+        <button type="button" class="court-ctl play-btn" id="play-btn" aria-pressed="false">
+          <svg class="ico-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>
+          <svg class="ico-stop" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="2" width="8" height="8"/></svg>
+          <span id="play-label">Play</span>
+        </button>
       </div>
 
       <!-- Mode toggle: court → which side of the rally → which moment of it -->
@@ -259,7 +264,7 @@
   <div class="help-panel-backdrop" id="help-panel-backdrop"></div>
 
   <script src="js/arrow-routing.js?v=1"></script>
-  <script src="js/app.js?v=9"></script>
+  <script src="js/app.js?v=10"></script>
   <script>
     // Nav hamburger
     const navHamburger = document.getElementById('nav-hamburger');

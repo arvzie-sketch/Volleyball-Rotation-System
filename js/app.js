@@ -194,6 +194,7 @@ function populateSystemDropdown() {
     btn.textContent = systemName;
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
+      stopPlay();
       menu.classList.remove('open');
 
       // Reset state for new system
@@ -569,16 +570,58 @@ function renderPhaseButtons() {
   phases.forEach(phase => {
     const btn = document.createElement('button');
     btn.className = 'phase-btn' + (state.phase === phase ? ' active' : '');
+    btn.dataset.phase = phase;
     btn.textContent = phaseLabels[phase];
     btn.addEventListener('click', () => {
-      state.phase = phase;
-      document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      refresh();
-      syncURL();
+      stopPlay();
+      setPhase(phase);
     });
     container.appendChild(btn);
   });
+}
+
+function setPhase(phase) {
+  state.phase = phase;
+  document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.dataset.phase === phase));
+  refresh();
+  syncURL();
+}
+
+// ---- Play: step through the phases of the current mode ----
+const PLAY_FIRST_MS = 2200, PLAY_STEP_MS = 2600, PLAY_END_MS = 1800;
+let playTimer = null;
+
+function updatePlayButton() {
+  const btn = document.getElementById('play-btn');
+  btn.classList.toggle('on', state.playing);
+  btn.setAttribute('aria-pressed', String(state.playing));
+  document.getElementById('play-label').textContent = state.playing ? 'Stop' : 'Play';
+}
+
+function stopPlay() {
+  if (!state.playing) return;
+  state.playing = false;
+  clearTimeout(playTimer);
+  updatePlayButton();
+}
+
+function playStep() {
+  if (!state.playing) return;
+  const phases = state.rotationData.phases[state.mode] || [];
+  const i = phases.indexOf(state.phase);
+  if (i < 0 || i >= phases.length - 1) { playTimer = setTimeout(stopPlay, PLAY_END_MS); return; }
+  setPhase(phases[i + 1]);
+  playTimer = setTimeout(playStep, PLAY_STEP_MS);
+}
+
+function togglePlay() {
+  if (state.playing) { stopPlay(); return; }
+  const phases = state.rotationData ? (state.rotationData.phases[state.mode] || []) : [];
+  if (phases.length < 2) return;
+  state.playing = true;
+  updatePlayButton();
+  setPhase(phases[0]);
+  playTimer = setTimeout(playStep, PLAY_FIRST_MS);
 }
 
 // Initialize event handlers
@@ -597,9 +640,12 @@ function initEventHandlers() {
     systemMenu.classList.remove('open');
   });
 
+  document.getElementById('play-btn').addEventListener('click', togglePlay);
+
   // Mode toggle
   document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      stopPlay();
       state.mode = btn.dataset.mode;
       state.phase = 'base';
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -613,6 +659,7 @@ function initEventHandlers() {
   // Setter position
   document.querySelectorAll('.zone-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      stopPlay();
       state.setterPosition = parseInt(btn.dataset.zone);
       document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -703,6 +750,7 @@ function isRotationData(d) {
 
 // Handle imported rotation file
 document.getElementById('import-rotation').addEventListener('change', async (e) => {
+  stopPlay();
   const file = e.target.files[0];
   if (!file) return;
   try {
