@@ -338,10 +338,12 @@ function tokenOpacity(id, onBench) {
 }
 
 // Token fill + label colour by role (setter and libero are told apart by more than colour: labels S / L)
-// 6-2: a setter in the front row is an attacker, so draw them like the other hitters
-function isFrontRowAttacker(player, pos) {
-  return player.role === 'setter' && state.rotationData && state.rotationData.name === '6-2' &&
-    !!pos && !isOnBench(pos) && pos[1] < 450;
+// 6-2: a setter who starts the rotation (base) in the front row is the attacker, so draw them like the
+// other hitters for the whole rotation. A base back-row setter stays yellow wherever they move.
+function isFrontRowAttacker(player) {
+  if (player.role !== 'setter' || !state.rotationData || state.rotationData.name !== '6-2') return false;
+  const base = getPositionsFor(state.mode, 'base')[player.id];
+  return !!base && !isOnBench(base) && base[1] < 450;
 }
 
 function getPlayerColors(player, asAttacker) {
@@ -428,7 +430,7 @@ function updatePlayers(animate = true) {
     }
 
     elements.group.style.display = '';
-    const colors = getPlayerColors(player, isFrontRowAttacker(player, pos));
+    const colors = getPlayerColors(player, isFrontRowAttacker(player));
     elements.circle.setAttribute('fill', colors.fill);
     elements.text.setAttribute('fill', colors.text);
     const scaled = scalePos(pos);
@@ -786,7 +788,7 @@ function sync3D(animate = true, force = false) {
     if (!v) return;
     pos[p.id] = toWorld(v);
     if (isOnBench(v)) benched[p.id] = true;
-    if (isFrontRowAttacker(p, v)) attacker[p.id] = true;
+    if (isFrontRowAttacker(p)) attacker[p.id] = true;
   });
   court3d.setScene({
     pos, benched, attacker,
